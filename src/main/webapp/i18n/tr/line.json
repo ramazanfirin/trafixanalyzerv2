@@ -1,0 +1,27 @@
+{
+    "trafficanalzyzerv2App": {
+        "line" : {
+            "home": {
+                "title": "Lines",
+                "createLabel": "Create a new Line",
+                "createOrEditLabel": "Create or edit a Line"
+            },
+            "created": "A new Line is created with identifier {{ param }}",
+            "updated": "A Line is updated with identifier {{ param }}",
+            "deleted": "A Line is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Line {{ id }}?"
+            },
+            "detail": {
+                "title": "Line"
+            },
+            "name": "Name",
+            "startPointX": "Start Point X",
+            "startPointY": "Start Point Y",
+            "endPointX": "End Point X",
+            "endPointY": "End Point Y",
+            "scenario": "Scenario",
+            "direction": "Direction"
+        }
+    }
+}

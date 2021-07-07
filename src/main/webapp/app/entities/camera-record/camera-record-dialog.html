@@ -1,0 +1,105 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myCameraRecordLabel" data-translate="trafficanalzyzerv2App.cameraRecord.home.createOrEditLabel">Create or edit a Camera Record</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.cameraRecord.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.cameraRecord.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.cameraRecord.insertDate" for="field_insertDate">Insert Date</label>
+                <div class="input-group">
+                    <input id="field_insertDate" type="text" class="form-control" name="insertDate" datetime-picker="{{dateformat}}" ng-model="vm.cameraRecord.insertDate" is-open="vm.datePickerOpenStatus.insertDate"
+                    required/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('insertDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            <div ng-show="editForm.insertDate.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.insertDate.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.insertDate.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.cameraRecord.vehicleType" for="field_vehicleType">Vehicle Type</label>
+            <input type="text" class="form-control" name="vehicleType" id="field_vehicleType"
+                    ng-model="vm.cameraRecord.vehicleType"
+                    required/>
+            <div ng-show="editForm.vehicleType.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.vehicleType.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.cameraRecord.duration" for="field_duration">Duration</label>
+            <input type="number" class="form-control" name="duration" id="field_duration"
+                    ng-model="vm.cameraRecord.duration"
+                    required/>
+            <div ng-show="editForm.duration.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.duration.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.duration.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.cameraRecord.speed" for="field_speed">Speed</label>
+            <input type="number" class="form-control" name="speed" id="field_speed"
+                    ng-model="vm.cameraRecord.speed"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.cameraRecord.processType" for="field_processType">Process Type</label>
+            <select class="form-control" name="processType" ng-model="vm.cameraRecord.processType" id="field_processType">
+                <option value="COUNTING" data-translate="trafficanalzyzerv2App.ProcessType.COUNTING">COUNTING</option>
+                <option value="DIRECTION" data-translate="trafficanalzyzerv2App.ProcessType.DIRECTION">DIRECTION</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.cameraRecord.camera" for="field_camera">Camera</label>
+            <select class="form-control" id="field_camera" name="camera" ng-model="vm.cameraRecord.camera" ng-options="camera as camera.id for camera in vm.cameras track by camera.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.cameraRecord.line" for="field_line">Line</label>
+            <select class="form-control" id="field_line" name="line" ng-model="vm.cameraRecord.line" ng-options="line as line.id for line in vm.lines track by line.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.cameraRecord.direction" for="field_direction">Direction</label>
+            <select class="form-control" id="field_direction" name="direction" ng-model="vm.cameraRecord.direction" ng-options="direction as direction.id for direction in vm.directions track by direction.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,45 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "scenario",
+            "otherEntityName": "scenario",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "direction",
+            "otherEntityName": "direction",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "startPointX",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "startPointY",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "endPointX",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "endPointY",
+            "fieldType": "Long"
+        }
+    ],
+    "changelogDate": "20210707180526",
+    "entityTableName": "line",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

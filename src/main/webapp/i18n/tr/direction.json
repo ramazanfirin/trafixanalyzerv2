@@ -1,0 +1,23 @@
+{
+    "trafficanalzyzerv2App": {
+        "direction" : {
+            "home": {
+                "title": "Directions",
+                "createLabel": "Create a new Direction",
+                "createOrEditLabel": "Create or edit a Direction"
+            },
+            "created": "A new Direction is created with identifier {{ param }}",
+            "updated": "A Direction is updated with identifier {{ param }}",
+            "deleted": "A Direction is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Direction {{ id }}?"
+            },
+            "detail": {
+                "title": "Direction"
+            },
+            "name": "Name",
+            "pathCoordinates": "Path Coordinates",
+            "scenario": "Scenario"
+        }
+    }
+}

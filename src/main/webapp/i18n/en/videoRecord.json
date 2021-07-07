@@ -1,0 +1,28 @@
+{
+    "trafficanalzyzerv2App": {
+        "videoRecord" : {
+            "home": {
+                "title": "Video Records",
+                "createLabel": "Create a new Video Record",
+                "createOrEditLabel": "Create or edit a Video Record"
+            },
+            "created": "A new Video Record is created with identifier {{ param }}",
+            "updated": "A Video Record is updated with identifier {{ param }}",
+            "deleted": "A Video Record is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Video Record {{ id }}?"
+            },
+            "detail": {
+                "title": "Video Record"
+            },
+            "insertDate": "Insert Date",
+            "vehicleType": "Vehicle Type",
+            "duration": "Duration",
+            "speed": "Speed",
+            "processType": "Process Type",
+            "video": "Video",
+            "line": "Line",
+            "direction": "Direction"
+        }
+    }
+}

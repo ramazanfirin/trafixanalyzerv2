@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity CameraRecord.
+    -->
+    <changeSet id="20210707180530-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="camera_id"
+                                 baseTableName="camera_record"
+                                 constraintName="fk_camera_record_camera_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="camera"/>
+
+        <addForeignKeyConstraint baseColumnNames="line_id"
+                                 baseTableName="camera_record"
+                                 constraintName="fk_camera_record_line_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="line"/>
+
+        <addForeignKeyConstraint baseColumnNames="direction_id"
+                                 baseTableName="camera_record"
+                                 constraintName="fk_camera_record_direction_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="direction"/>
+
+    </changeSet>
+</databaseChangeLog>

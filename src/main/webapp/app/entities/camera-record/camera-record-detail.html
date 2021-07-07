@@ -1,0 +1,51 @@
+
+<div>
+    <h2><span data-translate="trafficanalzyzerv2App.cameraRecord.detail.title">Camera Record</span> {{vm.cameraRecord.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="trafficanalzyzerv2App.cameraRecord.insertDate">Insert Date</span></dt>
+        <dd>
+            <span>{{vm.cameraRecord.insertDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.cameraRecord.vehicleType">Vehicle Type</span></dt>
+        <dd>
+            <span>{{vm.cameraRecord.vehicleType}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.cameraRecord.duration">Duration</span></dt>
+        <dd>
+            <span>{{vm.cameraRecord.duration}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.cameraRecord.speed">Speed</span></dt>
+        <dd>
+            <span>{{vm.cameraRecord.speed}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.cameraRecord.processType">Process Type</span></dt>
+        <dd>
+            <span data-translate="{{'trafficanalzyzerv2App.ProcessType.' + vm.cameraRecord.processType}}">{{vm.cameraRecord.processType}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.cameraRecord.camera">Camera</span></dt>
+        <dd>
+            <a ui-sref="camera-detail({id:vm.cameraRecord.camera.id})">{{vm.cameraRecord.camera.id}}</a>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.cameraRecord.line">Line</span></dt>
+        <dd>
+            <a ui-sref="line-detail({id:vm.cameraRecord.line.id})">{{vm.cameraRecord.line.id}}</a>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.cameraRecord.direction">Direction</span></dt>
+        <dd>
+            <a ui-sref="direction-detail({id:vm.cameraRecord.direction.id})">{{vm.cameraRecord.direction.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="camera-record-detail.edit({id:vm.cameraRecord.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

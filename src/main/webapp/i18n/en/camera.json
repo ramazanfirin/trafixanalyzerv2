@@ -1,0 +1,27 @@
+{
+    "trafficanalzyzerv2App": {
+        "camera" : {
+            "home": {
+                "title": "Cameras",
+                "createLabel": "Create a new Camera",
+                "createOrEditLabel": "Create or edit a Camera"
+            },
+            "created": "A new Camera is created with identifier {{ param }}",
+            "updated": "A Camera is updated with identifier {{ param }}",
+            "deleted": "A Camera is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Camera {{ id }}?"
+            },
+            "detail": {
+                "title": "Camera"
+            },
+            "name": "Name",
+            "ip": "Ip",
+            "port": "Port",
+            "connectionUrl": "Connection Url",
+            "usename": "Usename",
+            "password": "Password",
+            "location": "Location"
+        }
+    }
+}

@@ -1,0 +1,114 @@
+entity City{
+	name String required
+}
+entity District{
+	name String required
+}
+entity Location{
+	name String required
+}
+
+entity Camera{
+	name String
+	ip String
+	port String
+	connectionUrl String
+	usename String
+	password String
+}
+
+entity Video{
+	path String required
+	name String required
+	processDate Instant
+	startDate Instant
+	endDate Instant
+	state VideoState
+}
+
+enum VideoState {
+  NOT_PROCESSED,
+  STARTED,
+  PROCESSED,
+  ERROR
+}
+
+entity Scenario{
+	name String
+}
+
+entity Line{
+	name String
+	startPointX Long
+	startPointY Long
+	endPointX Long
+	endPointY Long
+}
+
+entity Polygon{
+	name String
+	points String
+}
+
+entity Direction{
+	name String required
+	pathCoordinates String
+}
+
+
+entity VideoRecord{
+	insertDate Instant required
+	vehicleType String required
+	duration Long required
+	speed Double
+	processType ProcessType
+}
+
+entity CameraRecord{
+	insertDate Instant required
+	vehicleType String required
+	duration Long required
+	speed Double
+	processType ProcessType
+}
+
+enum ProcessType {
+  COUNTING,
+  DIRECTION
+}
+
+relationship ManyToOne {
+	Location{district} to District
+	District{city} to City
+	Camera{location} to Location
+	Video{location} to Location
+	Scenario{video} to Video
+
+
+	Line{scenario} to Scenario
+	Polygon{scenario} to Scenario
+	Direction{scenario} to Scenario
+	Line{Direction} to Direction
+	
+	VideoRecord{video} to Video
+	VideoRecord{line} to Line
+	VideoRecord{direction} to Direction
+	
+	CameraRecord{camera} to Camera
+	CameraRecord{line} to Line
+	CameraRecord{direction} to Direction
+}
+
+
+paginate Location with pagination
+paginate City with pagination
+paginate District with pagination
+paginate Camera with pagination
+paginate Video with pagination
+paginate Scenario with pagination
+paginate Line with pagination
+paginate Polygon with pagination
+paginate Direction with pagination
+paginate VideoRecord with pagination
+paginate CameraRecord with pagination
+

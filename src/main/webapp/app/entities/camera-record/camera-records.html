@@ -1,0 +1,80 @@
+<div>
+    <h2 data-translate="trafficanalzyzerv2App.cameraRecord.home.title">Camera Records</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="camera-record.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="trafficanalzyzerv2App.cameraRecord.home.createLabel">
+                        Create new Camera Record
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="insertDate"><span data-translate="trafficanalzyzerv2App.cameraRecord.insertDate">Insert Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="vehicleType"><span data-translate="trafficanalzyzerv2App.cameraRecord.vehicleType">Vehicle Type</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="duration"><span data-translate="trafficanalzyzerv2App.cameraRecord.duration">Duration</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="speed"><span data-translate="trafficanalzyzerv2App.cameraRecord.speed">Speed</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="processType"><span data-translate="trafficanalzyzerv2App.cameraRecord.processType">Process Type</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="camera.id"><span data-translate="trafficanalzyzerv2App.cameraRecord.camera">Camera</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="line.id"><span data-translate="trafficanalzyzerv2App.cameraRecord.line">Line</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="direction.id"><span data-translate="trafficanalzyzerv2App.cameraRecord.direction">Direction</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cameraRecord in vm.cameraRecords track by cameraRecord.id">
+                    <td><a ui-sref="camera-record-detail({id:cameraRecord.id})">{{cameraRecord.id}}</a></td>
+                    <td>{{cameraRecord.insertDate | date:'medium'}}</td>
+                    <td>{{cameraRecord.vehicleType}}</td>
+                    <td>{{cameraRecord.duration}}</td>
+                    <td>{{cameraRecord.speed}}</td>
+                    <td data-translate="{{'trafficanalzyzerv2App.ProcessType.' + cameraRecord.processType}}">{{cameraRecord.processType}}</td>
+                    <td>
+                        <a ui-sref="camera-detail({id:cameraRecord.camera.id})">{{cameraRecord.camera.id}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="line-detail({id:cameraRecord.line.id})">{{cameraRecord.line.id}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="direction-detail({id:cameraRecord.direction.id})">{{cameraRecord.direction.id}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="camera-record-detail({id:cameraRecord.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="camera-record.edit({id:cameraRecord.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="camera-record.delete({id:cameraRecord.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+    </div>
+</div>

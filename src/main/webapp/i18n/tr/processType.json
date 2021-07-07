@@ -1,0 +1,9 @@
+{
+    "trafficanalzyzerv2App": {
+        "ProcessType" : {
+            "null": "",
+            "COUNTING": "COUNTING",
+            "DIRECTION": "DIRECTION"
+        }
+    }
+}

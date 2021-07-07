@@ -1,0 +1,23 @@
+{
+    "trafficanalzyzerv2App": {
+        "polygon" : {
+            "home": {
+                "title": "Polygons",
+                "createLabel": "Create a new Polygon",
+                "createOrEditLabel": "Create or edit a Polygon"
+            },
+            "created": "A new Polygon is created with identifier {{ param }}",
+            "updated": "A Polygon is updated with identifier {{ param }}",
+            "deleted": "A Polygon is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Polygon {{ id }}?"
+            },
+            "detail": {
+                "title": "Polygon"
+            },
+            "name": "Name",
+            "points": "Points",
+            "scenario": "Scenario"
+        }
+    }
+}

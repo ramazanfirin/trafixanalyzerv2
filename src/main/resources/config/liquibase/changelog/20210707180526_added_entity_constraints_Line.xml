@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Line.
+    -->
+    <changeSet id="20210707180526-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="scenario_id"
+                                 baseTableName="line"
+                                 constraintName="fk_line_scenario_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="scenario"/>
+
+        <addForeignKeyConstraint baseColumnNames="direction_id"
+                                 baseTableName="line"
+                                 constraintName="fk_line_direction_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="direction"/>
+
+    </changeSet>
+</databaseChangeLog>

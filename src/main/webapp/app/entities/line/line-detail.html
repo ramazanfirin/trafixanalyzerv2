@@ -1,0 +1,47 @@
+
+<div>
+    <h2><span data-translate="trafficanalzyzerv2App.line.detail.title">Line</span> {{vm.line.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="trafficanalzyzerv2App.line.name">Name</span></dt>
+        <dd>
+            <span>{{vm.line.name}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.line.startPointX">Start Point X</span></dt>
+        <dd>
+            <span>{{vm.line.startPointX}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.line.startPointY">Start Point Y</span></dt>
+        <dd>
+            <span>{{vm.line.startPointY}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.line.endPointX">End Point X</span></dt>
+        <dd>
+            <span>{{vm.line.endPointX}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.line.endPointY">End Point Y</span></dt>
+        <dd>
+            <span>{{vm.line.endPointY}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.line.scenario">Scenario</span></dt>
+        <dd>
+            <a ui-sref="scenario-detail({id:vm.line.scenario.id})">{{vm.line.scenario.id}}</a>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.line.direction">Direction</span></dt>
+        <dd>
+            <a ui-sref="direction-detail({id:vm.line.direction.id})">{{vm.line.direction.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="line-detail.edit({id:vm.line.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

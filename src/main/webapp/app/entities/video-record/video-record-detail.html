@@ -1,0 +1,51 @@
+
+<div>
+    <h2><span data-translate="trafficanalzyzerv2App.videoRecord.detail.title">Video Record</span> {{vm.videoRecord.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="trafficanalzyzerv2App.videoRecord.insertDate">Insert Date</span></dt>
+        <dd>
+            <span>{{vm.videoRecord.insertDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.videoRecord.vehicleType">Vehicle Type</span></dt>
+        <dd>
+            <span>{{vm.videoRecord.vehicleType}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.videoRecord.duration">Duration</span></dt>
+        <dd>
+            <span>{{vm.videoRecord.duration}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.videoRecord.speed">Speed</span></dt>
+        <dd>
+            <span>{{vm.videoRecord.speed}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.videoRecord.processType">Process Type</span></dt>
+        <dd>
+            <span data-translate="{{'trafficanalzyzerv2App.ProcessType.' + vm.videoRecord.processType}}">{{vm.videoRecord.processType}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.videoRecord.video">Video</span></dt>
+        <dd>
+            <a ui-sref="video-detail({id:vm.videoRecord.video.id})">{{vm.videoRecord.video.id}}</a>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.videoRecord.line">Line</span></dt>
+        <dd>
+            <a ui-sref="line-detail({id:vm.videoRecord.line.id})">{{vm.videoRecord.line.id}}</a>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.videoRecord.direction">Direction</span></dt>
+        <dd>
+            <a ui-sref="direction-detail({id:vm.videoRecord.direction.id})">{{vm.videoRecord.direction.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="video-record-detail.edit({id:vm.videoRecord.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

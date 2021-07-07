@@ -1,0 +1,22 @@
+{
+    "trafficanalzyzerv2App": {
+        "scenario" : {
+            "home": {
+                "title": "Scenarios",
+                "createLabel": "Create a new Scenario",
+                "createOrEditLabel": "Create or edit a Scenario"
+            },
+            "created": "A new Scenario is created with identifier {{ param }}",
+            "updated": "A Scenario is updated with identifier {{ param }}",
+            "deleted": "A Scenario is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Scenario {{ id }}?"
+            },
+            "detail": {
+                "title": "Scenario"
+            },
+            "name": "Name",
+            "video": "Video"
+        }
+    }
+}

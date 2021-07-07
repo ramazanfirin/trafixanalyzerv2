@@ -1,0 +1,188 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myScenarioLabel" data-translate="trafficanalzyzerv2App.scenario.home.createOrEditLabel">Create or edit a Scenario</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.scenario.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.scenario.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.scenario.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.scenario.name"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.scenario.video" for="field_video">Video</label>
+            <select class="form-control" id="field_video" name="video" ng-model="vm.scenario.video" ng-change="vm.update()" ng-options="video as video.id for video in vm.videos track by video.id">
+                <option value=""></option>
+            </select>
+            <span>{{vm.selectVideoMessage}}</span>
+        </div>
+        
+        <div class="form-group">
+<!--         	<img ng-src="content/images/kale.JPG" width="640" height="480"> -->
+			<div id="containerKonva"></div>
+			<div id="buttons">
+			      <span>{{vm.addMessage}}</span>
+			      <input type="button" id="add" value="Ekle" ng-click="vm.changeMessage()"/>
+			      <input type="button" id="save" value="Kaydet" ng-click="vm.addToPolygonList()"/>
+			      <input type="button" id="deleteAll" value="Hepsini Sil" ng-click="vm.deleteAll()"/>
+			    </div>
+        </div>
+        
+        <div class="form-group">
+         <div class="table-responsive">
+	        <table class="jh-table table table-striped">
+	        	<thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span >Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+           		 </thead>
+	        	<tbody></tbody>
+                <tr ng-repeat="polygon in vm.polygons">
+                	<td>{{polygon.id}}</td>
+                	<td>{{polygon.name}}</td>
+                	       
+                </tr>
+                
+                
+	        
+	        </table>
+        
+        </div>
+        </div>
+        
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
+
+<script>
+
+var points = [];
+var polygons = [];
+var poly = null;
+
+var width = window.innerWidth;
+var height = window.innerHeight;
+
+var stage = new Konva.Stage({
+	container : 'containerKonva',
+	width : 640,
+	height : 480,
+});
+
+var layerImage = new Konva.Layer();
+var layer = new Konva.Layer();
+
+var darthVaderImg = new Konva.Image({
+	width : 640,
+	height : 480,
+	z : -1
+});
+
+var imageObj1 = new Image();
+imageObj1.onload = function() {
+	darthVaderImg.image(imageObj1);
+	layerImage.draw();
+};
+
+//imageObj1.src = 'http://localhost:8080/api/videos/image/1'
+var scope = angular.element(document.getElementById("editForm")).scope();
+
+layerImage.add(darthVaderImg);
+
+stage.add(layerImage);
+stage.add(layer);
+
+    var tempId = 0;
+
+	
+	document.getElementById('add').addEventListener('click', function() {
+		console.log("addLine called");
+		poly = new Konva.Line({
+			points : [],
+			fill : 'lightgreen',
+			stroke : 'lightgreen',
+			//strokeWidth: 5,
+			draggable : false,
+			closed : true,
+			opacity : 0.5,
+		//tension:5
+		//id :"1"
+
+		});
+
+		tempId = tempId + 1;
+		poly.id(tempId);
+		layer.add(poly);
+		console.log("addline bitti");
+		return poly;
+	}, false);
+
+	
+	document.getElementById('deleteAll').addEventListener('click', function() {
+		console.log("deleteAll called");
+
+		layer.destroyChildren();
+		layer.draw();
+		tempId = 0;
+	}, false);
+
+	
+	
+	
+	stage.on('click', function() {
+		var pos = layer.getRelativePointerPosition();
+		console.log("image width: " + pos.x + " " + pos.y);
+
+		if ((typeof (poly) !== 'undefined') && (poly !== null)) {
+			addPoint(pos.x, pos.y);
+
+		} else {
+			alert("Nokta eklemek icin, Ekle butonuna basiniz");
+		}
+	});
+
+	function addPoint(pointx, pointy) {
+		points.push(pointx);
+		points.push(pointy);
+
+		poly.attrs.points.push(pointx);
+		poly.attrs.points.push(pointy);
+
+		if (points.length == 2) {
+			var simpleText = new Konva.Text({
+				x : pointx,
+				y : pointy,
+				text : '1',
+				fontSize : 15,
+				fontFamily : 'Calibri',
+				fill : 'red',
+			});
+			simpleText.text(poly.id());
+			layer.add(simpleText);
+		}
+
+		layer.draw();
+
+	}
+</script>

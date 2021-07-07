@@ -1,0 +1,11 @@
+{
+    "trafficanalzyzerv2App": {
+        "VideoState" : {
+            "null": "",
+            "NOT_PROCESSED": "NOT_PROCESSED",
+            "STARTED": "STARTED",
+            "PROCESSED": "PROCESSED",
+            "ERROR": "ERROR"
+        }
+    }
+}

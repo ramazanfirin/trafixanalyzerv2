@@ -1,0 +1,28 @@
+{
+    "trafficanalzyzerv2App": {
+        "cameraRecord" : {
+            "home": {
+                "title": "Camera Records",
+                "createLabel": "Create a new Camera Record",
+                "createOrEditLabel": "Create or edit a Camera Record"
+            },
+            "created": "A new Camera Record is created with identifier {{ param }}",
+            "updated": "A Camera Record is updated with identifier {{ param }}",
+            "deleted": "A Camera Record is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Camera Record {{ id }}?"
+            },
+            "detail": {
+                "title": "Camera Record"
+            },
+            "insertDate": "Insert Date",
+            "vehicleType": "Vehicle Type",
+            "duration": "Duration",
+            "speed": "Speed",
+            "processType": "Process Type",
+            "camera": "Camera",
+            "line": "Line",
+            "direction": "Direction"
+        }
+    }
+}

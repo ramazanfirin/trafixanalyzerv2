@@ -1,0 +1,74 @@
+<div>
+    <h2 data-translate="trafficanalzyzerv2App.camera.home.title">Cameras</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="camera.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="trafficanalzyzerv2App.camera.home.createLabel">
+                        Create new Camera
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span data-translate="trafficanalzyzerv2App.camera.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="ip"><span data-translate="trafficanalzyzerv2App.camera.ip">Ip</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="port"><span data-translate="trafficanalzyzerv2App.camera.port">Port</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="connectionUrl"><span data-translate="trafficanalzyzerv2App.camera.connectionUrl">Connection Url</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="usename"><span data-translate="trafficanalzyzerv2App.camera.usename">Usename</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="password"><span data-translate="trafficanalzyzerv2App.camera.password">Password</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="location.id"><span data-translate="trafficanalzyzerv2App.camera.location">Location</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="camera in vm.cameras track by camera.id">
+                    <td><a ui-sref="camera-detail({id:camera.id})">{{camera.id}}</a></td>
+                    <td>{{camera.name}}</td>
+                    <td>{{camera.ip}}</td>
+                    <td>{{camera.port}}</td>
+                    <td>{{camera.connectionUrl}}</td>
+                    <td>{{camera.usename}}</td>
+                    <td>{{camera.password}}</td>
+                    <td>
+                        <a ui-sref="location-detail({id:camera.location.id})">{{camera.location.id}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="camera-detail({id:camera.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="camera.edit({id:camera.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="camera.delete({id:camera.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+    </div>
+</div>
