@@ -122,6 +122,26 @@ public class PolygonResource {
     public ResponseEntity<Void> deletePolygon(@PathVariable Long id) {
         log.debug("REST request to delete Polygon : {}", id);
         polygonRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok()
+        		.headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString()))
+        		.build();
+    }
+    
+    @GetMapping("/polygons/deletePolygonById/{id}")
+    @Timed
+    public ResponseEntity<Void> deletePolygonById(@PathVariable Long id) {
+        log.debug("REST request to delete Polygon : {}", id);
+        polygonRepository.delete(id);
+        return ResponseEntity.ok()
+        		.headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString()))
+        		.build();
+    }
+    
+    @GetMapping("/polygons/getPolygonListByScenarioId/{id}")
+    @Timed
+    public List<Polygon> getPolygonListByScenarioId(@PathVariable Long id) {
+        log.debug("REST request to get Polygon : {}", id);
+        List<Polygon> result = polygonRepository.getPolygonListByScenarioId(id);
+        return result;
     }
 }

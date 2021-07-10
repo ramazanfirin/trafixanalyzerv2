@@ -53,7 +53,14 @@
                 <tr ng-repeat="polygon in vm.polygons">
                 	<td>{{polygon.id}}</td>
                 	<td>{{polygon.name}}</td>
-                	       
+                	<td>
+<!--                 	<button type="submit" ng-click="vm.deletePolygon(polygon.id)"                                    -->
+<!--                                     class="btn btn-danger btn-sm"> -->
+<!--                                 <span class="glyphicon glyphicon-remove-circle"></span> -->
+<!--                                 <span class="hidden-sm-down" data-translate="entity.action.delete"></span> -->
+<!--                             </button> -->
+                    <input type="button" id="add" value="Sil" ng-click="vm.deletePolygon(polygon.id,polygon.name)"/>        
+                    </td>                     
                 </tr>
                 
                 
@@ -78,8 +85,10 @@
 <script>
 
 var points = [];
-var polygons = [];
+//var polygons = [];
 var poly = null;
+var polygonListOnScreen=[];
+var textListOnScreen=[];
 
 var width = window.innerWidth;
 var height = window.innerHeight;
@@ -128,9 +137,9 @@ stage.add(layer);
 			opacity : 0.5,
 		//tension:5
 		//id :"1"
-
 		});
 
+		polygonListOnScreen.push(poly);
 		tempId = tempId + 1;
 		poly.id(tempId);
 		layer.add(poly);
@@ -163,8 +172,8 @@ stage.add(layer);
 	});
 
 	function addPoint(pointx, pointy) {
-		points.push(pointx);
-		points.push(pointy);
+		points.push(parseInt(pointx, 10)+","+parseInt(pointy, 10));
+		//points.push(pointy);
 
 		poly.attrs.points.push(pointx);
 		poly.attrs.points.push(pointy);
@@ -178,6 +187,7 @@ stage.add(layer);
 				fontFamily : 'Calibri',
 				fill : 'red',
 			});
+			textListOnScreen.push(simpleText);
 			simpleText.text(poly.id());
 			layer.add(simpleText);
 		}
