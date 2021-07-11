@@ -15,11 +15,12 @@
         vm.save = save;
         vm.videos = Video.query();
 		vm.update = update;
-		vm.changeMessage = changeMessage;
+		vm.addPolygon = addPolygon;
 		vm.addToPolygonList = addToPolygonList;
-		vm.deleteAll = deleteAll;
 		vm.resetMessage = resetMessage;
 		vm.deletePolygon = deletePolygon;
+		vm.adding = false;
+		vm.cancelPolygon = cancelPolygon;
 
 		vm.addMessageBefore = "Çizgi eklemek için, Ekle butonuna basınız"
 	    vm.addMessageAfter = "Çizgi ekleyebilirsiniz"
@@ -28,14 +29,28 @@
 	    vm.polygons = []; 
 	    vm.polygon = [];
 	    vm.points = $window.points;
+	    //vm.createPolygon = vm.createPolygon();
 
 		loadAll();
 
         function loadAll () {
-        	Scenario.save(vm.scenario, onSaveSuccessFirst, onSaveError);
+        	if(vm.scenario.id == null)
+        		Scenario.save(vm.scenario, onSaveSuccessFirst, onSaveError);
+        	else{
+        		Polygon.getPolygonListByScenarioId({id:vm.scenario.id},getPolygonListForFirstTime,onSaveError);
+        	}	
+        		
         }
+        
+        function getPolygonListForFirstTime(result){
+			vm.polygons = result;
+			console.log("from controller:"+vm.polygons.length);
+			$scope.$broadcast('messagename', "ramazan");
+		}
+        
         function onSaveSuccessFirst (result) {
            vm.scenario = result;
+           Polygon.getPolygonListByScenarioId({id:vm.scenario.id},getPolygonListSuccess,onSaveError);
         }
 
 		function resetMessage(){
@@ -67,19 +82,12 @@
 	    	}
 	    }
 
-		function deleteAll () {
-	    	$window.points = [];
-            $window.poly = null;
-            vm.polygons = [];
-	    }
-
 		function addToPolygonList () {
-	        var i;
-			
+
 			vm.polygon = new Object();
 			vm.polygon.name = $window.tempId;
             vm.polygon.points="";
-            for (i = 0; i < $window.points.length; i++) {
+            for (var i = 0; i < $window.points.length; i++) {
   				if(vm.polygon.points=="")
   					vm.polygon.points = $window.points[i]; 
   				else
@@ -91,7 +99,7 @@
             vm.addMessage = vm.addMessageBefore;
             vm.polygon.scenario = vm.scenario;
 			Polygon.save(vm.polygon, onPolygonSaveSuccess, onSaveError);
-            
+            vm.adding = false;
         } 
 
 		function onPolygonSaveSuccess (result) {
@@ -101,16 +109,21 @@
 
 		function getPolygonListSuccess(result){
 			vm.polygons = result;
-//			for (i = 0; i < vm.polygons.length; i++) {
-//  				if(vm.polygon.points=="")
-//  					vm.polygon.points = $window.points[i]; 
-//  				else
-//  					vm.polygon.points = vm.polygon.points+";"+$window.points[i];
-//			}
+			console.log("from controller:"+vm.polygons.length);
+			//$scope.$broadcast('messagename', "ramazan");
 		}
 
-		 function changeMessage () {
+		 function addPolygon () {
 	    	vm.addMessage = vm.addMessageAfter;
+	    	vm.adding = true;
+	    }
+	    
+	    function cancelPolygon () {
+	    	vm.addMessage = vm.addMessageBefore;
+            vm.adding = false;
+            $window.points = [];
+            $window.poly = null;
+            deleteFromScreen($window.tempId);
 	    }
 
 		function getPolygonList () {
