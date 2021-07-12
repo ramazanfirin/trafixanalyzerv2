@@ -97,6 +97,10 @@ relationship ManyToOne {
 	CameraRecord{camera} to Camera
 	CameraRecord{line} to Line
 	CameraRecord{direction} to Direction
+	
+	Line{startPolygon} to Polygon
+	Line{endPolygon} to Polygon
+	Line{calculatedPolygon} to Polygon
 }
 
 
