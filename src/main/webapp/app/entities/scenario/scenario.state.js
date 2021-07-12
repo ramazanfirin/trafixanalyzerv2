@@ -186,6 +186,31 @@
                 });
             }]
         })
+        .state('scenario.edit.speed', {
+            parent: 'scenario',
+            url: '/{id}/editspeed',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/scenario/scenario-dialog-speed.html',
+                    controller: 'ScenarioDialogSpeedController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['Scenario', function(Scenario) {
+                            return Scenario.get({id : $stateParams.id}).$promise;
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('scenario', null, { reload: 'scenario' });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
+        })
         .state('scenario.delete', {
             parent: 'scenario',
             url: '/{id}/delete',

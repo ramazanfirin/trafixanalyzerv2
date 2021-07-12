@@ -4,6 +4,8 @@ import com.masterteknoloji.trafficanalyzer.Trafficanalzyzerv2App;
 
 import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
+import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
+import com.masterteknoloji.trafficanalyzer.repository.ScenarioRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -67,6 +69,12 @@ public class LineResourceIntTest {
 
     @Autowired
     private EntityManager em;
+    
+    @Autowired
+    ScenarioRepository scenarioRepository; 
+    
+    @Autowired
+    PolygonRepository polygonRepository;
 
     private MockMvc restLineMockMvc;
 
@@ -75,7 +83,7 @@ public class LineResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final LineResource lineResource = new LineResource(lineRepository);
+        final LineResource lineResource = new LineResource(lineRepository,scenarioRepository,polygonRepository);
         this.restLineMockMvc = MockMvcBuilders.standaloneSetup(lineResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

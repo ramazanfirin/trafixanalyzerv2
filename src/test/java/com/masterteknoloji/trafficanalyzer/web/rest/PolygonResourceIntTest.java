@@ -29,6 +29,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.PolygonType;
 /**
  * Test class for the PolygonResource REST controller.
  *
@@ -43,6 +44,9 @@ public class PolygonResourceIntTest {
 
     private static final String DEFAULT_POINTS = "AAAAAAAAAA";
     private static final String UPDATED_POINTS = "BBBBBBBBBB";
+
+    private static final PolygonType DEFAULT_TYPE = PolygonType.COUNTING;
+    private static final PolygonType UPDATED_TYPE = PolygonType.SPEED;
 
     @Autowired
     private PolygonRepository polygonRepository;
@@ -83,7 +87,8 @@ public class PolygonResourceIntTest {
     public static Polygon createEntity(EntityManager em) {
         Polygon polygon = new Polygon()
             .name(DEFAULT_NAME)
-            .points(DEFAULT_POINTS);
+            .points(DEFAULT_POINTS)
+            .type(DEFAULT_TYPE);
         return polygon;
     }
 
@@ -109,6 +114,7 @@ public class PolygonResourceIntTest {
         Polygon testPolygon = polygonList.get(polygonList.size() - 1);
         assertThat(testPolygon.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testPolygon.getPoints()).isEqualTo(DEFAULT_POINTS);
+        assertThat(testPolygon.getType()).isEqualTo(DEFAULT_TYPE);
     }
 
     @Test
@@ -142,7 +148,8 @@ public class PolygonResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(polygon.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS.toString())));
+            .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS.toString())))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
     }
 
     @Test
@@ -157,7 +164,8 @@ public class PolygonResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(polygon.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.points").value(DEFAULT_POINTS.toString()));
+            .andExpect(jsonPath("$.points").value(DEFAULT_POINTS.toString()))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
     }
 
     @Test
@@ -181,7 +189,8 @@ public class PolygonResourceIntTest {
         em.detach(updatedPolygon);
         updatedPolygon
             .name(UPDATED_NAME)
-            .points(UPDATED_POINTS);
+            .points(UPDATED_POINTS)
+            .type(UPDATED_TYPE);
 
         restPolygonMockMvc.perform(put("/api/polygons")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -194,6 +203,7 @@ public class PolygonResourceIntTest {
         Polygon testPolygon = polygonList.get(polygonList.size() - 1);
         assertThat(testPolygon.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testPolygon.getPoints()).isEqualTo(UPDATED_POINTS);
+        assertThat(testPolygon.getType()).isEqualTo(UPDATED_TYPE);
     }
 
     @Test

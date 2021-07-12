@@ -11,7 +11,7 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
-            'getPolygonListByScenarioId': { method: 'GET', isArray: true,url: 'api/polygons/getPolygonListByScenarioId/:id'},
+            'getPolygonListByScenarioId': { method: 'GET', isArray: true,url: 'api/polygons/getPolygonListByScenarioId/:id/:type'},
             'deletePolygonById': { method: 'GET', isArray: true,url: 'api/polygons/deletePolygonById/:id'},
             'get': {
                 method: 'GET',

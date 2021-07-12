@@ -46,6 +46,7 @@
                 }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('polygon');
+                    $translatePartialLoader.addPart('polygonType');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
@@ -68,6 +69,7 @@
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('polygon');
+                    $translatePartialLoader.addPart('polygonType');
                     return $translate.refresh();
                 }],
                 entity: ['$stateParams', 'Polygon', function($stateParams, Polygon) {
@@ -126,6 +128,7 @@
                             return {
                                 name: null,
                                 points: null,
+                                type: null,
                                 id: null
                             };
                         }

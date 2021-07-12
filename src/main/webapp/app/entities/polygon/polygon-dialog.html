@@ -25,6 +25,13 @@
                     ng-model="vm.polygon.points"
                     />
         </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.polygon.type" for="field_type">Type</label>
+            <select class="form-control" name="type" ng-model="vm.polygon.type" id="field_type">
+                <option value="COUNTING" data-translate="trafficanalzyzerv2App.PolygonType.COUNTING">COUNTING</option>
+                <option value="SPEED" data-translate="trafficanalzyzerv2App.PolygonType.SPEED">SPEED</option>
+            </select>
+        </div>
 
         <div class="form-group">
             <label data-translate="trafficanalzyzerv2App.polygon.scenario" for="field_scenario">Scenario</label>

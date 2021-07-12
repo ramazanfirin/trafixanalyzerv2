@@ -2,7 +2,7 @@ package com.masterteknoloji.trafficanalyzer.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
-
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.PolygonType;
 import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
@@ -137,11 +137,12 @@ public class PolygonResource {
         		.build();
     }
     
-    @GetMapping("/polygons/getPolygonListByScenarioId/{id}")
+    @GetMapping("/polygons/getPolygonListByScenarioId/{id}/{type}")
     @Timed
-    public List<Polygon> getPolygonListByScenarioId(@PathVariable Long id) {
+    public List<Polygon> getPolygonListByScenarioId(@PathVariable Long id,@PathVariable String type) {
         log.debug("REST request to get Polygon : {}", id);
-        List<Polygon> result = polygonRepository.getPolygonListByScenarioId(id);
+        List<Polygon> result = polygonRepository.getPolygonListByScenarioId(id,PolygonType.valueOf(type));
         return result;
     }
+
 }

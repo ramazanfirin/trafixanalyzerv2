@@ -8,6 +8,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.PolygonType;
+
 /**
  * A Polygon.
  */
@@ -27,6 +29,10 @@ public class Polygon implements Serializable {
 
     @Column(name = "points")
     private String points;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "jhi_type")
+    private PolygonType type;
 
     @ManyToOne
     private Scenario scenario;
@@ -64,6 +70,19 @@ public class Polygon implements Serializable {
 
     public void setPoints(String points) {
         this.points = points;
+    }
+
+    public PolygonType getType() {
+        return type;
+    }
+
+    public Polygon type(PolygonType type) {
+        this.type = type;
+        return this;
+    }
+
+    public void setType(PolygonType type) {
+        this.type = type;
     }
 
     public Scenario getScenario() {
@@ -106,6 +125,7 @@ public class Polygon implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", points='" + getPoints() + "'" +
+            ", type='" + getType() + "'" +
             "}";
     }
 }

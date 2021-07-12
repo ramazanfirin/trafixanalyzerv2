@@ -100,7 +100,8 @@
             "edit": "Düzenle",
             "open": "Aç",
             "save": "Kaydet",
-            "view": "Görüntüle"
+            "view": "Görüntüle",
+            "speed": "Hız Ayarları"
         },
         "detail": {
             "field": "Alan",

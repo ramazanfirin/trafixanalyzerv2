@@ -16,6 +16,11 @@
         {
             "fieldName": "points",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "PolygonType",
+            "fieldValues": "COUNTING,SPEED"
         }
     ],
     "changelogDate": "20210707180527",

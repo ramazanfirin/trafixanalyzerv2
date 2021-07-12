@@ -48,6 +48,7 @@ entity Line{
 entity Polygon{
 	name String
 	points String
+	type PolygonType
 }
 
 entity Direction{
@@ -75,6 +76,11 @@ entity CameraRecord{
 enum ProcessType {
   COUNTING,
   DIRECTION
+}
+
+enum PolygonType {
+  COUNTING,
+  SPEED
 }
 
 relationship ManyToOne {

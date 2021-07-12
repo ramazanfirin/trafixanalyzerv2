@@ -3,11 +3,11 @@
 
     angular
         .module('trafficanalzyzerv2App')
-        .controller('ScenarioDialogController', ScenarioDialogController);
+        .controller('ScenarioDialogSpeedController', ScenarioDialogSpeedController);
 
-    ScenarioDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon'];
+    ScenarioDialogSpeedController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon'];
 
-    function ScenarioDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon) {
+    function ScenarioDialogSpeedController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon) {
         var vm = this;
 
         vm.scenario = entity;
@@ -30,7 +30,7 @@
 	    vm.polygon = [];
 	    vm.points = $window.points;
 	    //vm.createPolygon = vm.createPolygon();
-		vm.polygonType="COUNTING";
+	    vm.polygonType = "SPEED";
 
 		loadAll();
 
@@ -129,7 +129,7 @@
 	    }
 
 		function getPolygonList () {
-	    	Polygon.getPolygonListByScenarioId({id:vm.scenario.id},getPolygonListSuccess,onSaveError);
+	    	Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListSuccess,onSaveError);
 	    }
 
 		function update(){

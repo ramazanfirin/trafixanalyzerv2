@@ -35,6 +35,7 @@
 	    vm.showPopup = showPopup;
 	    vm.hidePopup = hidePopup;
 	    //vm.createPolygon = vm.createPolygon();
+	    vm.polygonType="COUNTING";
 
 		loadAll();
 
@@ -45,7 +46,7 @@
         		Scenario.save(vm.scenario, onSaveSuccessFirst, onSaveError);
         	else{
         	//
-        		Polygon.getPolygonListByScenarioId({id:vm.scenario.id},getPolygonListForFirstTime,onSaveError);
+        		Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListForFirstTime,onSaveError);
         		
         	}	
         		
@@ -66,7 +67,7 @@
         
         function onSaveSuccessFirst (result) {
            vm.scenario = result;
-           Polygon.getPolygonListByScenarioId({id:vm.scenario.id},getPolygonListSuccess,onSaveError);
+           Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListSuccess,onSaveError);
         }
 
 		function resetMessage(){
@@ -141,7 +142,7 @@
 		}
 		
 		function onPolygonSaveSuccess (result) {
-             Polygon.getPolygonListByScenarioId({id:vm.scenario.id},getPolygonListSuccess,onSaveError);
+             Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListSuccess,onSaveError);
         }
 
 		function getPolygonListSuccess(result){
@@ -154,7 +155,7 @@
 	    }
 	    
 	    function getPolygonList () {
-	    	Polygon.getPolygonListByScenarioId({id:vm.scenario.id},getPolygonListSuccess,onSaveError);
+	    	Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListSuccess,onSaveError);
 	    }
 
 		

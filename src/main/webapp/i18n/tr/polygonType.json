@@ -1,0 +1,9 @@
+{
+    "trafficanalzyzerv2App": {
+        "PolygonType" : {
+            "null": "",
+            "COUNTING": "COUNTING",
+            "SPEED": "SPEED"
+        }
+    }
+}
