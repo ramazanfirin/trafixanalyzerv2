@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('LineDetailController', LineDetailController);
 
-    LineDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Line', 'Scenario', 'Direction'];
+    LineDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Line', 'Scenario', 'Direction', 'Polygon'];
 
-    function LineDetailController($scope, $rootScope, $stateParams, previousState, entity, Line, Scenario, Direction) {
+    function LineDetailController($scope, $rootScope, $stateParams, previousState, entity, Line, Scenario, Direction, Polygon) {
         var vm = this;
 
         vm.line = entity;

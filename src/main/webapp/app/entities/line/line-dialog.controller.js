@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('LineDialogController', LineDialogController);
 
-    LineDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Line', 'Scenario', 'Direction'];
+    LineDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Line', 'Scenario', 'Direction', 'Polygon'];
 
-    function LineDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Line, Scenario, Direction) {
+    function LineDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Line, Scenario, Direction, Polygon) {
         var vm = this;
 
         vm.line = entity;
@@ -15,6 +15,7 @@
         vm.save = save;
         vm.scenarios = Scenario.query();
         vm.directions = Direction.query();
+        vm.polygons = Polygon.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

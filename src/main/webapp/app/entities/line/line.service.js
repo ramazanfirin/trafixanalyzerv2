@@ -11,6 +11,8 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'createLineByPolygons': { method: 'POST', isArray: false, url: 'api/lines/createLineByPolygons'},
+            'getLineListByScenarioId': { method: 'GET', isArray: true, url: 'api/lines/getLineListByScenarioId/:id'},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

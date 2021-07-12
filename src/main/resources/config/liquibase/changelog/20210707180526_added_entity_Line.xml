@@ -50,6 +50,18 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="start_polygon_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="end_polygon_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="calculated_polygon_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         

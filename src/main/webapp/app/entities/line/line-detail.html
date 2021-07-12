@@ -32,6 +32,18 @@
         <dd>
             <a ui-sref="direction-detail({id:vm.line.direction.id})">{{vm.line.direction.id}}</a>
         </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.line.startPolygon">Start Polygon</span></dt>
+        <dd>
+            <a ui-sref="polygon-detail({id:vm.line.startPolygon.id})">{{vm.line.startPolygon.id}}</a>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.line.endPolygon">End Polygon</span></dt>
+        <dd>
+            <a ui-sref="polygon-detail({id:vm.line.endPolygon.id})">{{vm.line.endPolygon.id}}</a>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.line.calculatedPolygon">Calculated Polygon</span></dt>
+        <dd>
+            <a ui-sref="polygon-detail({id:vm.line.calculatedPolygon.id})">{{vm.line.calculatedPolygon.id}}</a>
+        </dd>
     </dl>
 
     <button type="submit"

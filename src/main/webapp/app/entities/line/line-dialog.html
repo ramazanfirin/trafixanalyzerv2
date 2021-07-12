@@ -56,6 +56,24 @@
                 <option value=""></option>
             </select>
         </div>
+        <div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.line.startPolygon" for="field_startPolygon">Start Polygon</label>
+            <select class="form-control" id="field_startPolygon" name="startPolygon" ng-model="vm.line.startPolygon" ng-options="polygon as polygon.id for polygon in vm.polygons track by polygon.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.line.endPolygon" for="field_endPolygon">End Polygon</label>
+            <select class="form-control" id="field_endPolygon" name="endPolygon" ng-model="vm.line.endPolygon" ng-options="polygon as polygon.id for polygon in vm.polygons track by polygon.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.line.calculatedPolygon" for="field_calculatedPolygon">Calculated Polygon</label>
+            <select class="form-control" id="field_calculatedPolygon" name="calculatedPolygon" ng-model="vm.line.calculatedPolygon" ng-options="polygon as polygon.id for polygon in vm.polygons track by polygon.id">
+                <option value=""></option>
+            </select>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">

@@ -43,6 +43,15 @@ public class Line implements Serializable {
     @ManyToOne
     private Direction direction;
 
+    @ManyToOne
+    private Polygon startPolygon;
+
+    @ManyToOne
+    private Polygon endPolygon;
+
+    @ManyToOne
+    private Polygon calculatedPolygon;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -141,6 +150,45 @@ public class Line implements Serializable {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public Polygon getStartPolygon() {
+        return startPolygon;
+    }
+
+    public Line startPolygon(Polygon polygon) {
+        this.startPolygon = polygon;
+        return this;
+    }
+
+    public void setStartPolygon(Polygon polygon) {
+        this.startPolygon = polygon;
+    }
+
+    public Polygon getEndPolygon() {
+        return endPolygon;
+    }
+
+    public Line endPolygon(Polygon polygon) {
+        this.endPolygon = polygon;
+        return this;
+    }
+
+    public void setEndPolygon(Polygon polygon) {
+        this.endPolygon = polygon;
+    }
+
+    public Polygon getCalculatedPolygon() {
+        return calculatedPolygon;
+    }
+
+    public Line calculatedPolygon(Polygon polygon) {
+        this.calculatedPolygon = polygon;
+        return this;
+    }
+
+    public void setCalculatedPolygon(Polygon polygon) {
+        this.calculatedPolygon = polygon;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

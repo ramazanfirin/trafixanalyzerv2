@@ -12,6 +12,24 @@
             "relationshipName": "direction",
             "otherEntityName": "direction",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "startPolygon",
+            "otherEntityName": "polygon",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "endPolygon",
+            "otherEntityName": "polygon",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "calculatedPolygon",
+            "otherEntityName": "polygon",
+            "otherEntityField": "id"
         }
     ],
     "fields": [

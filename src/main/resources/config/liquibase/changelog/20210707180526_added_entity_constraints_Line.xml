@@ -20,5 +20,23 @@
                                  referencedColumnNames="id"
                                  referencedTableName="direction"/>
 
+        <addForeignKeyConstraint baseColumnNames="start_polygon_id"
+                                 baseTableName="line"
+                                 constraintName="fk_line_start_polygon_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="polygon"/>
+
+        <addForeignKeyConstraint baseColumnNames="end_polygon_id"
+                                 baseTableName="line"
+                                 constraintName="fk_line_end_polygon_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="polygon"/>
+
+        <addForeignKeyConstraint baseColumnNames="calculated_polygon_id"
+                                 baseTableName="line"
+                                 constraintName="fk_line_calculated_polygon_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="polygon"/>
+
     </changeSet>
 </databaseChangeLog>

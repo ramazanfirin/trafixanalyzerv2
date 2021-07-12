@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('ScenarioDialogLineController', ScenarioDialogLineController);
 
-    ScenarioDialogLineController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon'];
+    ScenarioDialogLineController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line'];
 
-    function ScenarioDialogLineController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon) {
+    function ScenarioDialogLineController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line) {
         var vm = this;
 
         vm.scenario = entity;
@@ -22,32 +22,46 @@
 		vm.adding = false;
 		//vm.cancelPolygon = cancelPolygon;
 		vm.addLine = addLine;
+		vm.deleteLine = deleteLine;
 
 		vm.addMessageBefore = "Çizgi eklemek için, Ekle butonuna basınız"
 	    vm.addMessageAfter = "Çizgi ekleyebilirsiniz"
 	    vm.addMessage = vm.addMessageBefore;
 	    vm.selectVideoMessage = ""
 	    vm.polygons = []; 
+	    vm.lines = []; 
 	    vm.polygon = [];
 	    vm.points = $window.points;
+	    vm.showPopup = showPopup;
+	    vm.hidePopup = hidePopup;
 	    //vm.createPolygon = vm.createPolygon();
 
 		loadAll();
 
         function loadAll () {
         //$("#exampleModal").modal("show");
-        
+        	
         	if(vm.scenario.id == null)
         		Scenario.save(vm.scenario, onSaveSuccessFirst, onSaveError);
         	else{
+        	//
         		Polygon.getPolygonListByScenarioId({id:vm.scenario.id},getPolygonListForFirstTime,onSaveError);
+        		
         	}	
         		
         }
         
         function getPolygonListForFirstTime(result){
+			//resetAll();
 			vm.polygons = result;
-			$scope.$broadcast('messagename', "ramazan");
+			$scope.$broadcast('ploygonDataReceived', "ramazan");
+			Line.getLineListByScenarioId({id:vm.scenario.id},getLineListForFirstTime,onSaveError);
+		}
+		
+		function getLineListForFirstTime(result){
+			vm.lines = result;
+			
+			$scope.$broadcast('lineDataReceived', "ramazan");
 		}
         
         function onSaveSuccessFirst (result) {
@@ -60,21 +74,72 @@
 	    }
 	    
 	    function addLine () {
-			if($window.selectedPolygons.length!=2){
+			
+			Line.createLineByPolygons({
+				scenarioId:vm.scenario.id,
+				startPolygonId:selectedPolygons[0].attrs.id,
+				endPolygonId:selectedPolygons[1].attrs.id,
+				name:vm.addLineName
+			},addLineSuccess,onSaveError);
+            
+        } 
+        
+        function addLineSuccess(){
+ 			vm.addMessage = vm.addMessageBefore;
+            vm.adding = false;
+            
+//            for(var i=0;i<selectedPolygons.length;i++){
+//				selectedPolygons[i].fill("lightgreen");;
+//			}
+            resetAll();
+			vm.addLineName= "";
+			hidePopup();
+ 			       
+        }
+        
+        function resetAll(){
+        
+        	deleteFromScreen($window.selectedPolygons);	
+        	deleteFromScreen($window.polygonListOnScreen);	
+        	deleteFromScreen($window.lineListOnScreen);
+        	deleteFromScreen($window.textListOnScreen);
+        	
+        
+        	$window.selectedPolygons = [];
+            $window.polygonListOnScreen=[];
+			$window.lineListOnScreen=[];
+			$window.textListOnScreen=[];
+            $window.selectedPolygons = [];
+            $window.poly = null;
+            //loadAll();
+            //$window.layer = new Konva.Layer();
+        }
+        
+        function deleteFromScreen(list){
+        	 for(var i=0;i<list.length;i++){
+				list[i].destroy();
+			}
+        }
+        function showPopup(){
+        	if($window.selectedPolygons.length!=2){
 				alert("2 adet seçim yapmalısınız");
 				return;
 			}
-			vm.addMessage = vm.addMessageBefore;
-            //Polygon.save(vm.polygon, onPolygonSaveSuccess, onSaveError);
-            vm.adding = false;
-            
-            for(var i=0;i<selectedPolygons.length;i++){
-				selectedPolygons[i].fill("lightgreen");;
-			}
-            $window.selectedPolygons = [];
-            
-        } 
+			
+			$window.modal.style.display = "block";
+        }
+		
+		function hidePopup(){
+			$window.modal.style.display = "none";
+        
+		}
 
+		function deleteLine(lineId){
+			 
+			 Line.delete({id: lineId},loadAll,onSaveError);
+			 
+		}
+		
 		function onPolygonSaveSuccess (result) {
              Polygon.getPolygonListByScenarioId({id:vm.scenario.id},getPolygonListSuccess,onSaveError);
         }

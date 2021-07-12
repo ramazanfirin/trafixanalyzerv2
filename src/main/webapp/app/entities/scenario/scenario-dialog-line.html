@@ -37,7 +37,7 @@
 			<div id="buttons">
 			      <span>{{vm.addMessage}}</span>
 			      <input type="button" id="add" value="Seçime Basla" ng-click="vm.addPolygon()" ng-show = "!vm.adding"/>
-			      <input type="button" id="save" value="Kaydet" ng-click="vm.addLine()" ng-show = "vm.adding" data-target="#modal"/>
+			      <input type="button" id="save" value="Kaydet" ng-click="vm.showPopup()" ng-show = "vm.adding" data-target="#modal"/>
 			      <input type="button" id="Ä°ptal" value="Ä°ptal" onclick="cancelSelections()" ng-click="vm.cancelPolygon();" ng-show = "vm.adding"/>
 			    </div>
         </div>
@@ -53,16 +53,16 @@
                 </tr>
            		 </thead>
 	        	<tbody></tbody>
-                <tr ng-repeat="polygon in vm.polygons">
-                	<td>{{polygon.id}}</td>
-                	<td>{{polygon.name}}</td>
+                <tr ng-repeat="line in vm.lines">
+                	<td>{{line.id}}</td>
+                	<td>{{line.name}}</td>
                 	<td>
 <!--                 	<button type="submit" ng-click="vm.deletePolygon(polygon.id)"                                    -->
 <!--                                     class="btn btn-danger btn-sm"> -->
 <!--                                 <span class="glyphicon glyphicon-remove-circle"></span> -->
 <!--                                 <span class="hidden-sm-down" data-translate="entity.action.delete"></span> -->
 <!--                             </button> -->
-                    <input type="button" id="add" value="Sil" ng-click="vm.deletePolygon(polygon.id,polygon.name)"/>        
+                    <input type="button" id="add" value="Sil" ng-click="vm.deleteLine(line.id)"/>        
                     </td>                     
                 </tr>
                 
@@ -85,12 +85,12 @@
     <div class="form-group">
             <label class="control-label" data-translate="trafficanalzyzerv2App.scenario.name" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
-                    ng-model="vm.scenario.name"
+                    ng-model="vm.addLineName"
                     />
         </div>
     <div class="clearfix">
-        <button type="button" id="cancelBtn" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-        <button type="button" id="submitBtn" onclick="document.getElementById('id01').style.display='none'" class="deletebtn">Delete</button>
+        <button type="button" id="cancelBtn"  ng-click="vm.hidePopup()" class="cancelbtn">Cancel</button>
+        <button type="button" id="submitBtn"  ng-click="vm.addLine()" class="deletebtn">Kaydet</button>
       </div>
   </div>
 
@@ -141,6 +141,7 @@ var points = [];
 //var polygons = [];
 var poly = null;
 var polygonListOnScreen=[];
+var lineListOnScreen=[];
 var textListOnScreen=[];
 
 var width = window.innerWidth;
@@ -217,12 +218,12 @@ stage.add(layer);
 	});
 	
 	
-	scope.$on('messagename', function(params){
+	scope.$on('ploygonDataReceived', function(params){
 		//alert(scope.vm.polygons.length); 
 	
 		for(var i=0;i<scope.vm.polygons.length;i++){
 			var polyFromDB = scope.vm.polygons[i];
-			poly = createPolygon(polyFromDB.name);
+			poly = createPolygon(polyFromDB.id);
 			tempId = tempId + 1;
 			
 			var allCoords = polyFromDB.points.split(";");
@@ -232,13 +233,75 @@ stage.add(layer);
 				var pointy = pointCoords[1];
 				addPoint(pointx,pointy);
 				
-				console.log(pointx +" "+pointy);	
+				//console.log(pointx +" "+pointy);	
 			}
 			points=[];
 			;
 		}
 		poly = null;
 	});
+	
+	scope.$on('lineDataReceived', function(params){
+		console.log("lineDataReceived");
+	    console.log("lines"+" "+scope.vm.lines);
+		for(var i=0;i<scope.vm.lines.length;i++){
+			var line = scope.vm.lines[i];
+			var linePoly = createLinePolygon(line.id);
+			linePoly.fill("yellow");
+			tempId = tempId + 1;
+			
+			var allCoords = line.calculatedPolygon.points.split(";");
+			console.log(allCoords);
+			var totalx = 0;
+			var totaly = 0;
+			for(var y=0;y<allCoords.length;y++){
+				var pointCoords = allCoords[y].split(",");
+				var pointx = pointCoords[0];
+				var pointy = pointCoords[1];
+				totalx= totalx +parseInt(pointx);
+				totaly= totaly +parseInt(pointy);
+				
+				console.log("pointx "+ pointx);
+				console.log("pointy "+ pointy);
+				
+				linePoly.attrs.points.push(pointx);
+				linePoly.attrs.points.push(pointy);
+			}
+		
+			disabledPolygon(line.startPolygon.id);
+			disabledPolygon(line.endPolygon.id);
+			
+			var centerx = totalx / allCoords.length;
+			var centery = totaly / allCoords.length;
+			
+			createText(centerx,centery,line.name);
+			console.log(totalx+ " " +totaly+ " "+line.name);
+			console.log(centerx+ " " +centery+ " "+line.name);
+			
+			points=[];
+			
+		}
+		
+		
+		
+		
+		poly = null;
+	});
+	
+	function disabledPolygon(polygonId){
+		console.log("disabledPolygon:polygonId "+polygonId)
+		for(var i=0;i<polygonListOnScreen.length;i++){
+			console.log("disabledPolygon:polygonListOnScreen "+polygonListOnScreen[i].attrs.id)
+			if(polygonListOnScreen[i].attrs.id==polygonId){
+				polygonListOnScreen[i].attrs.selectable=false;
+				polygonListOnScreen[i].fill(null);
+				polygonListOnScreen[i].stroke(null);
+				console.log("disabledPolygon:disabled edildi "+polygonListOnScreen[i].attrs.id);
+// 				polygonListOnScreen[i].destroy();
+// 				layer.draw();
+			}	
+		}
+	}
 	
 	console.log(scope);
 	function addPoint(pointx, pointy) {
@@ -256,6 +319,25 @@ stage.add(layer);
 
 	}
 	
+	function createLinePolygon(id){
+		var polyNew = new Konva.Line({
+			points : [],
+			fill : 'lightgreen',
+			stroke : 'lightgreen',
+			//strokeWidth: 5,
+			draggable : false,
+			closed : true,
+			opacity : 0.5,
+		//tension:5
+		//id :"1"
+		});
+		//console.log("polygonId="+id);
+		lineListOnScreen.push(polyNew);
+		polyNew.id(id);
+		layer.add(polyNew);
+		return polyNew;
+	}	
+	
 	function createPolygon(id){
 		var polyNew = new Konva.Line({
 			points : [],
@@ -268,15 +350,20 @@ stage.add(layer);
 		//tension:5
 		//id :"1"
 		});
-		console.log("polygonId="+id);
+		//console.log("polygonId="+id);
 		polygonListOnScreen.push(polyNew);
 		polyNew.id(id);
 		layer.add(polyNew);
+		polyNew.attrs.selectable = true;
 		
 		polyNew.on('mousedown', function () {
 // 	        console.log('Mouseup circle');
 // 	        console.log(this.attrs.fill);
 // 	        console.log(this);
+
+			if(!this.attrs.selectable)
+				return;
+			
 			if(scope.vm.adding == false){
 				alert("Çizgi eklemek icin, Secime Basla butonuna basiniz");
 				return;
