@@ -69,7 +69,7 @@ public class LineResourceIntTest {
 
     @Autowired
     private EntityManager em;
-    
+
     @Autowired
     ScenarioRepository scenarioRepository; 
     

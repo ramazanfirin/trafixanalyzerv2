@@ -46,10 +46,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="direction_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <column name="start_polygon_id" type="bigint">
                 <constraints nullable="true" />
             </column>

@@ -5,16 +5,15 @@
         .module('trafficanalzyzerv2App')
         .controller('LineDialogController', LineDialogController);
 
-    LineDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Line', 'Scenario', 'Direction', 'Polygon'];
+    LineDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Line', 'Scenario', 'Polygon'];
 
-    function LineDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Line, Scenario, Direction, Polygon) {
+    function LineDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Line, Scenario, Polygon) {
         var vm = this;
 
         vm.line = entity;
         vm.clear = clear;
         vm.save = save;
         vm.scenarios = Scenario.query();
-        vm.directions = Direction.query();
         vm.polygons = Polygon.query();
 
         $timeout(function (){

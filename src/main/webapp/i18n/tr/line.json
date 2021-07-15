@@ -21,7 +21,6 @@
             "endPointX": "End Point X",
             "endPointY": "End Point Y",
             "scenario": "Scenario",
-            "direction": "Direction",
             "startPolygon": "Start Polygon",
             "endPolygon": "End Polygon",
             "calculatedPolygon": "Calculated Polygon"

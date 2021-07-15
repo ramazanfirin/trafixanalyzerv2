@@ -3,3 +3,5 @@
 3 - line üzerinde yön bilgisi
 4 - name alanının dialog lardan kaldırılması
 5 - line eklemede, 50 pixel problemi
+6 - silme işlemlerinde onay
+7 - çizgi çizerken iptal butonu

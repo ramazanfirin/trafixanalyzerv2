@@ -33,6 +33,12 @@ public class Direction implements Serializable {
     @ManyToOne
     private Scenario scenario;
 
+    @ManyToOne
+    private Line startLine;
+
+    @ManyToOne
+    private Line endLine;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -79,6 +85,32 @@ public class Direction implements Serializable {
 
     public void setScenario(Scenario scenario) {
         this.scenario = scenario;
+    }
+
+    public Line getStartLine() {
+        return startLine;
+    }
+
+    public Direction startLine(Line line) {
+        this.startLine = line;
+        return this;
+    }
+
+    public void setStartLine(Line line) {
+        this.startLine = line;
+    }
+
+    public Line getEndLine() {
+        return endLine;
+    }
+
+    public Direction endLine(Line line) {
+        this.endLine = line;
+        return this;
+    }
+
+    public void setEndLine(Line line) {
+        this.endLine = line;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -14,12 +14,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="scenario"/>
 
-        <addForeignKeyConstraint baseColumnNames="direction_id"
-                                 baseTableName="line"
-                                 constraintName="fk_line_direction_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="direction"/>
-
         <addForeignKeyConstraint baseColumnNames="start_polygon_id"
                                  baseTableName="line"
                                  constraintName="fk_line_start_polygon_id"

@@ -41,9 +41,6 @@ public class Line implements Serializable {
     private Scenario scenario;
 
     @ManyToOne
-    private Direction direction;
-
-    @ManyToOne
     private Polygon startPolygon;
 
     @ManyToOne
@@ -137,19 +134,6 @@ public class Line implements Serializable {
 
     public void setScenario(Scenario scenario) {
         this.scenario = scenario;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public Line direction(Direction direction) {
-        this.direction = direction;
-        return this;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
     }
 
     public Polygon getStartPolygon() {

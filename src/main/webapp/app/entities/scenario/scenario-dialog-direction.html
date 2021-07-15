@@ -36,7 +36,7 @@
 			<div id="containerKonva"></div>
 			<div id="buttons">
 			      <span>{{vm.addMessage}}</span>
-			      <input type="button" id="add" value="Seçime Basla" ng-click="vm.addPolygon()" ng-show = "!vm.adding"/>
+			      <input type="button" id="add" value="Seçime Basla" ng-click="vm.addItem()" ng-show = "!vm.adding"/>
 			      <input type="button" id="save" value="Kaydet" ng-click="vm.showPopup()" ng-show = "vm.adding" data-target="#modal"/>
 			      <input type="button" id="Ä°ptal" value="Ä°ptal" onclick="cancelSelections()" ng-click="vm.cancelPolygon();" ng-show = "vm.adding"/>
 			    </div>
@@ -47,22 +47,27 @@
 	        <table class="jh-table table table-striped">
 	        	<thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="name"><span >Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th ><span>ID</span> </th>
+                    <th ><span >Name</span> </th>
+                    <th ><span >Başlangiç Noktası</span> </th>
+                    <th ><span >Bitiş Noktası</span> </th>
                     <th></th>
                 </tr>
            		 </thead>
 	        	<tbody></tbody>
-                <tr ng-repeat="line in vm.lines">
-                	<td>{{line.id}}</td>
-                	<td>{{line.name}}</td>
+                <tr ng-repeat="item in vm.directions">
+                	<td>{{item.id}}</td>
+                	<td>{{item.name}}</td>
+                	<td>{{item.startLine.name}}</td>
+                	<td>{{item.endLine.name}}</td>
                 	<td>
 <!--                 	<button type="submit" ng-click="vm.deletePolygon(polygon.id)"                                    -->
 <!--                                     class="btn btn-danger btn-sm"> -->
 <!--                                 <span class="glyphicon glyphicon-remove-circle"></span> -->
 <!--                                 <span class="hidden-sm-down" data-translate="entity.action.delete"></span> -->
 <!--                             </button> -->
-                    <input type="button" id="add" value="Sil" ng-click="vm.deleteLine(line.id)"/>        
+                    <input type="button" id="show" value="Göster" ng-click="vm.showOnScreen(item);"/>        
+                    <input type="button" id="add" value="Sil" ng-click="vm.deleteDirection(item.id)"/> 
                     </td>                     
                 </tr>
                 
@@ -81,7 +86,7 @@
   <!-- Modal content -->
   <div class="modal-content-new">
     <span class="close">&times;</span>
-    <h1>Çizgi Tanımlama</h1>
+    <h1>Yön Tanımlama</h1>
     <div class="form-group">
             <label class="control-label" data-translate="trafficanalzyzerv2App.scenario.name" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
@@ -342,7 +347,7 @@ stage.add(layer);
 // 			return;
 		
 		if(scope.vm.adding == false){
-			alert("Çizgi eklemek icin, Secime Basla butonuna basiniz");
+			alert("Yön Belirlemek icin, Secime Basla butonuna basiniz");
 			return;
 		}
 
@@ -455,5 +460,13 @@ stage.add(layer);
 		textListOnScreen.push(simpleText);
 		simpleText.text(text);
 		layer.add(simpleText);
+	}
+	
+	function showOnScreen(item){
+		console.log("item:"+item)
+		for(var i=0;i<lineListOnScreen.length;i++){
+			if(lineListOnScreen[i].id == item.id)
+				lineListOnScreen[i].fill("blue;")
+		}
 	}
 </script>

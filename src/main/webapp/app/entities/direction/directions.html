@@ -22,6 +22,8 @@
                     <th jh-sort-by="name"><span data-translate="trafficanalzyzerv2App.direction.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="pathCoordinates"><span data-translate="trafficanalzyzerv2App.direction.pathCoordinates">Path Coordinates</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="scenario.id"><span data-translate="trafficanalzyzerv2App.direction.scenario">Scenario</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="startLine.id"><span data-translate="trafficanalzyzerv2App.direction.startLine">Start Line</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="endLine.id"><span data-translate="trafficanalzyzerv2App.direction.endLine">End Line</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -32,6 +34,12 @@
                     <td>{{direction.pathCoordinates}}</td>
                     <td>
                         <a ui-sref="scenario-detail({id:direction.scenario.id})">{{direction.scenario.id}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="line-detail({id:direction.startLine.id})">{{direction.startLine.id}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="line-detail({id:direction.endLine.id})">{{direction.endLine.id}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

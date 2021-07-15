@@ -14,5 +14,17 @@
                                  referencedColumnNames="id"
                                  referencedTableName="scenario"/>
 
+        <addForeignKeyConstraint baseColumnNames="start_line_id"
+                                 baseTableName="direction"
+                                 constraintName="fk_direction_start_line_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="line"/>
+
+        <addForeignKeyConstraint baseColumnNames="end_line_id"
+                                 baseTableName="direction"
+                                 constraintName="fk_direction_end_line_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="line"/>
+
     </changeSet>
 </databaseChangeLog>

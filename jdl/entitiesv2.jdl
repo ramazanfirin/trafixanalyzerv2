@@ -94,7 +94,9 @@ relationship ManyToOne {
 	Line{scenario} to Scenario
 	Polygon{scenario} to Scenario
 	Direction{scenario} to Scenario
-	Line{Direction} to Direction
+	Direction{startLine} to Line
+	Direction{endLine} to Line
+	//Line{Direction} to Direction
 	
 	VideoRecord{video} to Video
 	VideoRecord{line} to Line

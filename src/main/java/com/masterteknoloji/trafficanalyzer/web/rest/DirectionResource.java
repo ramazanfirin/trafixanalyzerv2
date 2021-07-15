@@ -1,9 +1,16 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masterteknoloji.trafficanalyzer.domain.Direction;
-
+import com.masterteknoloji.trafficanalyzer.domain.Line;
+import com.masterteknoloji.trafficanalyzer.domain.Polygon;
+import com.masterteknoloji.trafficanalyzer.domain.Scenario;
 import com.masterteknoloji.trafficanalyzer.repository.DirectionRepository;
+import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
+import com.masterteknoloji.trafficanalyzer.repository.ScenarioRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
@@ -15,12 +22,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.awt.Point;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,9 +48,15 @@ public class DirectionResource {
     private static final String ENTITY_NAME = "direction";
 
     private final DirectionRepository directionRepository;
+    
+    private final LineRepository lineRepository;
 
-    public DirectionResource(DirectionRepository directionRepository) {
+    private final ScenarioRepository scenarioRepository;
+
+    public DirectionResource(DirectionRepository directionRepository,ScenarioRepository scenarioRepository,LineRepository lineRepository) {
         this.directionRepository = directionRepository;
+        this.lineRepository = lineRepository;
+        this.scenarioRepository = scenarioRepository;
     }
 
     /**
@@ -124,5 +142,37 @@ public class DirectionResource {
         log.debug("REST request to delete Direction : {}", id);
         directionRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    @PostMapping("/directions/createDirectionByLines")
+    @Timed
+    public ResponseEntity<Direction> createLineByPolygons(@RequestBody String requestBody) throws JsonProcessingException, IOException {
+        log.debug("REST request to get Line : {}", requestBody);
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode actualObj = objectMapper.readTree(requestBody);
+        
+        
+        Direction direction = new Direction();
+        Scenario scenario = scenarioRepository.findOne(actualObj.get("scenarioId").asLong());
+        Line startLine = lineRepository.findOne(actualObj.get("startLineId").asLong());
+        Line endline = lineRepository.findOne(actualObj.get("endLineId").asLong());
+        String name = actualObj.get("name").asText();
+        
+        direction.setScenario(scenario);
+        direction.setStartLine(startLine);
+        direction.setEndLine(endline);
+        direction.setName(name);
+       
+        directionRepository.save(direction);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(direction));
+    }
+    
+    @GetMapping("/directions/getDirectionListByScenarioId/{id}")
+    @Timed
+    public List<Direction> getLineListByScenarioId(@PathVariable Long id) {
+        log.debug("REST request to get Polygon : {}", id);
+        List<Direction> result = directionRepository.getDirectionListByScenarioId(id);
+        return result;
     }
 }

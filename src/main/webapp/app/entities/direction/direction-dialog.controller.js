@@ -5,15 +5,16 @@
         .module('trafficanalzyzerv2App')
         .controller('DirectionDialogController', DirectionDialogController);
 
-    DirectionDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Direction', 'Scenario'];
+    DirectionDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Direction', 'Scenario', 'Line'];
 
-    function DirectionDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Direction, Scenario) {
+    function DirectionDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Direction, Scenario, Line) {
         var vm = this;
 
         vm.direction = entity;
         vm.clear = clear;
         vm.save = save;
         vm.scenarios = Scenario.query();
+        vm.lines = Line.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

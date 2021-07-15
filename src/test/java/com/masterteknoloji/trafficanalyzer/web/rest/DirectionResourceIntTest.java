@@ -4,6 +4,8 @@ import com.masterteknoloji.trafficanalyzer.Trafficanalzyzerv2App;
 
 import com.masterteknoloji.trafficanalyzer.domain.Direction;
 import com.masterteknoloji.trafficanalyzer.repository.DirectionRepository;
+import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
+import com.masterteknoloji.trafficanalyzer.repository.ScenarioRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -58,6 +60,12 @@ public class DirectionResourceIntTest {
 
     @Autowired
     private EntityManager em;
+    
+    @Autowired
+    private ScenarioRepository scenarioRepository;
+    
+    @Autowired
+    private LineRepository lineRepository;
 
     private MockMvc restDirectionMockMvc;
 
@@ -66,7 +74,7 @@ public class DirectionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final DirectionResource directionResource = new DirectionResource(directionRepository);
+        final DirectionResource directionResource = new DirectionResource(directionRepository,scenarioRepository,lineRepository);
         this.restDirectionMockMvc = MockMvcBuilders.standaloneSetup(directionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -11,6 +11,8 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'createDirectionByLines': { method: 'POST', isArray: false, url: 'api/directions/createDirectionByLines'},
+            'getDirectionListByScenarioId': { method: 'GET', isArray: true, url: 'api/directions/getDirectionListByScenarioId/:id'},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

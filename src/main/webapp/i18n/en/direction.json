@@ -17,7 +17,9 @@
             },
             "name": "Name",
             "pathCoordinates": "Path Coordinates",
-            "scenario": "Scenario"
+            "scenario": "Scenario",
+            "startLine": "Start Line",
+            "endLine": "End Line"
         }
     }
 }

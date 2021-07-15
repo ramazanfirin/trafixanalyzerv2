@@ -16,6 +16,14 @@
         <dd>
             <a ui-sref="scenario-detail({id:vm.direction.scenario.id})">{{vm.direction.scenario.id}}</a>
         </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.direction.startLine">Start Line</span></dt>
+        <dd>
+            <a ui-sref="line-detail({id:vm.direction.startLine.id})">{{vm.direction.startLine.id}}</a>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.direction.endLine">End Line</span></dt>
+        <dd>
+            <a ui-sref="line-detail({id:vm.direction.endLine.id})">{{vm.direction.endLine.id}}</a>
+        </dd>
     </dl>
 
     <button type="submit"

@@ -25,7 +25,6 @@
                     <th jh-sort-by="endPointX"><span data-translate="trafficanalzyzerv2App.line.endPointX">End Point X</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="endPointY"><span data-translate="trafficanalzyzerv2App.line.endPointY">End Point Y</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="scenario.id"><span data-translate="trafficanalzyzerv2App.line.scenario">Scenario</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="direction.id"><span data-translate="trafficanalzyzerv2App.line.direction">Direction</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="startPolygon.id"><span data-translate="trafficanalzyzerv2App.line.startPolygon">Start Polygon</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="endPolygon.id"><span data-translate="trafficanalzyzerv2App.line.endPolygon">End Polygon</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="calculatedPolygon.id"><span data-translate="trafficanalzyzerv2App.line.calculatedPolygon">Calculated Polygon</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -42,9 +41,6 @@
                     <td>{{line.endPointY}}</td>
                     <td>
                         <a ui-sref="scenario-detail({id:line.scenario.id})">{{line.scenario.id}}</a>
-                    </td>
-                    <td>
-                        <a ui-sref="direction-detail({id:line.direction.id})">{{line.direction.id}}</a>
                     </td>
                     <td>
                         <a ui-sref="polygon-detail({id:line.startPolygon.id})">{{line.startPolygon.id}}</a>

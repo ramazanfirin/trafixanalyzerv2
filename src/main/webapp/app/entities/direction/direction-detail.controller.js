@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('DirectionDetailController', DirectionDetailController);
 
-    DirectionDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Direction', 'Scenario'];
+    DirectionDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Direction', 'Scenario', 'Line'];
 
-    function DirectionDetailController($scope, $rootScope, $stateParams, previousState, entity, Direction, Scenario) {
+    function DirectionDetailController($scope, $rootScope, $stateParams, previousState, entity, Direction, Scenario, Line) {
         var vm = this;
 
         vm.direction = entity;

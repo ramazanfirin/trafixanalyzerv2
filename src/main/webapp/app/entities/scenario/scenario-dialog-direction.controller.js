@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('ScenarioDialogDirectionController', ScenarioDialogDirectionController);
 
-    ScenarioDialogDirectionController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line'];
+    ScenarioDialogDirectionController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line','Direction'];
 
-    function ScenarioDialogDirectionController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line) {
+    function ScenarioDialogDirectionController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line,Direction) {
         var vm = this;
 
         vm.scenario = entity;
@@ -15,14 +15,16 @@
         vm.save = save;
         vm.videos = Video.query();
 		//vm.update = update;
-		vm.addPolygon = addPolygon;
+		//vm.addPolygon = addPolygon;
 		//vm.addToPolygonList = addToPolygonList;
 		vm.resetMessage = resetMessage;
 		//vm.deletePolygon = deletePolygon;
 		vm.adding = false;
-		//vm.cancelPolygon = cancelPolygon;
+		vm.cancelPolygon = cancelPolygon;
 		vm.addLine = addLine;
-		vm.deleteLine = deleteLine;
+		vm.deleteDirection = deleteDirection;
+		vm.addItem = addItem;
+		vm.showOnScreen = showOnScreen;
 
 		vm.addMessageBefore = "Çizgi eklemek için, Ekle butonuna basınız"
 	    vm.addMessageAfter = "Çizgi ekleyebilirsiniz"
@@ -31,6 +33,7 @@
 	    vm.polygons = []; 
 	    vm.lines = []; 
 	    vm.polygon = [];
+	    vm.directions = [];
 	    vm.points = $window.points;
 	    vm.showPopup = showPopup;
 	    vm.hidePopup = hidePopup;
@@ -46,24 +49,31 @@
         		Scenario.save(vm.scenario, onSaveSuccessFirst, onSaveError);
         	else{
         	//
-        		Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListForFirstTime,onSaveError);
-        		
+        		//Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListForFirstTime,onSaveError);
+        		Line.getLineListByScenarioId({id:vm.scenario.id},getLineListForFirstTime,onSaveError);
         	}	
         		
         }
         
-        function getPolygonListForFirstTime(result){
-			//resetAll();
-			vm.polygons = result;
-			//$scope.$broadcast('ploygonDataReceived', "ramazan");
-			Line.getLineListByScenarioId({id:vm.scenario.id},getLineListForFirstTime,onSaveError);
-		}
+//        function getPolygonListForFirstTime(result){
+//			//resetAll();
+//			vm.polygons = result;
+//			//$scope.$broadcast('ploygonDataReceived', "ramazan");
+//			Line.getLineListByScenarioId({id:vm.scenario.id},getLineListForFirstTime,onSaveError);
+//		}
 		
 		function getLineListForFirstTime(result){
 			vm.lines = result;
-			
+			Direction.getDirectionListByScenarioId({id:vm.scenario.id},getDirectionListForFirstTime,onSaveError);
 			$scope.$broadcast('lineDataReceived', "ramazan");
 		}
+		
+		function getDirectionListForFirstTime(result){
+			vm.directions = result;
+			
+			$scope.$broadcast('directionDataReceived', "ramazan");
+		}
+        
         
         function onSaveSuccessFirst (result) {
            vm.scenario = result;
@@ -76,16 +86,16 @@
 	    
 	    function addLine () {
 			
-			Line.createLineByPolygons({
+			Direction.createDirectionByLines({
 				scenarioId:vm.scenario.id,
-				startPolygonId:selectedPolygons[0].attrs.id,
-				endPolygonId:selectedPolygons[1].attrs.id,
+				startLineId:selectedPolygons[0].attrs.id,
+				endLineId:selectedPolygons[1].attrs.id,
 				name:vm.addLineName
-			},addLineSuccess,onSaveError);
+			},addDirectionSuccess,onSaveError);
             
         } 
         
-        function addLineSuccess(){
+        function addDirectionSuccess(){
  			vm.addMessage = vm.addMessageBefore;
             vm.adding = false;
             
@@ -95,6 +105,8 @@
             resetAll();
 			vm.addLineName= "";
 			hidePopup();
+			loadAll();
+			//$window.layer = new Konva.Layer();			
  			       
         }
         
@@ -135,28 +147,29 @@
         
 		}
 
-		function deleteLine(lineId){
+		function deleteDirection(directionId){
 			 
-			 Line.delete({id: lineId},loadAll,onSaveError);
+			 Direction.delete({id: directionId},loadAll,onSaveError);
 			 
 		}
 		
-		function onPolygonSaveSuccess (result) {
-             Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListSuccess,onSaveError);
-        }
-
-		function getPolygonListSuccess(result){
-			vm.polygons = result;
-		}
-
-		function addPolygon () {
+//		function onPolygonSaveSuccess (result) {
+//             Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListSuccess,onSaveError);
+//        }
+//
+//		function getPolygonListSuccess(result){
+//			vm.polygons = result;
+//		}
+//
+		function addItem () {
 	    	vm.addMessage = vm.addMessageAfter;
 	    	vm.adding = true;
+	    	clearSelectedLines();
 	    }
-	    
-	    function getPolygonList () {
-	    	Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListSuccess,onSaveError);
-	    }
+//	    
+//	    function getPolygonList () {
+//	    	Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListSuccess,onSaveError);
+//	    }
 
 		
         $timeout(function (){
@@ -190,6 +203,29 @@
             vm.isSaving = false;
         }
 
-
+		function showOnScreen (item) {
+		clearSelectedLines();
+			console.log("item:"+item)
+			for(var i=0;i<$window.lineListOnScreen.length;i++){
+				if($window.lineListOnScreen[i].attrs.id == item.startLine.id || $window.lineListOnScreen[i].attrs.id == item.endLine.id)
+					$window.lineListOnScreen[i].fill("blue");
+			}
+		}
+		
+		function clearSelectedLines(){
+			for(var i=0;i<$window.lineListOnScreen.length;i++){
+					$window.lineListOnScreen[i].fill("yellow");
+				
+			}
+		}
+		
+		function cancelPolygon () {
+			clearSelectedLines();
+	    	vm.addMessage = vm.addMessageBefore;
+            vm.adding = false;
+            $window.points = [];
+            $window.poly = null;
+            //deleteFromScreen($window.tempId);
+	    }
     }
 })();
