@@ -6,6 +6,18 @@
             "relationshipName": "scenario",
             "otherEntityName": "scenario",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "startLine",
+            "otherEntityName": "line",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "endLine",
+            "otherEntityName": "line",
+            "otherEntityField": "id"
         }
     ],
     "fields": [
