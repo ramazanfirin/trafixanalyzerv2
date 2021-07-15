@@ -101,7 +101,8 @@
             "open": "Aç",
             "save": "Kaydet",
             "view": "Görüntüle",
-            "speed": "Hız Ayarları"
+            "speed": "Hız Ayarları",
+            "direction": "Yön Ayarları"
         },
         "detail": {
             "field": "Alan",

@@ -101,7 +101,8 @@
             "open": "Open",
             "save": "Save",
             "view": "View",
-            "speed": "Speed Settings"
+            "speed": "Speed Settings",
+            "direction": "Direction Settings"
         },
         "detail": {
             "field": "Field",
