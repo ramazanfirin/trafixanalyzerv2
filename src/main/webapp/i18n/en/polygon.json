@@ -18,6 +18,7 @@
             "name": "Name",
             "points": "Points",
             "type": "Type",
+            "width": "Width",
             "scenario": "Scenario"
         }
     }

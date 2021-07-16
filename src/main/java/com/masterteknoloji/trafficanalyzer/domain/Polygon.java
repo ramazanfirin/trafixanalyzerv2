@@ -34,6 +34,9 @@ public class Polygon implements Serializable {
     @Column(name = "jhi_type")
     private PolygonType type;
 
+    @Column(name = "width")
+    private Integer width;
+
     @ManyToOne
     private Scenario scenario;
 
@@ -85,6 +88,19 @@ public class Polygon implements Serializable {
         this.type = type;
     }
 
+    public Integer getWidth() {
+        return width;
+    }
+
+    public Polygon width(Integer width) {
+        this.width = width;
+        return this;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
     public Scenario getScenario() {
         return scenario;
     }
@@ -126,6 +142,7 @@ public class Polygon implements Serializable {
             ", name='" + getName() + "'" +
             ", points='" + getPoints() + "'" +
             ", type='" + getType() + "'" +
+            ", width=" + getWidth() +
             "}";
     }
 }

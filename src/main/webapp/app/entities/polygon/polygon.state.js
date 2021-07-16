@@ -129,6 +129,7 @@
                                 name: null,
                                 points: null,
                                 type: null,
+                                width: null,
                                 id: null
                             };
                         }

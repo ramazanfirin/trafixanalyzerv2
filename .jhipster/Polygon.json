@@ -21,6 +21,10 @@
             "fieldName": "type",
             "fieldType": "PolygonType",
             "fieldValues": "COUNTING,SPEED"
+        },
+        {
+            "fieldName": "width",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20210707180527",

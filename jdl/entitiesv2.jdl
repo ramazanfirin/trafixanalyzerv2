@@ -49,6 +49,7 @@ entity Polygon{
 	name String
 	points String
 	type PolygonType
+	width Integer
 }
 
 entity Direction{

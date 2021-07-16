@@ -34,6 +34,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="width" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="scenario_id" type="bigint">
                 <constraints nullable="true" />
             </column>

@@ -48,6 +48,9 @@ public class PolygonResourceIntTest {
     private static final PolygonType DEFAULT_TYPE = PolygonType.COUNTING;
     private static final PolygonType UPDATED_TYPE = PolygonType.SPEED;
 
+    private static final Integer DEFAULT_WIDTH = 1;
+    private static final Integer UPDATED_WIDTH = 2;
+
     @Autowired
     private PolygonRepository polygonRepository;
 
@@ -88,7 +91,8 @@ public class PolygonResourceIntTest {
         Polygon polygon = new Polygon()
             .name(DEFAULT_NAME)
             .points(DEFAULT_POINTS)
-            .type(DEFAULT_TYPE);
+            .type(DEFAULT_TYPE)
+            .width(DEFAULT_WIDTH);
         return polygon;
     }
 
@@ -115,6 +119,7 @@ public class PolygonResourceIntTest {
         assertThat(testPolygon.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testPolygon.getPoints()).isEqualTo(DEFAULT_POINTS);
         assertThat(testPolygon.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testPolygon.getWidth()).isEqualTo(DEFAULT_WIDTH);
     }
 
     @Test
@@ -149,7 +154,8 @@ public class PolygonResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(polygon.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS.toString())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].width").value(hasItem(DEFAULT_WIDTH)));
     }
 
     @Test
@@ -165,7 +171,8 @@ public class PolygonResourceIntTest {
             .andExpect(jsonPath("$.id").value(polygon.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.points").value(DEFAULT_POINTS.toString()))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
+            .andExpect(jsonPath("$.width").value(DEFAULT_WIDTH));
     }
 
     @Test
@@ -190,7 +197,8 @@ public class PolygonResourceIntTest {
         updatedPolygon
             .name(UPDATED_NAME)
             .points(UPDATED_POINTS)
-            .type(UPDATED_TYPE);
+            .type(UPDATED_TYPE)
+            .width(UPDATED_WIDTH);
 
         restPolygonMockMvc.perform(put("/api/polygons")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -204,6 +212,7 @@ public class PolygonResourceIntTest {
         assertThat(testPolygon.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testPolygon.getPoints()).isEqualTo(UPDATED_POINTS);
         assertThat(testPolygon.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testPolygon.getWidth()).isEqualTo(UPDATED_WIDTH);
     }
 
     @Test
