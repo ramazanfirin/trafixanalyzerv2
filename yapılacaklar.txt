@@ -1,5 +1,5 @@
--------------------------------------1 - plogonlar kaydedilirken, saat yönünde kaydedilecek
-2 - hız için, mesafe bilgisi alınacak
+----------------------------------------1 - plogonlar kaydedilirken, saat yönünde kaydedilecek
+----------------------------------------2 - hız için, mesafe bilgisi alınacak
 3 - line üzerinde yön bilgisi
 ----------------------------------------4 - name alanının dialog lardan kaldırılması
 5 - line eklemede, 50 pixel problemi

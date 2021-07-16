@@ -6,9 +6,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.TreeMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +43,7 @@ import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertExcept
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.Util;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.DistancePointVM;
 
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -220,19 +223,29 @@ public class LineResource {
 
 			int x1 = Integer.parseInt(p1Point[0]);
 			int y1 = Integer.parseInt(p1Point[1]);
+			TreeMap<Double,DistancePointVM> distanceMap = new TreeMap<Double,DistancePointVM>();
 			for (int j = 0; j < p2Points.length; j++) {
 				String[] p2Point = p2Points[j].split(",");
 				int x2 = Integer.parseInt(p2Point[0]);
 				int y2 = Integer.parseInt(p2Point[1]);
 
 				double dis = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-
-				if (dis < 50) {
-					neigburPOints.add(new Point(x1, y1));
-					neigburPOints.add(new Point(x2, y2));
-					System.out.println(x1 + "," + y1);
-					System.out.println(x2 + "," + y2);
-				}
+				DistancePointVM distancePointVM= new DistancePointVM(); 
+				distancePointVM.setDistance(dis);
+				distancePointVM.setPoint(new Point(x2,y2));
+				distanceMap.put(dis, distancePointVM);
+				
+				
+			}
+			
+			List<Double> employeeByKey = new ArrayList<>(distanceMap.keySet());
+			Collections.sort(employeeByKey);
+			DistancePointVM closer = distanceMap.get(employeeByKey.get(0));
+			
+			if (closer.getDistance() < 20) {
+				neigburPOints.add(new Point(x1, y1));
+				neigburPOints.add(closer.getPoint());
+				
 			}
 		}
 
