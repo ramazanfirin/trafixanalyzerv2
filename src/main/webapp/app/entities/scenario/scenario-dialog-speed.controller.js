@@ -156,10 +156,10 @@
 
         function clear () {
             $uibModalInstance.dismiss('cancel');
-            if(vm.polygons == null || vm.polygons.length==0){
-            	alert('Senaryo içerisine polygon bulunmadığı için, senaryo silinecektir.Onaylıyor musunuz ? ');
-            	Scenario.delete({id:vm.scenario.id});
-            }
+//            if(vm.polygons == null || vm.polygons.length==0){
+//            	alert('Senaryo içerisine polygon bulunmadığı için, senaryo silinecektir.Onaylıyor musunuz ? ');
+//            	Scenario.delete({id:vm.scenario.id});
+//            }
         }
 
         function save () {

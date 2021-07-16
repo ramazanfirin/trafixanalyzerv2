@@ -18,4 +18,7 @@ import org.springframework.data.jpa.repository.*;
 public interface LineRepository extends JpaRepository<Line, Long> {
      @Query("select v from Line v where v.scenario.id = ?1")
 	 List<Line> getLineListByScenarioId(Long id);
+     
+     @Query("select v from Line v where v.startPolygon.id = ?1 or v.endPolygon.id = ?1")
+	 List<Line> getLineListByPolygonId(Long id);
 }

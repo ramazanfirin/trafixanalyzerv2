@@ -40,6 +40,7 @@ public final class HeaderUtil {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-trafficanalzyzerv2App-error", "error." + errorKey);
         headers.add("X-trafficanalzyzerv2App-params", entityName);
+        headers.add("X-trafficanalzyzerv2App-errorMessage", defaultMessage);
         return headers;
     }
 }

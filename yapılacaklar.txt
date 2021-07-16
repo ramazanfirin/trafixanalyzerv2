@@ -1,8 +1,8 @@
 ----------------------------------------1 - plogonlar kaydedilirken, saat yönünde kaydedilecek
 ----------------------------------------2 - hız için, mesafe bilgisi alınacak
-3 - line üzerinde yön bilgisi
+----------------------------------------3 - line üzerinde yön bilgisi
 ----------------------------------------4 - name alanının dialog lardan kaldırılması
-5 - line eklemede, 50 pixel problemi
+----------------------------------------5 - line eklemede, 50 pixel problemi
 6 - silme işlemlerinde onay
 7 - çizgi çizerken iptal butonu
 8 - senaryo datasında, resim saklanması
@@ -10,4 +10,4 @@
 10 - entegrasyon tablosu
 11 - dizini otomatik tarama
 12 - işlem sonucunu otomatik tarama
-13 - pşoygon sil refresh ve line sil..
+-----------------------------------------13 - pşoygon sil refresh ve line sil..

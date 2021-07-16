@@ -1,8 +1,10 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.PolygonType;
+import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
@@ -37,9 +39,12 @@ public class PolygonResource {
     private static final String ENTITY_NAME = "polygon";
 
     private final PolygonRepository polygonRepository;
+    
+    private final LineRepository lineRepository;
 
-    public PolygonResource(PolygonRepository polygonRepository) {
+    public PolygonResource(PolygonRepository polygonRepository ,LineRepository lineRepository) {
         this.polygonRepository = polygonRepository;
+        this.lineRepository = lineRepository;
     }
 
     /**
@@ -134,10 +139,18 @@ public class PolygonResource {
     @Timed
     public ResponseEntity<Void> deletePolygonById(@PathVariable Long id) {
         log.debug("REST request to delete Polygon : {}", id);
-        polygonRepository.delete(id);
-        return ResponseEntity.ok()
+        List<Line> lineList = lineRepository.getLineListByPolygonId(id);
+        if(lineList.size()>0)
+        	return ResponseEntity.ok()
+            		.headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "1001", ""))
+            		.build();
+        else {
+        	polygonRepository.delete(id);
+            
+        	return ResponseEntity.ok()
         		.headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString()))
         		.build();
+        }
     }
     
     @GetMapping("/polygons/getPolygonListByScenarioId/{id}/{type}")

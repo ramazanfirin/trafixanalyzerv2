@@ -59,8 +59,31 @@
 	    }
 	    
 	    function deletePolygon(id,index){
-	    	 Polygon.deletePolygonById({id: id},getPolygonList,onSaveError);
-	    	 deleteFromScreen(index);
+	    	 Polygon.deletePolygonById({id: id},deletePolygonSuccess,onSaveError);
+	    }
+	    
+	    function deletePolygonSuccess(result,headers){
+	   		 if(headers('X-trafficanalzyzerv2App-error')=="error.1001"){
+	   		 	alert("Bu polygon çizgilerde kullanıldığı için silinemez. Önce çizgiyi siliniz");
+	   		 	return;
+	   		 }else{
+	   		 	refresh();
+	   		 	getPolygonList();
+	     	 	//deleteFromScreen(index);
+	    	}
+	    }
+	    
+	    function refresh(){
+	    	for (var i = 0; i < $window.polygonListOnScreen.length; i++) {
+	    		var poly = $window.polygonListOnScreen[i];
+	    		poly.destroy();
+	    	}
+	    	
+	    	for (var i = 0; i < $window.textListOnScreen.length; i++) {
+	    		var text = $window.textListOnScreen[i];
+	    		text.destroy();
+	    	
+	    	}
 	    }
 	    
 	    function deleteFromScreen(index){
@@ -105,6 +128,7 @@
         } 
 
 		function onPolygonSaveSuccess (result) {
+             refresh();
              Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListSuccess,onSaveError);
              //alert('abc');         
         }
@@ -112,7 +136,7 @@
 		function getPolygonListSuccess(result){
 			vm.polygons = result;
 			console.log("from controller:"+vm.polygons.length);
-			//$scope.$broadcast('messagename', "ramazan");
+			$scope.$broadcast('messagename', "ramazan");
 		}
 
 		 function addPolygon () {
@@ -129,7 +153,7 @@
 	    }
 
 		function getPolygonList () {
-	    	Polygon.getPolygonListByScenarioId({id:vm.scenario.id},getPolygonListSuccess,onSaveError);
+	    	Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListSuccess,onSaveError);
 	    }
 
 		function update(){
