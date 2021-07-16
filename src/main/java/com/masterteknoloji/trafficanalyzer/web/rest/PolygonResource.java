@@ -7,6 +7,8 @@ import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
+import com.masterteknoloji.trafficanalyzer.web.rest.util.Util;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +78,7 @@ public class PolygonResource {
         if (polygon.getId() == null) {
             return createPolygon(polygon);
         }
+        polygon.setPoints(Util.sortPoygonPoints(polygon.getPoints()));
         Polygon result = polygonRepository.save(polygon);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, polygon.getId().toString()))

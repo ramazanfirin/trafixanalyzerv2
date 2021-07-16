@@ -40,6 +40,7 @@ import com.masterteknoloji.trafficanalyzer.repository.ScenarioRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
+import com.masterteknoloji.trafficanalyzer.web.rest.util.Util;
 
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -174,22 +175,11 @@ public class LineResource {
         List<Point> calculatedPoints = calculateNeigberhood(startPolygon, endPolygon);
         if(calculatedPoints.size()==0)
         	throw new RuntimeException("komşu polygonlar bulunamadı");
-        Point center = findCentroid(calculatedPoints);
-        Collections.sort(calculatedPoints, (a, b) -> {
-            double a1 = (Math.toDegrees(Math.atan2(a.x - center.x, a.y - center.y)) + 360) % 360;
-            double a2 = (Math.toDegrees(Math.atan2(b.x - center.x, b.y - center.y)) + 360) % 360;
-            return (int) (a1 - a2);
-        });
-        
+                
         Polygon calculatedPolygon = new Polygon();
-        for (Iterator iterator = calculatedPoints.iterator(); iterator.hasNext();) {
-			Point point = (Point) iterator.next();
-			if(StringUtils.isEmpty(calculatedPolygon.getPoints()))
-				calculatedPolygon.setPoints(point.getX()+","+point.getY());
-			else
-				calculatedPolygon.setPoints(calculatedPolygon.getPoints()+";"+point.getX()+","+point.getY());
-			
-        }
+        calculatedPolygon.setPoints(Util.sortPoygonPoints(calculatedPoints));
+        
+        
         line.setCalculatedPolygon(calculatedPolygon);
         polygonRepository.save(calculatedPolygon);
         lineRepository.save(line);
