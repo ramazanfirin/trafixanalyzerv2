@@ -23,6 +23,7 @@
 		vm.cancelPolygon = cancelPolygon;
 		vm.showPopup = showPopup;
 		vm.hidePopup = hidePopup;
+		vm.width = 0;
 
 		vm.addMessageBefore = "Çizgi eklemek için, Ekle butonuna basınız"
 	    vm.addMessageAfter = "Çizgi ekleyebilirsiniz"
@@ -88,7 +89,7 @@
 		function addToPolygonList () {
 
 			vm.polygon = new Object();
-			vm.polygon.name = $window.tempId;
+			vm.polygon.name = "HIZ";
             vm.polygon.points="";
             for (var i = 0; i < $window.points.length; i++) {
   				if(vm.polygon.points=="")
@@ -102,6 +103,7 @@
             vm.addMessage = vm.addMessageBefore;
             vm.polygon.scenario = vm.scenario;
             vm.polygon.type=vm.polygonType;
+            vm.polygon.width = vm.width;
 			Polygon.save(vm.polygon, onPolygonSaveSuccess, onSaveError);
             vm.adding = false;
         } 
@@ -114,6 +116,8 @@
 		function getPolygonListSuccess(result){
 			vm.polygons = result;
 			console.log("from controller:"+vm.polygons.length);
+			vm.width= 0;
+			hidePopup();
 			//$scope.$broadcast('messagename', "ramazan");
 		}
 
