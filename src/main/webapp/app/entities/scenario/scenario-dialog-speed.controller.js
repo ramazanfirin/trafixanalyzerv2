@@ -21,6 +21,8 @@
 		vm.deletePolygon = deletePolygon;
 		vm.adding = false;
 		vm.cancelPolygon = cancelPolygon;
+		vm.showPopup = showPopup;
+		vm.hidePopup = hidePopup;
 
 		vm.addMessageBefore = "Çizgi eklemek için, Ekle butonuna basınız"
 	    vm.addMessageAfter = "Çizgi ekleyebilirsiniz"
@@ -174,6 +176,15 @@
         function onSaveError () {
             vm.isSaving = false;
         }
+        
+        function showPopup(){
+        	$window.modal.style.display = "block";
+        }
+		
+		function hidePopup(){
+			$window.modal.style.display = "none";
+        
+		}
 
 
     }

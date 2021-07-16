@@ -34,7 +34,7 @@
 			<div id="buttons">
 			      <span>{{vm.addMessage}}</span>
 			      <input type="button" id="add" value="Ekle" ng-click="vm.addPolygon()" ng-show = "!vm.adding"/>
-			      <input type="button" id="save" value="Kaydet" ng-click="vm.addToPolygonList()" ng-show = "vm.adding"/>
+			      <input type="button" id="save" value="Kaydet" ng-click="vm.showPopup()"  ng-show = "vm.adding"/>
 			      <input type="button" id="İptal" value="İptal" ng-click="vm.cancelPolygon()" ng-show = "vm.adding"/>
 			    </div>
         </div>
@@ -80,6 +80,22 @@
             <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
         </button>
     </div>
+    
+    
+    <div class="modal-content-new">
+    <span class="close">&times;</span>
+    <h1>Çizgi Tanımlama</h1>
+    <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.scenario.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.addLineName"
+                    />
+        </div>
+    <div class="clearfix">
+        <button type="button" id="cancelBtn"  ng-click="vm.hidePopup()" class="cancelbtn">Cancel</button>
+        <button type="button" id="submitBtn"  ng-click="vm.vm.addToPolygonList()" class="deletebtn">Kaydet</button>
+      </div>
+  </div>
 </form>
 
 <script>
