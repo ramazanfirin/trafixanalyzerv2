@@ -67,6 +67,15 @@ entity VideoRecord{
 	processType ProcessType
 }
 
+entity RawRecord{
+	sessionID String
+	time Instant
+	objectType String
+	speed Double
+	entry String
+	exit String
+}
+
 entity CameraRecord{
 	insertDate Instant required
 	vehicleType String required
@@ -83,6 +92,32 @@ enum ProcessType {
 enum PolygonType {
   COUNTING,
   SPEED
+}
+
+entity AnalyzeOrder{
+	startDate Instant
+	endDate Instant
+	processDuration Long
+	videoDuration Long
+	state AnalyzeState
+
+}
+
+entity AnalyzeOrderDetails{
+	sessionId String
+	videoPath String
+	count Boolean
+	classes TextBlob
+	directions TextBlob
+	speed TextBlob
+}
+
+enum AnalyzeState {
+  NOT_PROCESSED,
+  STARTED,
+  PROCESSED,
+  COMPLETED,
+  ERROR
 }
 
 relationship ManyToOne {
@@ -111,8 +146,17 @@ relationship ManyToOne {
 	Line{startPolygon} to Polygon
 	Line{endPolygon} to Polygon
 	Line{calculatedPolygon} to Polygon
+	
+	AnalyzeOrder{video} to Video
+	AnalyzeOrder{scenario} to Scenario
+	VideoRecord{analyze} to AnalyzeOrder
+	AnalyzeOrder{orderDetails} to AnalyzeOrderDetails
+	
 }
 
+//relationship OneToOne {
+//  AnalyzeOrder to OrderDetails
+//}
 
 paginate Location with pagination
 paginate City with pagination
@@ -125,4 +169,7 @@ paginate Polygon with pagination
 paginate Direction with pagination
 paginate VideoRecord with pagination
 paginate CameraRecord with pagination
+paginate AnalyzeOrder with pagination
+paginate AnalyzeOrderDetails with pagination
+paginate RawRecord with pagination
 

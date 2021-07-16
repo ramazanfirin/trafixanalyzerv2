@@ -1,0 +1,51 @@
+
+<div>
+    <h2><span data-translate="trafficanalzyzerv2App.analyzeOrder.detail.title">Analyze Order</span> {{vm.analyzeOrder.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.startDate">Start Date</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrder.startDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.endDate">End Date</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrder.endDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.processDuration">Process Duration</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrder.processDuration}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.videoDuration">Video Duration</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrder.videoDuration}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.state">State</span></dt>
+        <dd>
+            <span data-translate="{{'trafficanalzyzerv2App.AnalyzeState.' + vm.analyzeOrder.state}}">{{vm.analyzeOrder.state}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.video">Video</span></dt>
+        <dd>
+            <a ui-sref="video-detail({id:vm.analyzeOrder.video.id})">{{vm.analyzeOrder.video.id}}</a>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.scenario">Scenario</span></dt>
+        <dd>
+            <a ui-sref="scenario-detail({id:vm.analyzeOrder.scenario.id})">{{vm.analyzeOrder.scenario.id}}</a>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.orderDetails">Order Details</span></dt>
+        <dd>
+            <a ui-sref="analyze-order-details-detail({id:vm.analyzeOrder.orderDetails.id})">{{vm.analyzeOrder.orderDetails.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="analyze-order-detail.edit({id:vm.analyzeOrder.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -18,6 +18,9 @@
                 "direction": "Direction",
                 "videoRecord": "Video Record",
                 "cameraRecord": "Camera Record",
+                "rawRecord": "Raw Record",
+                "analyzeOrder": "Analyze Order",
+                "analyzeOrderDetails": "Analyze Order Details",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

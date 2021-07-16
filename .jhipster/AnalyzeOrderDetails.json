@@ -1,0 +1,39 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "sessionId",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "videoPath",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "count",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "classes",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "directions",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "speed",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        }
+    ],
+    "changelogDate": "20210716122530",
+    "entityTableName": "analyze_order_details",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

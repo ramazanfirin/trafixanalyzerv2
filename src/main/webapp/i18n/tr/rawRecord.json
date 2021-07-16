@@ -1,0 +1,26 @@
+{
+    "trafficanalzyzerv2App": {
+        "rawRecord" : {
+            "home": {
+                "title": "Raw Records",
+                "createLabel": "Create a new Raw Record",
+                "createOrEditLabel": "Create or edit a Raw Record"
+            },
+            "created": "A new Raw Record is created with identifier {{ param }}",
+            "updated": "A Raw Record is updated with identifier {{ param }}",
+            "deleted": "A Raw Record is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Raw Record {{ id }}?"
+            },
+            "detail": {
+                "title": "Raw Record"
+            },
+            "sessionID": "Session ID",
+            "time": "Time",
+            "objectType": "Object Type",
+            "speed": "Speed",
+            "entry": "Entry",
+            "exit": "Exit"
+        }
+    }
+}

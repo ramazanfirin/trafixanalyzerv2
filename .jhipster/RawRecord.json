@@ -1,0 +1,36 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "sessionID",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "time",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "objectType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "speed",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "entry",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "exit",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20210716122527",
+    "entityTableName": "raw_record",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

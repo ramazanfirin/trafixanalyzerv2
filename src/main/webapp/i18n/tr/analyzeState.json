@@ -1,0 +1,12 @@
+{
+    "trafficanalzyzerv2App": {
+        "AnalyzeState" : {
+            "null": "",
+            "NOT_PROCESSED": "NOT_PROCESSED",
+            "STARTED": "STARTED",
+            "PROCESSED": "PROCESSED",
+            "COMPLETED": "COMPLETED",
+            "ERROR": "ERROR"
+        }
+    }
+}

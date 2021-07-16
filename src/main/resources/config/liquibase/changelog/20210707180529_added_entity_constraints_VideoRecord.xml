@@ -26,5 +26,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="direction"/>
 
+        <addForeignKeyConstraint baseColumnNames="analyze_id"
+                                 baseTableName="video_record"
+                                 constraintName="fk_video_record_analyze_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="analyze_order"/>
+
     </changeSet>
 </databaseChangeLog>

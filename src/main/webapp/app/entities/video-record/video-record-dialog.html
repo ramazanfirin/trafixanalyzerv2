@@ -93,6 +93,12 @@
                 <option value=""></option>
             </select>
         </div>
+        <div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.videoRecord.analyze" for="field_analyze">Analyze</label>
+            <select class="form-control" id="field_analyze" name="analyze" ng-model="vm.videoRecord.analyze" ng-options="analyzeOrder as analyzeOrder.id for analyzeOrder in vm.analyzeorders track by analyzeOrder.id">
+                <option value=""></option>
+            </select>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">

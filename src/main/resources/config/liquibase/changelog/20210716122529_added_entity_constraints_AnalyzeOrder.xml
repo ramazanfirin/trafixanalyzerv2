@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity AnalyzeOrder.
+    -->
+    <changeSet id="20210716122529-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="video_id"
+                                 baseTableName="analyze_order"
+                                 constraintName="fk_analyze_order_video_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="video"/>
+
+        <addForeignKeyConstraint baseColumnNames="scenario_id"
+                                 baseTableName="analyze_order"
+                                 constraintName="fk_analyze_order_scenario_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="scenario"/>
+
+        <addForeignKeyConstraint baseColumnNames="order_details_id"
+                                 baseTableName="analyze_order"
+                                 constraintName="fk_analyze_order_order_details_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="analyze_order_details"/>
+
+    </changeSet>
+</databaseChangeLog>

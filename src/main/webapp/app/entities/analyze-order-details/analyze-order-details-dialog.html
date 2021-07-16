@@ -1,0 +1,58 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myAnalyzeOrderDetailsLabel" data-translate="trafficanalzyzerv2App.analyzeOrderDetails.home.createOrEditLabel">Create or edit a Analyze Order Details</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.analyzeOrderDetails.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.analyzeOrderDetails.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrderDetails.sessionId" for="field_sessionId">Session Id</label>
+            <input type="text" class="form-control" name="sessionId" id="field_sessionId"
+                    ng-model="vm.analyzeOrderDetails.sessionId"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrderDetails.videoPath" for="field_videoPath">Video Path</label>
+            <input type="text" class="form-control" name="videoPath" id="field_videoPath"
+                    ng-model="vm.analyzeOrderDetails.videoPath"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrderDetails.count" for="field_count">Count</label>
+                <input type="checkbox" name="count" id="field_count"
+                          ng-model="vm.analyzeOrderDetails.count"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrderDetails.classes" for="field_classes">Classes</label>
+                <textarea class="form-control" name="classes" id="field_classes"
+                    ng-model="vm.analyzeOrderDetails.classes" ></textarea>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrderDetails.directions" for="field_directions">Directions</label>
+                <textarea class="form-control" name="directions" id="field_directions"
+                    ng-model="vm.analyzeOrderDetails.directions" ></textarea>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrderDetails.speed" for="field_speed">Speed</label>
+                <textarea class="form-control" name="speed" id="field_speed"
+                    ng-model="vm.analyzeOrderDetails.speed" ></textarea>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

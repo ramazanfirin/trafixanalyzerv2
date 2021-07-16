@@ -22,7 +22,8 @@
             "processType": "Process Type",
             "video": "Video",
             "line": "Line",
-            "direction": "Direction"
+            "direction": "Direction",
+            "analyze": "Analyze"
         }
     }
 }

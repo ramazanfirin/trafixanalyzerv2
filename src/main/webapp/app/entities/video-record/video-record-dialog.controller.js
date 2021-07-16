@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('VideoRecordDialogController', VideoRecordDialogController);
 
-    VideoRecordDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'VideoRecord', 'Video', 'Line', 'Direction'];
+    VideoRecordDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'VideoRecord', 'Video', 'Line', 'Direction', 'AnalyzeOrder'];
 
-    function VideoRecordDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, VideoRecord, Video, Line, Direction) {
+    function VideoRecordDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, VideoRecord, Video, Line, Direction, AnalyzeOrder) {
         var vm = this;
 
         vm.videoRecord = entity;
@@ -18,6 +18,7 @@
         vm.videos = Video.query();
         vm.lines = Line.query();
         vm.directions = Direction.query();
+        vm.analyzeorders = AnalyzeOrder.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

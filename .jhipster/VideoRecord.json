@@ -18,6 +18,12 @@
             "relationshipName": "direction",
             "otherEntityName": "direction",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "analyze",
+            "otherEntityName": "analyzeOrder",
+            "otherEntityField": "id"
         }
     ],
     "fields": [

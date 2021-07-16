@@ -1,0 +1,26 @@
+{
+    "trafficanalzyzerv2App": {
+        "analyzeOrderDetails" : {
+            "home": {
+                "title": "Analyze Order Details",
+                "createLabel": "Create a new Analyze Order Details",
+                "createOrEditLabel": "Create or edit a Analyze Order Details"
+            },
+            "created": "A new Analyze Order Details is created with identifier {{ param }}",
+            "updated": "A Analyze Order Details is updated with identifier {{ param }}",
+            "deleted": "A Analyze Order Details is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Analyze Order Details {{ id }}?"
+            },
+            "detail": {
+                "title": "Analyze Order Details"
+            },
+            "sessionId": "Session Id",
+            "videoPath": "Video Path",
+            "count": "Count",
+            "classes": "Classes",
+            "directions": "Directions",
+            "speed": "Speed"
+        }
+    }
+}

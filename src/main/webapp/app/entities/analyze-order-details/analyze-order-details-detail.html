@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.detail.title">Analyze Order Details</span> {{vm.analyzeOrderDetails.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.sessionId">Session Id</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrderDetails.sessionId}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.videoPath">Video Path</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrderDetails.videoPath}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.count">Count</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrderDetails.count}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.classes">Classes</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrderDetails.classes}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.directions">Directions</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrderDetails.directions}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.speed">Speed</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrderDetails.speed}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="analyze-order-details-detail.edit({id:vm.analyzeOrderDetails.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

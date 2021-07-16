@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="trafficanalzyzerv2App.rawRecord.detail.title">Raw Record</span> {{vm.rawRecord.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="trafficanalzyzerv2App.rawRecord.sessionID">Session ID</span></dt>
+        <dd>
+            <span>{{vm.rawRecord.sessionID}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.rawRecord.time">Time</span></dt>
+        <dd>
+            <span>{{vm.rawRecord.time | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.rawRecord.objectType">Object Type</span></dt>
+        <dd>
+            <span>{{vm.rawRecord.objectType}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.rawRecord.speed">Speed</span></dt>
+        <dd>
+            <span>{{vm.rawRecord.speed}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.rawRecord.entry">Entry</span></dt>
+        <dd>
+            <span>{{vm.rawRecord.entry}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.rawRecord.exit">Exit</span></dt>
+        <dd>
+            <span>{{vm.rawRecord.exit}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="raw-record-detail.edit({id:vm.rawRecord.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

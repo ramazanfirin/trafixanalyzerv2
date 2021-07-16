@@ -54,6 +54,9 @@ public class VideoRecord implements Serializable {
     @ManyToOne
     private Direction direction;
 
+    @ManyToOne
+    private AnalyzeOrder analyze;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -165,6 +168,19 @@ public class VideoRecord implements Serializable {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public AnalyzeOrder getAnalyze() {
+        return analyze;
+    }
+
+    public VideoRecord analyze(AnalyzeOrder analyzeOrder) {
+        this.analyze = analyzeOrder;
+        return this;
+    }
+
+    public void setAnalyze(AnalyzeOrder analyzeOrder) {
+        this.analyze = analyzeOrder;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

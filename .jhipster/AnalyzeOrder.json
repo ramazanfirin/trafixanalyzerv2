@@ -1,0 +1,52 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "video",
+            "otherEntityName": "video",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "scenario",
+            "otherEntityName": "scenario",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "orderDetails",
+            "otherEntityName": "analyzeOrderDetails",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "startDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "endDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "processDuration",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "videoDuration",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "state",
+            "fieldType": "AnalyzeState",
+            "fieldValues": "NOT_PROCESSED,STARTED,PROCESSED,COMPLETED,ERROR"
+        }
+    ],
+    "changelogDate": "20210716122529",
+    "entityTableName": "analyze_order",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

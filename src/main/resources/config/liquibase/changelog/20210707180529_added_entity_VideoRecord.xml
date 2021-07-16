@@ -54,6 +54,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="analyze_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="video_record" columnName="insert_date" columnDataType="datetime"/>
