@@ -2,7 +2,7 @@
 
 
 </style>
-<form name="editForm" id="editForm" role="form" novalidate ">
+<form name="editForm" id="editForm" role="form" novalidate ng-submit="vm.save()">
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
@@ -19,13 +19,13 @@
         <div class="form-group">
             <label class="control-label" data-translate="trafficanalzyzerv2App.scenario.name" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
-                    ng-model="vm.scenario.name"
+                    ng-model="vm.scenario.name" readonly
                     />
         </div>
 
         <div class="form-group">
             <label data-translate="trafficanalzyzerv2App.scenario.video" for="field_video">Video</label>
-            <select class="form-control" id="field_video" name="video" ng-model="vm.scenario.video" ng-change="vm.update()" ng-options="video as video.id for video in vm.videos track by video.id">
+            <select disabled class="form-control" id="field_video" name="video" ng-model="vm.scenario.video" ng-change="vm.update()" ng-options="video as video.name for video in vm.videos track by video.id">
                 <option value=""></option>
             </select>
             <span>{{vm.selectVideoMessage}}</span>
@@ -80,6 +80,14 @@
         
         
     </div>
+     <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
     
     <div id="myModal" class="modal-new">
 
@@ -100,6 +108,7 @@
   </div>
 
 </div>
+</form>
     
 <script>
 

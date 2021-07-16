@@ -16,13 +16,13 @@
         <div class="form-group">
             <label class="control-label" data-translate="trafficanalzyzerv2App.scenario.name" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
-                    ng-model="vm.scenario.name"
+                    ng-model="vm.scenario.name" readonly
                     />
         </div>
 
         <div class="form-group">
             <label data-translate="trafficanalzyzerv2App.scenario.video" for="field_video">Video</label>
-            <select class="form-control" id="field_video" name="video" ng-model="vm.scenario.video" ng-change="vm.update()" ng-options="video as video.id for video in vm.videos track by video.id">
+            <select disabled class="form-control" id="field_video" name="video" ng-model="vm.scenario.video" ng-change="vm.update()" ng-options="video as video.name for video in vm.videos track by video.id">
                 <option value=""></option>
             </select>
             <span>{{vm.selectVideoMessage}}</span>

@@ -102,7 +102,9 @@
             "save": "Kaydet",
             "view": "Görüntüle",
             "speed": "Hız Ayarları",
-            "direction": "Yön Ayarları"
+            "direction": "Yön Ayarları",
+            "polygon": "Polygon Ayarları",
+            "line": ": Çizgi Ayarları"
         },
         "detail": {
             "field": "Alan",

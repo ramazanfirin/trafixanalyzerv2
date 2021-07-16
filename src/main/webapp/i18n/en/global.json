@@ -102,7 +102,9 @@
             "save": "Save",
             "view": "View",
             "speed": "Speed Settings",
-            "direction": "Direction Settings"
+            "direction": "Direction Settings",
+            "polygon": "Polygon Settings",
+            "line": "Line Settings"
         },
         "detail": {
             "field": "Field",

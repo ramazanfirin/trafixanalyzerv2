@@ -29,32 +29,32 @@
                     <td><a ui-sref="scenario-detail({id:scenario.id})">{{scenario.id}}</a></td>
                     <td>{{scenario.name}}</td>
                     <td>
-                        <a ui-sref="video-detail({id:scenario.video.id})">{{scenario.video.id}}</a>
+                        <a ui-sref="video-detail({id:scenario.video.id})">{{scenario.video.name}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"
-                                    ui-sref="scenario.edit.line({id:scenario.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
-                            </button>
-                            <button type="submit"
                                     ui-sref="scenario.edit({id:scenario.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.polygon"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="scenario.edit.line({id:scenario.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.line"></span>
                             </button>
                             <button type="submit"
                                     ui-sref="scenario.edit.speed({id:scenario.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
+                                    class="btn btn-success btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.speed"></span>
                             </button>
                             <button type="submit"
                                     ui-sref="scenario.edit.direction({id:scenario.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
+                                    class="btn btn-warning btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.direction"></span>
                             </button>
                             <button type="submit"
