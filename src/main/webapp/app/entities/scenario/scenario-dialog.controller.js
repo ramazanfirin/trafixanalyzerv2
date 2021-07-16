@@ -14,7 +14,7 @@
         vm.clear = clear;
         vm.save = save;
         vm.videos = Video.query();
-		vm.update = update;
+		vm.insertScreenshot = insertScreenshot;
 		vm.addPolygon = addPolygon;
 		vm.addToPolygonList = addToPolygonList;
 		vm.resetMessage = resetMessage;
@@ -156,17 +156,22 @@
 	    	Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListSuccess,onSaveError);
 	    }
 
-		function update(){
+		function insertScreenshot(){
+	    	Scenario.insertScreenshot(vm.scenario, insertScreenshotSuccess, onSaveError);
+	    }
+	    
+	    function insertScreenshotSuccess(){
 	    	vm.selectVideoMessage = "Lütfen Video görüntüsünün gelmesini bekleyiniz";
-	    	
 	    	console.log("update bailadı");
-			$window.imageObj1.src = 'http://localhost:8080/api/videos/image/'+vm.scenario.video.id;
+			//$window.imageObj1 = new Image();
+			$window.imageObj1.src = 'http://localhost:8080/api/scenarios/getScreenShoot/'+vm.scenario.id;
 			$window.layer.draw();
 			console.log("update bitti");
 	    	//setTimeout(resetMessage, 1);
 	    	resetMessage();
-	    	
+	    	$window.location.reload();
 	    }
+	    
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

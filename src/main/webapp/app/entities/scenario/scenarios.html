@@ -20,6 +20,7 @@
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="name"><span data-translate="trafficanalzyzerv2App.scenario.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="screenShot"><span data-translate="trafficanalzyzerv2App.scenario.screenShot">Screen Shot</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.scenario.video">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
@@ -29,9 +30,15 @@
                     <td><a ui-sref="scenario-detail({id:scenario.id})">{{scenario.id}}</a></td>
                     <td>{{scenario.name}}</td>
                     <td>
-                        <a ui-sref="video-detail({id:scenario.video.id})">{{scenario.video.name}}</a>
+                        <a ng-if="scenario.screenShot" ng-click="vm.openFile(scenario.screenShotContentType, scenario.screenShot)">
+                            <img data-ng-src="{{'data:' + scenario.screenShotContentType + ';base64,' + scenario.screenShot}}" style="max-height: 30px;" alt="scenario image"/>
+                        </a>
+                        <span ng-if="scenario.screenShot">{{scenario.screenShotContentType}}, {{vm.byteSize(scenario.screenShot)}}</span>
                     </td>
-                    <td class="text-right">
+                    <td>
+                        <a ui-sref="video-detail({id:scenario.video.id})">{{scenario.video.id}}</a>
+                    </td>
+<td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"
                                     ui-sref="scenario.edit({id:scenario.id})"
@@ -74,4 +81,3 @@
         <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
     </div>
 </div>
-

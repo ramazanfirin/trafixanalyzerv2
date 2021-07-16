@@ -3,6 +3,7 @@ package com.masterteknoloji.trafficanalyzer.web.rest;
 import com.masterteknoloji.trafficanalyzer.Trafficanalzyzerv2App;
 
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
+import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
 
@@ -65,6 +66,9 @@ public class PolygonResourceIntTest {
 
     @Autowired
     private EntityManager em;
+    
+    @Autowired
+    private LineRepository lineRepository;
 
     private MockMvc restPolygonMockMvc;
 
@@ -73,7 +77,7 @@ public class PolygonResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PolygonResource polygonResource = new PolygonResource(polygonRepository);
+        final PolygonResource polygonResource = new PolygonResource(polygonRepository,lineRepository);
         this.restPolygonMockMvc = MockMvcBuilders.standaloneSetup(polygonResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

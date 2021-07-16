@@ -26,6 +26,13 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="screen_shot" type="longblob">
+                <constraints nullable="true" />
+            </column>
+            <column name="screen_shot_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="video_id" type="bigint">
                 <constraints nullable="true" />
             </column>

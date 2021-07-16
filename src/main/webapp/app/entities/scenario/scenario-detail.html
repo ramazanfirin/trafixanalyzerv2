@@ -8,6 +8,15 @@
         <dd>
             <span>{{vm.scenario.name}}</span>
         </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.scenario.screenShot">Screen Shot</span></dt>
+        <dd>
+            <div ng-if="vm.scenario.screenShot">
+                <a ng-click="vm.openFile(vm.scenario.screenShotContentType, vm.scenario.screenShot)">
+                    <img data-ng-src="{{'data:' + vm.scenario.screenShotContentType + ';base64,' + vm.scenario.screenShot}}" style="max-width: 100%;" alt="scenario image"/>
+                </a>
+                {{vm.scenario.screenShotContentType}}, {{vm.byteSize(vm.scenario.screenShot)}}
+            </div>
+        </dd>
         <dt><span data-translate="trafficanalzyzerv2App.scenario.video">Video</span></dt>
         <dd>
             <a ui-sref="video-detail({id:vm.scenario.video.id})">{{vm.scenario.video.id}}</a>

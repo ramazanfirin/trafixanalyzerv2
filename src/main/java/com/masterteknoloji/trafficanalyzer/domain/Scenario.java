@@ -25,6 +25,13 @@ public class Scenario implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Lob
+    @Column(name = "screen_shot")
+    private byte[] screenShot;
+
+    @Column(name = "screen_shot_content_type")
+    private String screenShotContentType;
+
     @ManyToOne
     private Video video;
 
@@ -48,6 +55,32 @@ public class Scenario implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public byte[] getScreenShot() {
+        return screenShot;
+    }
+
+    public Scenario screenShot(byte[] screenShot) {
+        this.screenShot = screenShot;
+        return this;
+    }
+
+    public void setScreenShot(byte[] screenShot) {
+        this.screenShot = screenShot;
+    }
+
+    public String getScreenShotContentType() {
+        return screenShotContentType;
+    }
+
+    public Scenario screenShotContentType(String screenShotContentType) {
+        this.screenShotContentType = screenShotContentType;
+        return this;
+    }
+
+    public void setScreenShotContentType(String screenShotContentType) {
+        this.screenShotContentType = screenShotContentType;
     }
 
     public Video getVideo() {
@@ -89,6 +122,8 @@ public class Scenario implements Serializable {
         return "Scenario{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", screenShot='" + getScreenShot() + "'" +
+            ", screenShotContentType='" + getScreenShotContentType() + "'" +
             "}";
     }
 }

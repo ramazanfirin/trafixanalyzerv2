@@ -8,6 +8,8 @@ import com.masterteknoloji.trafficanalyzer.repository.VideoRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
+import com.masterteknoloji.trafficanalyzer.web.rest.util.Util;
+
 import io.github.jhipster.web.util.ResponseUtil;
 
 import org.bytedeco.javacv.FFmpegFrameGrabber;
@@ -145,30 +147,9 @@ public class VideoResource {
         
     	Video video = videoRepository.findOne(id);
     	
-    	FFmpegFrameGrabber g = new FFmpegFrameGrabber(video.getPath());
-		g.start();
-
-		Java2DFrameConverter bimConverter = new Java2DFrameConverter();
-		
-		BufferedImage image=null;
-		for (int i = 0 ; i < 5 ; i++) {
-		    
-		Frame f =	g.grabFrame();
-			image = bimConverter.convert(f);
-			
-		}
-
-		
-		
-		g.stop();
-		
-		bimConverter.close();
-		
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		  ImageIO.write(image, "jpg", baos);
+    	ByteArrayOutputStream baos = Util.getScreenshotOfVideo(video.getPath());
         
-        
-       return baos.toByteArray();
+        return baos.toByteArray();
       
     }
 }

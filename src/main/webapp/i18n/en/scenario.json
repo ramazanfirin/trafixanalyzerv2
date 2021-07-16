@@ -16,6 +16,7 @@
                 "title": "Scenario"
             },
             "name": "Name",
+            "screenShot": "Screen Shot",
             "video": "Video"
         }
     }

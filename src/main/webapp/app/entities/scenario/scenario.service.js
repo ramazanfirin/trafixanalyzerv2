@@ -11,6 +11,7 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'insertScreenshot': { method: 'POST', isArray: false,url: 'api/scenarios/insertScreenshot'},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

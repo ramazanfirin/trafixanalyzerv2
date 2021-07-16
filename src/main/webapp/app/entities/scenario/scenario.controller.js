@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('ScenarioController', ScenarioController);
 
-    ScenarioController.$inject = ['$state', 'Scenario', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    ScenarioController.$inject = ['$state', 'DataUtils', 'Scenario', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function ScenarioController($state, Scenario, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function ScenarioController($state, DataUtils, Scenario, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
 
@@ -16,9 +16,9 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.openFile = DataUtils.openFile;
+        vm.byteSize = DataUtils.byteSize;
 
-		
-	
         loadAll();
 
         function loadAll () {

@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -40,6 +41,11 @@ public class ScenarioResourceIntTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
+
+    private static final byte[] DEFAULT_SCREEN_SHOT = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_SCREEN_SHOT = TestUtil.createByteArray(2, "1");
+    private static final String DEFAULT_SCREEN_SHOT_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_SCREEN_SHOT_CONTENT_TYPE = "image/png";
 
     @Autowired
     private ScenarioRepository scenarioRepository;
@@ -79,7 +85,9 @@ public class ScenarioResourceIntTest {
      */
     public static Scenario createEntity(EntityManager em) {
         Scenario scenario = new Scenario()
-            .name(DEFAULT_NAME);
+            .name(DEFAULT_NAME)
+            .screenShot(DEFAULT_SCREEN_SHOT)
+            .screenShotContentType(DEFAULT_SCREEN_SHOT_CONTENT_TYPE);
         return scenario;
     }
 
@@ -104,6 +112,8 @@ public class ScenarioResourceIntTest {
         assertThat(scenarioList).hasSize(databaseSizeBeforeCreate + 1);
         Scenario testScenario = scenarioList.get(scenarioList.size() - 1);
         assertThat(testScenario.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testScenario.getScreenShot()).isEqualTo(DEFAULT_SCREEN_SHOT);
+        assertThat(testScenario.getScreenShotContentType()).isEqualTo(DEFAULT_SCREEN_SHOT_CONTENT_TYPE);
     }
 
     @Test
@@ -136,7 +146,9 @@ public class ScenarioResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(scenario.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].screenShotContentType").value(hasItem(DEFAULT_SCREEN_SHOT_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].screenShot").value(hasItem(Base64Utils.encodeToString(DEFAULT_SCREEN_SHOT))));
     }
 
     @Test
@@ -150,7 +162,9 @@ public class ScenarioResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(scenario.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.screenShotContentType").value(DEFAULT_SCREEN_SHOT_CONTENT_TYPE))
+            .andExpect(jsonPath("$.screenShot").value(Base64Utils.encodeToString(DEFAULT_SCREEN_SHOT)));
     }
 
     @Test
@@ -173,7 +187,9 @@ public class ScenarioResourceIntTest {
         // Disconnect from session so that the updates on updatedScenario are not directly saved in db
         em.detach(updatedScenario);
         updatedScenario
-            .name(UPDATED_NAME);
+            .name(UPDATED_NAME)
+            .screenShot(UPDATED_SCREEN_SHOT)
+            .screenShotContentType(UPDATED_SCREEN_SHOT_CONTENT_TYPE);
 
         restScenarioMockMvc.perform(put("/api/scenarios")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -185,6 +201,8 @@ public class ScenarioResourceIntTest {
         assertThat(scenarioList).hasSize(databaseSizeBeforeUpdate);
         Scenario testScenario = scenarioList.get(scenarioList.size() - 1);
         assertThat(testScenario.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testScenario.getScreenShot()).isEqualTo(UPDATED_SCREEN_SHOT);
+        assertThat(testScenario.getScreenShotContentType()).isEqualTo(UPDATED_SCREEN_SHOT_CONTENT_TYPE);
     }
 
     @Test

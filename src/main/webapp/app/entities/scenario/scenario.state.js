@@ -125,6 +125,8 @@
                         entity: function () {
                             return {
                                 name: null,
+                                screenShot: null,
+                                screenShotContentType: null,
                                 id: null
                             };
                         }

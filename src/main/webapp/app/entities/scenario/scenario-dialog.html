@@ -22,7 +22,7 @@
 
         <div class="form-group">
             <label data-translate="trafficanalzyzerv2App.scenario.video" for="field_video">Video</label>
-            <select class="form-control" id="field_video" name="video" ng-model="vm.scenario.video" ng-change="vm.update()" ng-options="video as video.name for video in vm.videos track by video.id">
+            <select class="form-control" id="field_video" name="video" ng-model="vm.scenario.video" ng-change="vm.insertScreenshot()" ng-options="video as video.name for video in vm.videos track by video.id">
                 <option value=""></option>
             </select>
             <span>{{vm.selectVideoMessage}}</span>
@@ -113,11 +113,14 @@ var scope = angular.element(document.getElementById("editForm")).scope();
 console.log("from script:"+scope.vm.polygons.length);
 
 var imageObj1 = new Image();
-if(scope.vm.scenario!=null && scope.vm.scenario.video!=null && scope.vm.scenario.video.id != null)
-	imageObj1.src = "http://localhost:8080/api/videos/image/"+scope.vm.scenario.video.id;
+if(scope.vm.scenario!=null &&  scope.vm.scenario.id != null)
+	imageObj1.src = "http://localhost:8080/api/scenarios/getScreenShoot/"+scope.vm.scenario.id;
+
 
 imageObj1.onload = function() {
+	//alert(imageObj1.src);
 	darthVaderImg.image(imageObj1);
+	//darthVaderImg.getLayer().draw();
 	layerImage.draw();
 };
 

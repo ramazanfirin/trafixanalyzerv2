@@ -1,11 +1,21 @@
 package com.masterteknoloji.trafficanalyzer.web.rest.util;
 
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.FFmpegFrameGrabber.Exception;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.Java2DFrameConverter;
 import org.springframework.util.StringUtils;
 
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
@@ -90,5 +100,35 @@ public class Util {
         }
 		
 		return result;
+	}
+	
+	public static ByteArrayOutputStream getScreenshotOfVideo(String filePath) throws IOException {
+		File file = new File(filePath);
+    	file.exists();
+    	
+    	
+    	FFmpegFrameGrabber g = new FFmpegFrameGrabber(filePath);
+		g.start();
+
+		Java2DFrameConverter bimConverter = new Java2DFrameConverter();
+		
+		BufferedImage image=null;
+		for (int i = 0 ; i < 5 ; i++) {
+		    
+		Frame f =	g.grabFrame();
+			image = bimConverter.convert(f);
+			
+		}
+
+		
+		
+		g.stop();
+		
+		bimConverter.close();
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		  ImageIO.write(image, "jpg", baos);
+		  
+		return  baos;
 	}
 }

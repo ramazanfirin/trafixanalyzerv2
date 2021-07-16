@@ -7,21 +7,32 @@ import com.masterteknoloji.trafficanalyzer.repository.ScenarioRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
+import com.masterteknoloji.trafficanalyzer.web.rest.util.Util;
+
 import io.github.jhipster.web.util.ResponseUtil;
+
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * REST controller for managing Scenario.
@@ -46,14 +57,37 @@ public class ScenarioResource {
      * @param scenario the scenario to create
      * @return the ResponseEntity with status 201 (Created) and with body the new scenario, or with status 400 (Bad Request) if the scenario has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
      */
     @PostMapping("/scenarios")
     @Timed
-    public ResponseEntity<Scenario> createScenario(@RequestBody Scenario scenario) throws URISyntaxException {
+    public ResponseEntity<Scenario> createScenario(@RequestBody Scenario scenario) throws URISyntaxException, IOException {
         log.debug("REST request to save Scenario : {}", scenario);
         if (scenario.getId() != null) {
             throw new BadRequestAlertException("A new scenario cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        
+        if(scenario.getVideo()!=null) {
+        	ByteArrayOutputStream os = Util.getScreenshotOfVideo(scenario.getVideo().getPath());
+        	scenario.setScreenShot(os.toByteArray());
+        }
+        
+        Scenario result = scenarioRepository.save(scenario);
+        return ResponseEntity.created(new URI("/api/scenarios/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+    
+    @PostMapping("/scenarios/insertScreenshot")
+    @Timed
+    public ResponseEntity<Scenario> insertScreenshot(@RequestBody Scenario scenario) throws URISyntaxException, IOException {
+        log.debug("REST request to save Scenario : {}", scenario);
+        
+        if(scenario.getVideo()!=null) {
+        	ByteArrayOutputStream os = Util.getScreenshotOfVideo(scenario.getVideo().getPath());
+        	scenario.setScreenShot(os.toByteArray());
+        }
+        
         Scenario result = scenarioRepository.save(scenario);
         return ResponseEntity.created(new URI("/api/scenarios/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -68,10 +102,11 @@ public class ScenarioResource {
      * or with status 400 (Bad Request) if the scenario is not valid,
      * or with status 500 (Internal Server Error) if the scenario couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException 
      */
     @PutMapping("/scenarios")
     @Timed
-    public ResponseEntity<Scenario> updateScenario(@RequestBody Scenario scenario) throws URISyntaxException {
+    public ResponseEntity<Scenario> updateScenario(@RequestBody Scenario scenario) throws URISyntaxException, IOException {
         log.debug("REST request to update Scenario : {}", scenario);
         if (scenario.getId() == null) {
             return createScenario(scenario);
@@ -123,5 +158,13 @@ public class ScenarioResource {
         log.debug("REST request to delete Scenario : {}", id);
         scenarioRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    @GetMapping("/scenarios/getScreenShoot/{id}")
+    public @ResponseBody void getScreenShoot(@PathVariable Long id,HttpServletResponse response) throws IOException {
+    	Scenario scenario = scenarioRepository.findOne(id);
+    	InputStream targetStream = new ByteArrayInputStream(scenario.getScreenShot());
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        IOUtils.copy(targetStream, response.getOutputStream());
     }
 }
