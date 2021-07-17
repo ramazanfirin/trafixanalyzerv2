@@ -2,7 +2,8 @@ package com.masterteknoloji.trafficanalyzer.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
-
+import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrderDetails;
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +55,11 @@ public class AnalyzeOrderResource {
         if (analyzeOrder.getId() != null) {
             throw new BadRequestAlertException("A new analyzeOrder cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        analyzeOrder.setStartDate(Instant.now());
+//        AnalyzeOrderDetails analyzeOrderDetails = new AnalyzeOrderDetails();
+//        analyzeOrderDetails.set
+//        analyzeOrder.setOrderDetails(null);
+        analyzeOrder.setState(AnalyzeState.NOT_PROCESSED);
         AnalyzeOrder result = analyzeOrderRepository.save(analyzeOrder);
         return ResponseEntity.created(new URI("/api/analyze-orders/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

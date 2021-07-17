@@ -1,5 +1,5 @@
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+<form name="editForm" id="editForm" role="form" novalidate ng-submit="vm.save()">
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
@@ -13,67 +13,73 @@
             <input type="text" class="form-control" id="id" name="id"
                     ng-model="vm.analyzeOrder.id" readonly />
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrder.startDate" for="field_startDate">Start Date</label>
-                <div class="input-group">
-                    <input id="field_startDate" type="text" class="form-control" name="startDate" datetime-picker="{{dateformat}}" ng-model="vm.analyzeOrder.startDate" is-open="vm.datePickerOpenStatus.startDate"
-                    />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrder.endDate" for="field_endDate">End Date</label>
-                <div class="input-group">
-                    <input id="field_endDate" type="text" class="form-control" name="endDate" datetime-picker="{{dateformat}}" ng-model="vm.analyzeOrder.endDate" is-open="vm.datePickerOpenStatus.endDate"
-                    />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrder.processDuration" for="field_processDuration">Process Duration</label>
-            <input type="number" class="form-control" name="processDuration" id="field_processDuration"
-                    ng-model="vm.analyzeOrder.processDuration"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrder.videoDuration" for="field_videoDuration">Video Duration</label>
-            <input type="number" class="form-control" name="videoDuration" id="field_videoDuration"
-                    ng-model="vm.analyzeOrder.videoDuration"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrder.state" for="field_state">State</label>
-            <select class="form-control" name="state" ng-model="vm.analyzeOrder.state" id="field_state">
-                <option value="NOT_PROCESSED" data-translate="trafficanalzyzerv2App.AnalyzeState.NOT_PROCESSED">NOT_PROCESSED</option>
-                <option value="STARTED" data-translate="trafficanalzyzerv2App.AnalyzeState.STARTED">STARTED</option>
-                <option value="PROCESSED" data-translate="trafficanalzyzerv2App.AnalyzeState.PROCESSED">PROCESSED</option>
-                <option value="COMPLETED" data-translate="trafficanalzyzerv2App.AnalyzeState.COMPLETED">COMPLETED</option>
-                <option value="ERROR" data-translate="trafficanalzyzerv2App.AnalyzeState.ERROR">ERROR</option>
-            </select>
-        </div>
+<!--         <div class="form-group"> -->
+<!--             <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrder.startDate" for="field_startDate">Start Date</label> -->
+<!--                 <div class="input-group"> -->
+<!--                     <input id="field_startDate" type="text" class="form-control" name="startDate" datetime-picker="{{dateformat}}" ng-model="vm.analyzeOrder.startDate" is-open="vm.datePickerOpenStatus.startDate" -->
+<!--                     /> -->
+<!--                     <span class="input-group-btn"> -->
+<!--                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button> -->
+<!--                     </span> -->
+<!--                 </div> -->
+<!--         </div> -->
+<!--         <div class="form-group"> -->
+<!--             <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrder.endDate" for="field_endDate">End Date</label> -->
+<!--                 <div class="input-group"> -->
+<!--                     <input id="field_endDate" type="text" class="form-control" name="endDate" datetime-picker="{{dateformat}}" ng-model="vm.analyzeOrder.endDate" is-open="vm.datePickerOpenStatus.endDate" -->
+<!--                     /> -->
+<!--                     <span class="input-group-btn"> -->
+<!--                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button> -->
+<!--                     </span> -->
+<!--                 </div> -->
+<!--         </div> -->
+<!--         <div class="form-group"> -->
+<!--             <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrder.processDuration" for="field_processDuration">Process Duration</label> -->
+<!--             <input type="number" class="form-control" name="processDuration" id="field_processDuration" -->
+<!--                     ng-model="vm.analyzeOrder.processDuration" -->
+<!--                     /> -->
+<!--         </div> -->
+<!--         <div class="form-group"> -->
+<!--             <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrder.videoDuration" for="field_videoDuration">Video Duration</label> -->
+<!--             <input type="number" class="form-control" name="videoDuration" id="field_videoDuration" -->
+<!--                     ng-model="vm.analyzeOrder.videoDuration" -->
+<!--                     /> -->
+<!--         </div> -->
+<!--         <div class="form-group"> -->
+<!--             <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrder.state" for="field_state">State</label> -->
+<!--             <select class="form-control" name="state" ng-model="vm.analyzeOrder.state" id="field_state"> -->
+<!--                 <option value="NOT_PROCESSED" data-translate="trafficanalzyzerv2App.AnalyzeState.NOT_PROCESSED">NOT_PROCESSED</option> -->
+<!--                 <option value="STARTED" data-translate="trafficanalzyzerv2App.AnalyzeState.STARTED">STARTED</option> -->
+<!--                 <option value="PROCESSED" data-translate="trafficanalzyzerv2App.AnalyzeState.PROCESSED">PROCESSED</option> -->
+<!--                 <option value="COMPLETED" data-translate="trafficanalzyzerv2App.AnalyzeState.COMPLETED">COMPLETED</option> -->
+<!--                 <option value="ERROR" data-translate="trafficanalzyzerv2App.AnalyzeState.ERROR">ERROR</option> -->
+<!--             </select> -->
+<!--         </div> -->
 
         <div class="form-group">
             <label data-translate="trafficanalzyzerv2App.analyzeOrder.video" for="field_video">Video</label>
-            <select class="form-control" id="field_video" name="video" ng-model="vm.analyzeOrder.video" ng-options="video as video.id for video in vm.videos track by video.id">
+            <select class="form-control" id="field_video" name="video" ng-model="vm.analyzeOrder.video" ng-change="vm.videoFileChanged()" ng-options="video as video.name for video in vm.videos track by video.id">
                 <option value=""></option>
             </select>
         </div>
         <div class="form-group">
             <label data-translate="trafficanalzyzerv2App.analyzeOrder.scenario" for="field_scenario">Scenario</label>
-            <select class="form-control" id="field_scenario" name="scenario" ng-model="vm.analyzeOrder.scenario" ng-options="scenario as scenario.id for scenario in vm.scenarios track by scenario.id">
+            <select class="form-control" id="field_scenario" name="scenario" ng-model="vm.analyzeOrder.scenario" ng-change="vm.scenarioChanged()" ng-options="scenario as scenario.name for scenario in vm.scenarios track by scenario.id">
                 <option value=""></option>
             </select>
         </div>
+        
         <div class="form-group">
-            <label data-translate="trafficanalzyzerv2App.analyzeOrder.orderDetails" for="field_orderDetails">Order Details</label>
-            <select class="form-control" id="field_orderDetails" name="orderDetails" ng-model="vm.analyzeOrder.orderDetails" ng-options="analyzeOrderDetails as analyzeOrderDetails.id for analyzeOrderDetails in vm.analyzeorderdetails track by analyzeOrderDetails.id">
-                <option value=""></option>
-            </select>
+<!--         	<img ng-src="content/images/kale.JPG" width="640" height="480"> -->
+			<div id="containerKonva"></div>
         </div>
+        
+<!--         <div class="form-group"> -->
+<!--             <label data-translate="trafficanalzyzerv2App.analyzeOrder.orderDetails" for="field_orderDetails">Order Details</label> -->
+<!--             <select class="form-control" id="field_orderDetails" name="orderDetails" ng-model="vm.analyzeOrder.orderDetails" ng-options="analyzeOrderDetails as analyzeOrderDetails.id for analyzeOrderDetails in vm.analyzeorderdetails track by analyzeOrderDetails.id"> -->
+<!--                 <option value=""></option> -->
+<!--             </select> -->
+<!--         </div> -->
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
@@ -84,3 +90,238 @@
         </button>
     </div>
 </form>
+<script>
+
+var tempId = 0;
+var lineListOnScreen=[];
+var textListOnScreen=[];
+var polygonListOnScreen=[];
+var points = [];
+
+var width = window.innerWidth;
+var height = window.innerHeight;
+
+var stage = new Konva.Stage({
+	container : 'containerKonva',
+	width : 640,
+	height : 480,
+});
+
+var layerImage = new Konva.Layer();
+var layer = new Konva.Layer();
+
+var darthVaderImg = new Konva.Image({
+	width : 640,
+	height : 480,
+	z : -1
+});
+
+var scope = angular.element(document.getElementById("editForm")).scope();
+console.log(scope);
+
+var imageObj1 = new Image();
+if(scope.vm.analyzeOrder!=null &&  scope.vm.analyzeOrder.video != null &&  scope.vm.analyzeOrder.video.id != null)
+	imageObj1.src = 'http://localhost:8080/api/videos/image/'+scope.vm.analyzeOrder.video.id;
+                    
+
+
+imageObj1.onload = function() {
+	//alert(imageObj1.src);
+	darthVaderImg.image(imageObj1);
+	//darthVaderImg.getLayer().draw();
+	layerImage.draw();
+};
+
+layerImage.add(darthVaderImg);
+
+stage.add(layerImage);
+stage.add(layer);
+
+scope.$on('ploygonDataReceived', function(params){
+	console.log('ploygonDataReceived');
+
+	for(var i=0;i<scope.vm.polygons.length;i++){
+		var polyFromDB = scope.vm.polygons[i];
+		poly = createPolygon(polyFromDB.id);
+		tempId = tempId + 1;
+		
+		var allCoords = polyFromDB.points.split(";");
+		for(var y=0;y<allCoords.length;y++){
+			var pointCoords = allCoords[y].split(",");
+			var pointx = pointCoords[0];
+			var pointy = pointCoords[1];
+			addPoint(pointx,pointy);
+			
+			//console.log(pointx +" "+pointy);	
+		}
+		points=[];
+		;
+	}
+	poly = null;
+});
+
+scope.$on('lineDataReceived', function(params){
+	console.log("lineDataReceived");
+    console.log("lines"+" "+scope.vm.lines);
+	for(var i=0;i<scope.vm.lines.length;i++){
+		var line = scope.vm.lines[i];
+		var linePoly = createLinePolygon(line.id);
+		linePoly.fill("yellow");
+		tempId = tempId + 1;
+		
+		var allCoords = line.calculatedPolygon.points.split(";");
+		console.log(allCoords);
+		var totalx = 0;
+		var totaly = 0;
+		for(var y=0;y<allCoords.length;y++){
+			var pointCoords = allCoords[y].split(",");
+			var pointx = pointCoords[0];
+			var pointy = pointCoords[1];
+			totalx= totalx +parseInt(pointx);
+			totaly= totaly +parseInt(pointy);
+			
+			console.log("pointx "+ pointx);
+			console.log("pointy "+ pointy);
+			
+			linePoly.attrs.points.push(pointx);
+			linePoly.attrs.points.push(pointy);
+		}
+	
+		disabledPolygon(line.startPolygon.id);
+		disabledPolygon(line.endPolygon.id);
+		
+		var centerx = totalx / allCoords.length;
+		var centery = totaly / allCoords.length;
+		
+		createText(centerx,centery,line.name);
+//			console.log(totalx+ " " +totaly+ " "+line.name);
+//			console.log(centerx+ " " +centery+ " "+line.name);
+		
+		drawDirectionArrow(line);
+		points=[];
+		
+	}
+	
+	
+	
+	
+	poly = null;
+});
+
+
+function drawDirectionArrow(line){
+	var poly1 = getPolygonById(line.startPolygon.id);
+	var poly2 = getPolygonById(line.endPolygon.id);
+	
+	var box1 = poly1.getClientRect();
+	var box2 = poly2.getClientRect();
+	
+	var arrow = new Konva.Arrow({
+        points: [box1.x + box1.width / 2, box1.y + box1.height / 2, box2.x + box2.width / 2, box2.y + box2.height / 2],
+        //pointerLength: 20,
+        //pointerWidth: 20,
+        fill: 'black',
+        stroke: 'black',
+        strokeWidth: 2,
+      });
+	
+	layer.add(arrow);
+}
+
+function createLinePolygon(id){
+	var polyNew = new Konva.Line({
+		points : [],
+		fill : 'lightgreen',
+		stroke : 'lightgreen',
+		//strokeWidth: 5,
+		draggable : false,
+		closed : true,
+		opacity : 0.5,
+	//tension:5
+	//id :"1"
+	});
+	//console.log("polygonId="+id);
+	lineListOnScreen.push(polyNew);
+	polyNew.id(id);
+	layer.add(polyNew);
+	return polyNew;
+}	
+
+function createText(pointx,pointy,text){
+	//alert(text);
+	var simpleText = new Konva.Text({
+		x : pointx,
+		y : pointy,
+		text : '1',
+		fontSize : 15,
+		fontFamily : 'Calibri',
+		fill : 'red',
+	});
+	
+	textListOnScreen.push(simpleText);
+	simpleText.text(text);
+	layer.add(simpleText);
+}
+
+function disabledPolygon(polygonId){
+	console.log("disabledPolygon:polygonId "+polygonId)
+	for(var i=0;i<polygonListOnScreen.length;i++){
+		console.log("disabledPolygon:polygonListOnScreen "+polygonListOnScreen[i].attrs.id)
+		if(polygonListOnScreen[i].attrs.id==polygonId){
+			polygonListOnScreen[i].attrs.selectable=false;
+			polygonListOnScreen[i].fill(null);
+			polygonListOnScreen[i].stroke(null);
+			console.log("disabledPolygon:disabled edildi "+polygonListOnScreen[i].attrs.id);
+//				polygonListOnScreen[i].destroy();
+//				layer.draw();
+		}	
+	}
+}
+
+function getPolygonById(polygonId){
+	var result ;
+	for(var i=0;i<polygonListOnScreen.length;i++){
+		console.log("disabledPolygon:polygonListOnScreen "+polygonListOnScreen[i].attrs.id)
+		if(polygonListOnScreen[i].attrs.id==polygonId){
+				result = polygonListOnScreen[i];
+		}
+	}	
+	return result;
+}
+
+function createPolygon(id){
+	var polyNew = new Konva.Line({
+		points : [],
+		fill : 'lightgreen',
+		stroke : 'lightgreen',
+		//strokeWidth: 5,
+		draggable : false,
+		closed : true,
+		opacity : 0.5,
+	//tension:5
+	//id :"1"
+	});
+	//console.log("polygonId="+id);
+	polygonListOnScreen.push(polyNew);
+	polyNew.id(id);
+	layer.add(polyNew);
+	polyNew.attrs.selectable = true;
+	
+	return polyNew;
+}
+
+function addPoint(pointx, pointy) {
+	points.push(parseInt(pointx, 10)+","+parseInt(pointy, 10));
+	console.log(points);
+
+	poly.attrs.points.push(pointx);
+	poly.attrs.points.push(pointy);
+
+	if (points.length == 2) {
+		createText(pointx,pointy,poly.attrs.id);
+	}
+
+	layer.draw();
+
+}
+</script>

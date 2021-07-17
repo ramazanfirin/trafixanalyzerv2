@@ -13,12 +13,19 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import org.bytedeco.javacv.FFmpegFrameGrabber;
-import org.bytedeco.javacv.FFmpegFrameGrabber.Exception;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.springframework.util.StringUtils;
 
-import com.masterteknoloji.trafficanalyzer.domain.Polygon;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
+import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrderDetails;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.ConnectionVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.DirectionVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.PointsVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.RegionVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.VehicleTypeVM;
 
 public class Util {
 	
@@ -130,5 +137,49 @@ public class Util {
 		  ImageIO.write(image, "jpg", baos);
 		  
 		return  baos;
+	}
+	
+	public static AnalyzeOrderDetails prepareAnalyzeOrderDetails(ObjectMapper objectMapper,AnalyzeOrder analyzeOrder) throws JsonProcessingException {
+		AnalyzeOrderDetails analyzeOrderDetails = new AnalyzeOrderDetails();
+		analyzeOrderDetails.setClasses(objectMapper.writeValueAsString(new VehicleTypeVM()));
+		analyzeOrderDetails.setCount(true);
+		analyzeOrderDetails.setDirections(null);
+		analyzeOrderDetails.setSessionId(analyzeOrder.getId().toString());
+		analyzeOrderDetails.setSpeed(null);
+		analyzeOrderDetails.setVideoPath(analyzeOrder.getVideo().getPath());
+		
+		return analyzeOrderDetails;
+	}
+	
+	public static String prepareDirections(ObjectMapper objectMapper,AnalyzeOrder analyzeOrder) {
+		DirectionVM directionVM = new DirectionVM();
+		
+		List<RegionVM> regionList = new ArrayList<RegionVM>();
+//		analyzeOrder.getScenario().
+//		directionVM.setRegions(regionList);
+		
+		List<ConnectionVM> connectionVMs = new  ArrayList<ConnectionVM>();
+		directionVM.setConnections(connectionVMs);
+		return null;
+	}
+	
+	public static RegionVM prepareRegions(String label) {
+		RegionVM regionVM = new RegionVM();
+    	regionVM.setLabel("regions1");
+    	
+    	regionVM.getPoints().add(preparePoints(100l, 100l));
+    	regionVM.getPoints().add(preparePoints(200l,200l));
+    	
+    	return regionVM;
+	}
+	
+	 public static PointsVM preparePoints(Long x,Long y) {
+	    	PointsVM pointsVM2 = new PointsVM();
+	    	pointsVM2.setX(x);
+	    	pointsVM2.setY(y);
+	    	return pointsVM2;
+	    } 
+	public static String prepareSpeed(ObjectMapper objectMapper,AnalyzeOrder analyzeOrder) {
+		return null;
 	}
 }
