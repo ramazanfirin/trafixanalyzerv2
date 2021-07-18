@@ -35,6 +35,10 @@ import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.Vehic
 
 public class Util {
 	
+	public static Double multiplierOnScreen = 13d; // width = 64x13 = 832, heigth= 36x13= 468 
+	
+	public static Double multiplierOnAnalyze = 20d; // width = 64x20 = 1280, heigth= 36x13= 720
+	
 	public static List<Point> convertToPointList(String  points){
 		
 		List<Point>  result = new ArrayList<Point>();
@@ -133,7 +137,8 @@ public class Util {
 			
 		}
 
-		
+		System.out.println(image.getWidth());
+		System.out.println(image.getHeight());
 		
 		g.stop();
 		
@@ -246,9 +251,15 @@ public class Util {
 	
 	 public static PointsVM preparePoints(Long x,Long y) {
 	    	PointsVM pointsVM2 = new PointsVM();
-	    	pointsVM2.setX(x);
-	    	pointsVM2.setY(y);
+	    	pointsVM2.setX(convertCoordinate(x));
+	    	pointsVM2.setY(convertCoordinate(y));
 	    	return pointsVM2;
 	    } 
 	
+	public static Long convertCoordinate(Long value) {
+		
+		Double result = (value/multiplierOnScreen) * multiplierOnAnalyze;
+		
+		return result.longValue();
+	}
 }

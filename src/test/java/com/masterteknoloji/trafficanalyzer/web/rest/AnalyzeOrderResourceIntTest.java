@@ -39,6 +39,7 @@ import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
 import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
+import com.masterteknoloji.trafficanalyzer.web.rest.util.Util;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.AnalyzeOrderDetailVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.ConnectionVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.DirectionVM;
@@ -315,6 +316,13 @@ public class AnalyzeOrderResourceIntTest {
     	String result = objectMapper.writeValueAsString(analyzeOrderDetailVM);
     	System.out.println(result);
     }
+    
+    @Test
+    public void testConvertCoordinate() {
+    	Long result = Util.convertCoordinate(100l);
+    	System.out.println(result);
+    }
+    
     public PointsVM preparePoints(Long x,Long y) {
     	PointsVM pointsVM2 = new PointsVM();
     	pointsVM2.setX(x);
