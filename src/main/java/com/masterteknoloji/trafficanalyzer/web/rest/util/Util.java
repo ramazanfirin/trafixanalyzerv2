@@ -21,10 +21,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrderDetails;
+import com.masterteknoloji.trafficanalyzer.domain.Line;
+import com.masterteknoloji.trafficanalyzer.domain.Polygon;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.ConnectionVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.DirectionVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.PointsVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.RegionVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.SpeedVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.VehicleTypeVM;
 
 public class Util {
@@ -139,38 +142,79 @@ public class Util {
 		return  baos;
 	}
 	
-	public static AnalyzeOrderDetails prepareAnalyzeOrderDetails(ObjectMapper objectMapper,AnalyzeOrder analyzeOrder) throws JsonProcessingException {
+	public static AnalyzeOrderDetails prepareAnalyzeOrderDetails(ObjectMapper objectMapper,String sessionId,String videoPath,List<Line> lineList,List<Polygon> speedPolygonList) throws Exception {
 		AnalyzeOrderDetails analyzeOrderDetails = new AnalyzeOrderDetails();
 		analyzeOrderDetails.setClasses(objectMapper.writeValueAsString(new VehicleTypeVM()));
 		analyzeOrderDetails.setCount(true);
-		analyzeOrderDetails.setDirections(null);
-		analyzeOrderDetails.setSessionId(analyzeOrder.getId().toString());
-		analyzeOrderDetails.setSpeed(null);
-		analyzeOrderDetails.setVideoPath(analyzeOrder.getVideo().getPath());
+		analyzeOrderDetails.setDirections(prepareDirections(objectMapper, lineList));
+		analyzeOrderDetails.setSessionId(sessionId);
+		analyzeOrderDetails.setSpeed(prepareSpeeds(objectMapper, speedPolygonList));
+		analyzeOrderDetails.setVideoPath(videoPath);
 		
 		return analyzeOrderDetails;
 	}
 	
-	public static String prepareDirections(ObjectMapper objectMapper,AnalyzeOrder analyzeOrder) {
+	public static String prepareDirections(ObjectMapper objectMapper,List<Line> lineList) throws Exception {
 		DirectionVM directionVM = new DirectionVM();
 		
-		List<RegionVM> regionList = new ArrayList<RegionVM>();
-//		analyzeOrder.getScenario().
-//		directionVM.setRegions(regionList);
 		
-		List<ConnectionVM> connectionVMs = new  ArrayList<ConnectionVM>();
-		directionVM.setConnections(connectionVMs);
-		return null;
+		for (Iterator iterator = lineList.iterator(); iterator.hasNext();) {
+			Line line = (Line) iterator.next();
+			
+			RegionVM startRegionVM = prepareRegions(line.getStartPolygon());
+			directionVM.getRegions().add(startRegionVM);
+			
+			RegionVM endRegionVM = prepareRegions(line.getEndPolygon());
+			directionVM.getRegions().add(endRegionVM);
+			
+			directionVM.getConnections().add(prepareConnections(line));
+			
+		}
+		
+		return objectMapper.writeValueAsString(directionVM);
 	}
 	
-	public static RegionVM prepareRegions(String label) {
+	public static String prepareSpeeds(ObjectMapper objectMapper,List<Polygon> speedPolygonList) throws Exception {
+		List<SpeedVM> result = new ArrayList<SpeedVM>();
+		
+		for (Iterator iterator = speedPolygonList.iterator(); iterator.hasNext();) {
+			Polygon polygon = (Polygon) iterator.next();
+			
+			SpeedVM speedVM = new SpeedVM();
+			List<Point> pointList = convertToPointList(polygon.getPoints());
+	    	for (Iterator iterator2 = pointList.iterator(); iterator2.hasNext();) {
+				Point point = (Point) iterator2.next();
+				speedVM.getPoints().add(preparePoints((new Double(point.getX())).longValue(), (new Double(point.getY())).longValue()));
+			}
+			
+	    	speedVM.setDistance(polygon.getWidth().longValue());
+	    	speedVM.setLabel(polygon.getId().toString());
+	    	
+	    	result.add(speedVM);
+		}
+		
+		return objectMapper.writeValueAsString(result);
+	}
+	
+	public static RegionVM prepareRegions(Polygon polygon) {
 		RegionVM regionVM = new RegionVM();
-    	regionVM.setLabel("regions1");
+    	regionVM.setLabel(polygon.getId().toString());
     	
-    	regionVM.getPoints().add(preparePoints(100l, 100l));
-    	regionVM.getPoints().add(preparePoints(200l,200l));
+    	List<Point> pointList = convertToPointList(polygon.getPoints());
+    	for (Iterator iterator = pointList.iterator(); iterator.hasNext();) {
+			Point point = (Point) iterator.next();
+			regionVM.getPoints().add(preparePoints((new Double(point.getX())).longValue(), (new Double(point.getY())).longValue()));
+		}
     	
     	return regionVM;
+	}
+	
+	public static ConnectionVM prepareConnections(Line line) {
+		ConnectionVM connectionVM = new ConnectionVM();
+		connectionVM.setEntry(line.getStartPolygon().getId().toString());
+		connectionVM.setExit(line.getEndPolygon().getId().toString());
+    	
+		return connectionVM;
 	}
 	
 	 public static PointsVM preparePoints(Long x,Long y) {
@@ -179,7 +223,5 @@ public class Util {
 	    	pointsVM2.setY(y);
 	    	return pointsVM2;
 	    } 
-	public static String prepareSpeed(ObjectMapper objectMapper,AnalyzeOrder analyzeOrder) {
-		return null;
-	}
+	
 }

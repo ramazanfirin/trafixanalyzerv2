@@ -37,7 +37,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masterteknoloji.trafficanalyzer.Trafficanalzyzerv2App;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
+import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderDetailsRepository;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
+import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
+import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.AnalyzeOrderDetailVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.ConnectionVM;
@@ -91,11 +94,20 @@ public class AnalyzeOrderResourceIntTest {
     
     @Autowired
     private ObjectMapper objectMapper;
+    
+    @Autowired
+    private LineRepository lineRepository;
 
+    @Autowired
+    private PolygonRepository polygonRepository;
+
+    @Autowired
+    private AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository;
+    
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AnalyzeOrderResource analyzeOrderResource = new AnalyzeOrderResource(analyzeOrderRepository);
+        final AnalyzeOrderResource analyzeOrderResource = new AnalyzeOrderResource(analyzeOrderRepository,objectMapper,lineRepository,polygonRepository,analyzeOrderDetailsRepository);
         this.restAnalyzeOrderMockMvc = MockMvcBuilders.standaloneSetup(analyzeOrderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
