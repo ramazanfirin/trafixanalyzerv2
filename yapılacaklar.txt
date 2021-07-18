@@ -13,4 +13,4 @@
 -----------------------------------------13 - pşoygon sil refresh ve line sil..
 -----------------------------------------14 - resim boyutuna göre, koordinate hesabı
 15 - notify servisi
-16 - senaryoyu ekrana çizme
+-----------------------------------------16 - senaryoyu ekrana çizme

@@ -4,7 +4,8 @@
             "null": "",
             "NOT_PROCESSED": "NOT_PROCESSED",
             "STARTED": "STARTED",
-            "COMPLETED": "COMPLETED",
+            "ANALYZE_COMPLETED": "ANALYZE_COMPLETED",
+            "PROCESS_COMPLETED": "PROCESS_COMPLETED",
             "ERROR": "ERROR"
         }
     }

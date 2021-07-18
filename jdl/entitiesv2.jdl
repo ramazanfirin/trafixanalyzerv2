@@ -118,7 +118,8 @@ entity AnalyzeOrderDetails{
 enum AnalyzeState {
   NOT_PROCESSED,
   STARTED,
-  COMPLETED,
+  ANALYZE_COMPLETED,
+  PROCESS_COMPLETED,
   ERROR
 }
 
