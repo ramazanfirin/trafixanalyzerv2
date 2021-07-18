@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -23,6 +24,8 @@ import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrderDetails;
 import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.AnalyzeOrderDetailVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.ConnectionVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.DirectionVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.PointsVM;
@@ -143,18 +146,42 @@ public class Util {
 	}
 	
 	public static AnalyzeOrderDetails prepareAnalyzeOrderDetails(ObjectMapper objectMapper,String sessionId,String videoPath,List<Line> lineList,List<Polygon> speedPolygonList) throws Exception {
-		AnalyzeOrderDetails analyzeOrderDetails = new AnalyzeOrderDetails();
-		analyzeOrderDetails.setClasses(objectMapper.writeValueAsString(new VehicleTypeVM()));
-		analyzeOrderDetails.setCount(true);
-		analyzeOrderDetails.setDirections(prepareDirections(objectMapper, lineList));
-		analyzeOrderDetails.setSessionId(sessionId);
-		analyzeOrderDetails.setSpeed(prepareSpeeds(objectMapper, speedPolygonList));
-		analyzeOrderDetails.setVideoPath(videoPath);
+		AnalyzeOrderDetails result = new AnalyzeOrderDetails();
 		
-		return analyzeOrderDetails;
+		VehicleTypeVM vehicleTypeVM = new VehicleTypeVM();
+		result.setClasses(objectMapper.writeValueAsString(vehicleTypeVM));
+		
+		DirectionVM directionVM = prepareDirections(objectMapper, lineList);
+		result.setDirections(objectMapper.writeValueAsString(directionVM));
+		
+		List<SpeedVM> speedVMs = prepareSpeeds(objectMapper, speedPolygonList);
+		result.setSpeed(objectMapper.writeValueAsString(speedVMs));
+		
+		result.setCount(true);
+		result.setStartDate(Instant.now());
+		result.setState(AnalyzeState.NOT_PROCESSED);
+		result.setSessionId(sessionId);
+		result.setVideoPath(videoPath);
+		
+		AnalyzeOrderDetailVM analyzeOrderDetailVM = prepareAllData(vehicleTypeVM, directionVM, speedVMs, videoPath, sessionId);
+		result.setJsonData(objectMapper.writeValueAsString(analyzeOrderDetailVM));
+		
+		return result;
 	}
 	
-	public static String prepareDirections(ObjectMapper objectMapper,List<Line> lineList) throws Exception {
+	public static AnalyzeOrderDetailVM prepareAllData(VehicleTypeVM vehicleTypeVM,DirectionVM directionVM,List<SpeedVM> speed,String path,String sessionId) {
+		AnalyzeOrderDetailVM analyzeOrderDetailVM = new AnalyzeOrderDetailVM();
+		analyzeOrderDetailVM.setCount(true);
+		analyzeOrderDetailVM.setDirections(directionVM);
+		analyzeOrderDetailVM.setPath(path);
+		analyzeOrderDetailVM.setSessionId(sessionId);
+		analyzeOrderDetailVM.setSpeed(speed);
+		analyzeOrderDetailVM.setVehicleTypeVM(vehicleTypeVM);
+		
+		return analyzeOrderDetailVM;
+	}
+	
+	public static DirectionVM prepareDirections(ObjectMapper objectMapper,List<Line> lineList) throws Exception {
 		DirectionVM directionVM = new DirectionVM();
 		
 		
@@ -171,10 +198,10 @@ public class Util {
 			
 		}
 		
-		return objectMapper.writeValueAsString(directionVM);
+		return directionVM;
 	}
 	
-	public static String prepareSpeeds(ObjectMapper objectMapper,List<Polygon> speedPolygonList) throws Exception {
+	public static List<SpeedVM> prepareSpeeds(ObjectMapper objectMapper,List<Polygon> speedPolygonList) throws Exception {
 		List<SpeedVM> result = new ArrayList<SpeedVM>();
 		
 		for (Iterator iterator = speedPolygonList.iterator(); iterator.hasNext();) {
@@ -193,7 +220,7 @@ public class Util {
 	    	result.add(speedVM);
 		}
 		
-		return objectMapper.writeValueAsString(result);
+		return result;
 	}
 	
 	public static RegionVM prepareRegions(Polygon polygon) {

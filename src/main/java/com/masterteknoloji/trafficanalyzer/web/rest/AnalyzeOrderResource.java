@@ -84,8 +84,7 @@ public class AnalyzeOrderResource {
         if (analyzeOrder.getId() != null) {
             throw new BadRequestAlertException("A new analyzeOrder cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        analyzeOrder.setStartDate(Instant.now());
-        analyzeOrder.setState(AnalyzeState.NOT_PROCESSED);
+        
         AnalyzeOrder result = analyzeOrderRepository.save(analyzeOrder);
         
         List<Line> lines = lineRepository.getLineListByScenarioId(result.getScenario().getId());

@@ -28,6 +28,34 @@
         <dd>
             <span>{{vm.analyzeOrderDetails.speed}}</span>
         </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.jsonData">Json Data</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrderDetails.jsonData}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.state">State</span></dt>
+        <dd>
+            <span data-translate="{{'trafficanalzyzerv2App.AnalyzeState.' + vm.analyzeOrderDetails.state}}">{{vm.analyzeOrderDetails.state}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.errorMessage">Error Message</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrderDetails.errorMessage}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.startDate">Start Date</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrderDetails.startDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.endDate">End Date</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrderDetails.endDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.processDuration">Process Duration</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrderDetails.processDuration}}</span>
+        </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.videoDuration">Video Duration</span></dt>
+        <dd>
+            <span>{{vm.analyzeOrderDetails.videoDuration}}</span>
+        </dd>
     </dl>
 
     <button type="submit"

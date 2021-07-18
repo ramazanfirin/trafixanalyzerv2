@@ -6,7 +6,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
+
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 
 /**
  * A AnalyzeOrderDetails.
@@ -42,6 +45,29 @@ public class AnalyzeOrderDetails implements Serializable {
     @Lob
     @Column(name = "speed")
     private String speed;
+
+    @Lob
+    @Column(name = "json_data")
+    private String jsonData;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state")
+    private AnalyzeState state;
+
+    @Column(name = "error_message")
+    private String errorMessage;
+
+    @Column(name = "start_date")
+    private Instant startDate;
+
+    @Column(name = "end_date")
+    private Instant endDate;
+
+    @Column(name = "process_duration")
+    private Long processDuration;
+
+    @Column(name = "video_duration")
+    private Long videoDuration;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -129,6 +155,97 @@ public class AnalyzeOrderDetails implements Serializable {
     public void setSpeed(String speed) {
         this.speed = speed;
     }
+
+    public String getJsonData() {
+        return jsonData;
+    }
+
+    public AnalyzeOrderDetails jsonData(String jsonData) {
+        this.jsonData = jsonData;
+        return this;
+    }
+
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
+    }
+
+    public AnalyzeState getState() {
+        return state;
+    }
+
+    public AnalyzeOrderDetails state(AnalyzeState state) {
+        this.state = state;
+        return this;
+    }
+
+    public void setState(AnalyzeState state) {
+        this.state = state;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public AnalyzeOrderDetails errorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+        return this;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public Instant getStartDate() {
+        return startDate;
+    }
+
+    public AnalyzeOrderDetails startDate(Instant startDate) {
+        this.startDate = startDate;
+        return this;
+    }
+
+    public void setStartDate(Instant startDate) {
+        this.startDate = startDate;
+    }
+
+    public Instant getEndDate() {
+        return endDate;
+    }
+
+    public AnalyzeOrderDetails endDate(Instant endDate) {
+        this.endDate = endDate;
+        return this;
+    }
+
+    public void setEndDate(Instant endDate) {
+        this.endDate = endDate;
+    }
+
+    public Long getProcessDuration() {
+        return processDuration;
+    }
+
+    public AnalyzeOrderDetails processDuration(Long processDuration) {
+        this.processDuration = processDuration;
+        return this;
+    }
+
+    public void setProcessDuration(Long processDuration) {
+        this.processDuration = processDuration;
+    }
+
+    public Long getVideoDuration() {
+        return videoDuration;
+    }
+
+    public AnalyzeOrderDetails videoDuration(Long videoDuration) {
+        this.videoDuration = videoDuration;
+        return this;
+    }
+
+    public void setVideoDuration(Long videoDuration) {
+        this.videoDuration = videoDuration;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -161,6 +278,13 @@ public class AnalyzeOrderDetails implements Serializable {
             ", classes='" + getClasses() + "'" +
             ", directions='" + getDirections() + "'" +
             ", speed='" + getSpeed() + "'" +
+            ", jsonData='" + getJsonData() + "'" +
+            ", state='" + getState() + "'" +
+            ", errorMessage='" + getErrorMessage() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
+            ", processDuration=" + getProcessDuration() +
+            ", videoDuration=" + getVideoDuration() +
             "}";
     }
 }

@@ -20,7 +20,14 @@
             "count": "Count",
             "classes": "Classes",
             "directions": "Directions",
-            "speed": "Speed"
+            "speed": "Speed",
+            "jsonData": "Json Data",
+            "state": "State",
+            "errorMessage": "Error Message",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "processDuration": "Process Duration",
+            "videoDuration": "Video Duration"
         }
     }
 }

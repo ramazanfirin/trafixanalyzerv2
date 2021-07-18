@@ -6,10 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Objects;
-
-import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 
 /**
  * A AnalyzeOrder.
@@ -24,22 +21,6 @@ public class AnalyzeOrder implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "start_date")
-    private Instant startDate;
-
-    @Column(name = "end_date")
-    private Instant endDate;
-
-    @Column(name = "process_duration")
-    private Long processDuration;
-
-    @Column(name = "video_duration")
-    private Long videoDuration;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "state")
-    private AnalyzeState state;
 
     @ManyToOne
     private Video video;
@@ -57,71 +38,6 @@ public class AnalyzeOrder implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Instant getStartDate() {
-        return startDate;
-    }
-
-    public AnalyzeOrder startDate(Instant startDate) {
-        this.startDate = startDate;
-        return this;
-    }
-
-    public void setStartDate(Instant startDate) {
-        this.startDate = startDate;
-    }
-
-    public Instant getEndDate() {
-        return endDate;
-    }
-
-    public AnalyzeOrder endDate(Instant endDate) {
-        this.endDate = endDate;
-        return this;
-    }
-
-    public void setEndDate(Instant endDate) {
-        this.endDate = endDate;
-    }
-
-    public Long getProcessDuration() {
-        return processDuration;
-    }
-
-    public AnalyzeOrder processDuration(Long processDuration) {
-        this.processDuration = processDuration;
-        return this;
-    }
-
-    public void setProcessDuration(Long processDuration) {
-        this.processDuration = processDuration;
-    }
-
-    public Long getVideoDuration() {
-        return videoDuration;
-    }
-
-    public AnalyzeOrder videoDuration(Long videoDuration) {
-        this.videoDuration = videoDuration;
-        return this;
-    }
-
-    public void setVideoDuration(Long videoDuration) {
-        this.videoDuration = videoDuration;
-    }
-
-    public AnalyzeState getState() {
-        return state;
-    }
-
-    public AnalyzeOrder state(AnalyzeState state) {
-        this.state = state;
-        return this;
-    }
-
-    public void setState(AnalyzeState state) {
-        this.state = state;
     }
 
     public Video getVideo() {
@@ -188,11 +104,6 @@ public class AnalyzeOrder implements Serializable {
     public String toString() {
         return "AnalyzeOrder{" +
             "id=" + getId() +
-            ", startDate='" + getStartDate() + "'" +
-            ", endDate='" + getEndDate() + "'" +
-            ", processDuration=" + getProcessDuration() +
-            ", videoDuration=" + getVideoDuration() +
-            ", state='" + getState() + "'" +
             "}";
     }
 }

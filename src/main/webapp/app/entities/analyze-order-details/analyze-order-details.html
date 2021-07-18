@@ -25,6 +25,13 @@
                     <th jh-sort-by="classes"><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.classes">Classes</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="directions"><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.directions">Directions</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="speed"><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.speed">Speed</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="jsonData"><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.jsonData">Json Data</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="state"><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.state">State</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="errorMessage"><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.errorMessage">Error Message</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="startDate"><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.startDate">Start Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="endDate"><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.endDate">End Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="processDuration"><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.processDuration">Process Duration</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="videoDuration"><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.videoDuration">Video Duration</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -37,6 +44,13 @@
                     <td>{{analyzeOrderDetails.classes}}</td>
                     <td>{{analyzeOrderDetails.directions}}</td>
                     <td>{{analyzeOrderDetails.speed}}</td>
+                    <td>{{analyzeOrderDetails.jsonData}}</td>
+                    <td data-translate="{{'trafficanalzyzerv2App.AnalyzeState.' + analyzeOrderDetails.state}}">{{analyzeOrderDetails.state}}</td>
+                    <td>{{analyzeOrderDetails.errorMessage}}</td>
+                    <td>{{analyzeOrderDetails.startDate | date:'medium'}}</td>
+                    <td>{{analyzeOrderDetails.endDate | date:'medium'}}</td>
+                    <td>{{analyzeOrderDetails.processDuration}}</td>
+                    <td>{{analyzeOrderDetails.videoDuration}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

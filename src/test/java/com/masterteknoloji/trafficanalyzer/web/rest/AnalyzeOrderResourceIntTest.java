@@ -11,8 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +34,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masterteknoloji.trafficanalyzer.Trafficanalzyzerv2App;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
-import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderDetailsRepository;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
 import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
@@ -49,6 +46,7 @@ import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.Point
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.RegionVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.SpeedVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.VehicleTypeVM;
+
 /**
  * Test class for the AnalyzeOrderResource REST controller.
  *
@@ -57,21 +55,6 @@ import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.Vehic
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Trafficanalzyzerv2App.class)
 public class AnalyzeOrderResourceIntTest {
-
-    private static final Instant DEFAULT_START_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_START_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-
-    private static final Instant DEFAULT_END_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_END_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-
-    private static final Long DEFAULT_PROCESS_DURATION = 1L;
-    private static final Long UPDATED_PROCESS_DURATION = 2L;
-
-    private static final Long DEFAULT_VIDEO_DURATION = 1L;
-    private static final Long UPDATED_VIDEO_DURATION = 2L;
-
-    private static final AnalyzeState DEFAULT_STATE = AnalyzeState.NOT_PROCESSED;
-    private static final AnalyzeState UPDATED_STATE = AnalyzeState.STARTED;
 
     @Autowired
     private AnalyzeOrderRepository analyzeOrderRepository;
@@ -91,7 +74,7 @@ public class AnalyzeOrderResourceIntTest {
     private MockMvc restAnalyzeOrderMockMvc;
 
     private AnalyzeOrder analyzeOrder;
-    
+
     @Autowired
     private ObjectMapper objectMapper;
     
@@ -122,12 +105,7 @@ public class AnalyzeOrderResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static AnalyzeOrder createEntity(EntityManager em) {
-        AnalyzeOrder analyzeOrder = new AnalyzeOrder()
-            .startDate(DEFAULT_START_DATE)
-            .endDate(DEFAULT_END_DATE)
-            .processDuration(DEFAULT_PROCESS_DURATION)
-            .videoDuration(DEFAULT_VIDEO_DURATION)
-            .state(DEFAULT_STATE);
+        AnalyzeOrder analyzeOrder = new AnalyzeOrder();
         return analyzeOrder;
     }
 
@@ -151,11 +129,6 @@ public class AnalyzeOrderResourceIntTest {
         List<AnalyzeOrder> analyzeOrderList = analyzeOrderRepository.findAll();
         assertThat(analyzeOrderList).hasSize(databaseSizeBeforeCreate + 1);
         AnalyzeOrder testAnalyzeOrder = analyzeOrderList.get(analyzeOrderList.size() - 1);
-        assertThat(testAnalyzeOrder.getStartDate()).isEqualTo(DEFAULT_START_DATE);
-        assertThat(testAnalyzeOrder.getEndDate()).isEqualTo(DEFAULT_END_DATE);
-        assertThat(testAnalyzeOrder.getProcessDuration()).isEqualTo(DEFAULT_PROCESS_DURATION);
-        assertThat(testAnalyzeOrder.getVideoDuration()).isEqualTo(DEFAULT_VIDEO_DURATION);
-        assertThat(testAnalyzeOrder.getState()).isEqualTo(DEFAULT_STATE);
     }
 
     @Test
@@ -187,12 +160,7 @@ public class AnalyzeOrderResourceIntTest {
         restAnalyzeOrderMockMvc.perform(get("/api/analyze-orders?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(analyzeOrder.getId().intValue())))
-            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
-            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
-            .andExpect(jsonPath("$.[*].processDuration").value(hasItem(DEFAULT_PROCESS_DURATION.intValue())))
-            .andExpect(jsonPath("$.[*].videoDuration").value(hasItem(DEFAULT_VIDEO_DURATION.intValue())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(analyzeOrder.getId().intValue())));
     }
 
     @Test
@@ -205,12 +173,7 @@ public class AnalyzeOrderResourceIntTest {
         restAnalyzeOrderMockMvc.perform(get("/api/analyze-orders/{id}", analyzeOrder.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(analyzeOrder.getId().intValue()))
-            .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
-            .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
-            .andExpect(jsonPath("$.processDuration").value(DEFAULT_PROCESS_DURATION.intValue()))
-            .andExpect(jsonPath("$.videoDuration").value(DEFAULT_VIDEO_DURATION.intValue()))
-            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()));
+            .andExpect(jsonPath("$.id").value(analyzeOrder.getId().intValue()));
     }
 
     @Test
@@ -232,12 +195,6 @@ public class AnalyzeOrderResourceIntTest {
         AnalyzeOrder updatedAnalyzeOrder = analyzeOrderRepository.findOne(analyzeOrder.getId());
         // Disconnect from session so that the updates on updatedAnalyzeOrder are not directly saved in db
         em.detach(updatedAnalyzeOrder);
-        updatedAnalyzeOrder
-            .startDate(UPDATED_START_DATE)
-            .endDate(UPDATED_END_DATE)
-            .processDuration(UPDATED_PROCESS_DURATION)
-            .videoDuration(UPDATED_VIDEO_DURATION)
-            .state(UPDATED_STATE);
 
         restAnalyzeOrderMockMvc.perform(put("/api/analyze-orders")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -248,11 +205,6 @@ public class AnalyzeOrderResourceIntTest {
         List<AnalyzeOrder> analyzeOrderList = analyzeOrderRepository.findAll();
         assertThat(analyzeOrderList).hasSize(databaseSizeBeforeUpdate);
         AnalyzeOrder testAnalyzeOrder = analyzeOrderList.get(analyzeOrderList.size() - 1);
-        assertThat(testAnalyzeOrder.getStartDate()).isEqualTo(UPDATED_START_DATE);
-        assertThat(testAnalyzeOrder.getEndDate()).isEqualTo(UPDATED_END_DATE);
-        assertThat(testAnalyzeOrder.getProcessDuration()).isEqualTo(UPDATED_PROCESS_DURATION);
-        assertThat(testAnalyzeOrder.getVideoDuration()).isEqualTo(UPDATED_VIDEO_DURATION);
-        assertThat(testAnalyzeOrder.getState()).isEqualTo(UPDATED_STATE);
     }
 
     @Test
@@ -344,7 +296,7 @@ public class AnalyzeOrderResourceIntTest {
     
     @Test
     public void jsonTest_Speed() throws JsonProcessingException{
-    	SpeedVM speed = prepareSpeed();
+    	List<SpeedVM> speed = prepareSpeed();
     	
     	String result = objectMapper.writeValueAsString(speed);
     	System.out.println(result);
@@ -403,7 +355,9 @@ public class AnalyzeOrderResourceIntTest {
     	return direction;
     }
     
-    public SpeedVM prepareSpeed() {
+    public List<SpeedVM> prepareSpeed() {
+    	List<SpeedVM> result = new ArrayList<SpeedVM>();
+    	
     	SpeedVM speedVM = new SpeedVM();
     	
     	speedVM.setLabel("label");
@@ -411,6 +365,8 @@ public class AnalyzeOrderResourceIntTest {
     	
     	speedVM.getPoints().add(preparePoints(100l, 100l));
     	speedVM.getPoints().add(preparePoints(200l, 200l));
-    	return speedVM;
+    	
+    	result.add(speedVM);
+    	return result;
     }
 }

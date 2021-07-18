@@ -95,12 +95,7 @@ enum PolygonType {
 }
 
 entity AnalyzeOrder{
-	startDate Instant
-	endDate Instant
-	processDuration Long
-	videoDuration Long
-	state AnalyzeState
-
+	
 }
 
 entity AnalyzeOrderDetails{
@@ -110,12 +105,19 @@ entity AnalyzeOrderDetails{
 	classes TextBlob
 	directions TextBlob
 	speed TextBlob
+	
+	jsonData TextBlob
+	state AnalyzeState
+	errorMessage String
+	startDate Instant
+	endDate Instant
+	processDuration Long
+	videoDuration Long
 }
 
 enum AnalyzeState {
   NOT_PROCESSED,
   STARTED,
-  PROCESSED,
   COMPLETED,
   ERROR
 }

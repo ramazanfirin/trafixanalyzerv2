@@ -20,29 +20,7 @@
             "otherEntityField": "id"
         }
     ],
-    "fields": [
-        {
-            "fieldName": "startDate",
-            "fieldType": "Instant"
-        },
-        {
-            "fieldName": "endDate",
-            "fieldType": "Instant"
-        },
-        {
-            "fieldName": "processDuration",
-            "fieldType": "Long"
-        },
-        {
-            "fieldName": "videoDuration",
-            "fieldType": "Long"
-        },
-        {
-            "fieldName": "state",
-            "fieldType": "AnalyzeState",
-            "fieldValues": "NOT_PROCESSED,STARTED,PROCESSED,COMPLETED,ERROR"
-        }
-    ],
+    "fields": [],
     "changelogDate": "20210716122529",
     "entityTableName": "analyze_order",
     "dto": "no",

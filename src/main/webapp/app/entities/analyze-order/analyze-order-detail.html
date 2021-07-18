@@ -4,26 +4,6 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="dl-horizontal jh-entity-details">
-        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.startDate">Start Date</span></dt>
-        <dd>
-            <span>{{vm.analyzeOrder.startDate | date:'medium'}}</span>
-        </dd>
-        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.endDate">End Date</span></dt>
-        <dd>
-            <span>{{vm.analyzeOrder.endDate | date:'medium'}}</span>
-        </dd>
-        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.processDuration">Process Duration</span></dt>
-        <dd>
-            <span>{{vm.analyzeOrder.processDuration}}</span>
-        </dd>
-        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.videoDuration">Video Duration</span></dt>
-        <dd>
-            <span>{{vm.analyzeOrder.videoDuration}}</span>
-        </dd>
-        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.state">State</span></dt>
-        <dd>
-            <span data-translate="{{'trafficanalzyzerv2App.AnalyzeState.' + vm.analyzeOrder.state}}">{{vm.analyzeOrder.state}}</span>
-        </dd>
         <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.video">Video</span></dt>
         <dd>
             <a ui-sref="video-detail({id:vm.analyzeOrder.video.id})">{{vm.analyzeOrder.video.id}}</a>

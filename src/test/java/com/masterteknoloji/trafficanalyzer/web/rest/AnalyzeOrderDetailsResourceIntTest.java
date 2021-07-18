@@ -22,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.masterteknoloji.trafficanalyzer.web.rest.TestUtil.createFormattingConversionService;
@@ -30,6 +32,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 /**
  * Test class for the AnalyzeOrderDetailsResource REST controller.
  *
@@ -56,6 +59,27 @@ public class AnalyzeOrderDetailsResourceIntTest {
 
     private static final String DEFAULT_SPEED = "AAAAAAAAAA";
     private static final String UPDATED_SPEED = "BBBBBBBBBB";
+
+    private static final String DEFAULT_JSON_DATA = "AAAAAAAAAA";
+    private static final String UPDATED_JSON_DATA = "BBBBBBBBBB";
+
+    private static final AnalyzeState DEFAULT_STATE = AnalyzeState.NOT_PROCESSED;
+    private static final AnalyzeState UPDATED_STATE = AnalyzeState.STARTED;
+
+    private static final String DEFAULT_ERROR_MESSAGE = "AAAAAAAAAA";
+    private static final String UPDATED_ERROR_MESSAGE = "BBBBBBBBBB";
+
+    private static final Instant DEFAULT_START_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_START_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_END_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_END_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Long DEFAULT_PROCESS_DURATION = 1L;
+    private static final Long UPDATED_PROCESS_DURATION = 2L;
+
+    private static final Long DEFAULT_VIDEO_DURATION = 1L;
+    private static final Long UPDATED_VIDEO_DURATION = 2L;
 
     @Autowired
     private AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository;
@@ -100,7 +124,14 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .count(DEFAULT_COUNT)
             .classes(DEFAULT_CLASSES)
             .directions(DEFAULT_DIRECTIONS)
-            .speed(DEFAULT_SPEED);
+            .speed(DEFAULT_SPEED)
+            .jsonData(DEFAULT_JSON_DATA)
+            .state(DEFAULT_STATE)
+            .errorMessage(DEFAULT_ERROR_MESSAGE)
+            .startDate(DEFAULT_START_DATE)
+            .endDate(DEFAULT_END_DATE)
+            .processDuration(DEFAULT_PROCESS_DURATION)
+            .videoDuration(DEFAULT_VIDEO_DURATION);
         return analyzeOrderDetails;
     }
 
@@ -130,6 +161,13 @@ public class AnalyzeOrderDetailsResourceIntTest {
         assertThat(testAnalyzeOrderDetails.getClasses()).isEqualTo(DEFAULT_CLASSES);
         assertThat(testAnalyzeOrderDetails.getDirections()).isEqualTo(DEFAULT_DIRECTIONS);
         assertThat(testAnalyzeOrderDetails.getSpeed()).isEqualTo(DEFAULT_SPEED);
+        assertThat(testAnalyzeOrderDetails.getJsonData()).isEqualTo(DEFAULT_JSON_DATA);
+        assertThat(testAnalyzeOrderDetails.getState()).isEqualTo(DEFAULT_STATE);
+        assertThat(testAnalyzeOrderDetails.getErrorMessage()).isEqualTo(DEFAULT_ERROR_MESSAGE);
+        assertThat(testAnalyzeOrderDetails.getStartDate()).isEqualTo(DEFAULT_START_DATE);
+        assertThat(testAnalyzeOrderDetails.getEndDate()).isEqualTo(DEFAULT_END_DATE);
+        assertThat(testAnalyzeOrderDetails.getProcessDuration()).isEqualTo(DEFAULT_PROCESS_DURATION);
+        assertThat(testAnalyzeOrderDetails.getVideoDuration()).isEqualTo(DEFAULT_VIDEO_DURATION);
     }
 
     @Test
@@ -167,7 +205,14 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .andExpect(jsonPath("$.[*].count").value(hasItem(DEFAULT_COUNT.booleanValue())))
             .andExpect(jsonPath("$.[*].classes").value(hasItem(DEFAULT_CLASSES.toString())))
             .andExpect(jsonPath("$.[*].directions").value(hasItem(DEFAULT_DIRECTIONS.toString())))
-            .andExpect(jsonPath("$.[*].speed").value(hasItem(DEFAULT_SPEED.toString())));
+            .andExpect(jsonPath("$.[*].speed").value(hasItem(DEFAULT_SPEED.toString())))
+            .andExpect(jsonPath("$.[*].jsonData").value(hasItem(DEFAULT_JSON_DATA.toString())))
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
+            .andExpect(jsonPath("$.[*].errorMessage").value(hasItem(DEFAULT_ERROR_MESSAGE.toString())))
+            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
+            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
+            .andExpect(jsonPath("$.[*].processDuration").value(hasItem(DEFAULT_PROCESS_DURATION.intValue())))
+            .andExpect(jsonPath("$.[*].videoDuration").value(hasItem(DEFAULT_VIDEO_DURATION.intValue())));
     }
 
     @Test
@@ -186,7 +231,14 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .andExpect(jsonPath("$.count").value(DEFAULT_COUNT.booleanValue()))
             .andExpect(jsonPath("$.classes").value(DEFAULT_CLASSES.toString()))
             .andExpect(jsonPath("$.directions").value(DEFAULT_DIRECTIONS.toString()))
-            .andExpect(jsonPath("$.speed").value(DEFAULT_SPEED.toString()));
+            .andExpect(jsonPath("$.speed").value(DEFAULT_SPEED.toString()))
+            .andExpect(jsonPath("$.jsonData").value(DEFAULT_JSON_DATA.toString()))
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
+            .andExpect(jsonPath("$.errorMessage").value(DEFAULT_ERROR_MESSAGE.toString()))
+            .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
+            .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
+            .andExpect(jsonPath("$.processDuration").value(DEFAULT_PROCESS_DURATION.intValue()))
+            .andExpect(jsonPath("$.videoDuration").value(DEFAULT_VIDEO_DURATION.intValue()));
     }
 
     @Test
@@ -214,7 +266,14 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .count(UPDATED_COUNT)
             .classes(UPDATED_CLASSES)
             .directions(UPDATED_DIRECTIONS)
-            .speed(UPDATED_SPEED);
+            .speed(UPDATED_SPEED)
+            .jsonData(UPDATED_JSON_DATA)
+            .state(UPDATED_STATE)
+            .errorMessage(UPDATED_ERROR_MESSAGE)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE)
+            .processDuration(UPDATED_PROCESS_DURATION)
+            .videoDuration(UPDATED_VIDEO_DURATION);
 
         restAnalyzeOrderDetailsMockMvc.perform(put("/api/analyze-order-details")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -231,6 +290,13 @@ public class AnalyzeOrderDetailsResourceIntTest {
         assertThat(testAnalyzeOrderDetails.getClasses()).isEqualTo(UPDATED_CLASSES);
         assertThat(testAnalyzeOrderDetails.getDirections()).isEqualTo(UPDATED_DIRECTIONS);
         assertThat(testAnalyzeOrderDetails.getSpeed()).isEqualTo(UPDATED_SPEED);
+        assertThat(testAnalyzeOrderDetails.getJsonData()).isEqualTo(UPDATED_JSON_DATA);
+        assertThat(testAnalyzeOrderDetails.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testAnalyzeOrderDetails.getErrorMessage()).isEqualTo(UPDATED_ERROR_MESSAGE);
+        assertThat(testAnalyzeOrderDetails.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testAnalyzeOrderDetails.getEndDate()).isEqualTo(UPDATED_END_DATE);
+        assertThat(testAnalyzeOrderDetails.getProcessDuration()).isEqualTo(UPDATED_PROCESS_DURATION);
+        assertThat(testAnalyzeOrderDetails.getVideoDuration()).isEqualTo(UPDATED_VIDEO_DURATION);
     }
 
     @Test

@@ -28,6 +28,36 @@
             "fieldName": "speed",
             "fieldType": "byte[]",
             "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "jsonData",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "state",
+            "fieldType": "AnalyzeState",
+            "fieldValues": "NOT_PROCESSED,STARTED,COMPLETED,ERROR"
+        },
+        {
+            "fieldName": "errorMessage",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "startDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "endDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "processDuration",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "videoDuration",
+            "fieldType": "Long"
         }
     ],
     "changelogDate": "20210716122530",

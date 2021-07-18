@@ -1,5 +1,8 @@
 package com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AnalyzeOrderDetailVM {
 
 	String sessionId;
@@ -12,7 +15,7 @@ public class AnalyzeOrderDetailVM {
 	
 	DirectionVM directions = new DirectionVM();
 	
-	SpeedVM speed = new SpeedVM();
+	List<SpeedVM> speed = new ArrayList<SpeedVM>();
 
 	public String getSessionId() {
 		return sessionId;
@@ -54,13 +57,14 @@ public class AnalyzeOrderDetailVM {
 		this.directions = directions;
 	}
 
-	public SpeedVM getSpeed() {
+	public List<SpeedVM> getSpeed() {
 		return speed;
 	}
 
-	public void setSpeed(SpeedVM speed) {
+	public void setSpeed(List<SpeedVM> speed) {
 		this.speed = speed;
 	}
-	
+
+		
 	
 }

@@ -4,9 +4,9 @@
         .module('trafficanalzyzerv2App')
         .factory('AnalyzeOrder', AnalyzeOrder);
 
-    AnalyzeOrder.$inject = ['$resource', 'DateUtils'];
+    AnalyzeOrder.$inject = ['$resource'];
 
-    function AnalyzeOrder ($resource, DateUtils) {
+    function AnalyzeOrder ($resource) {
         var resourceUrl =  'api/analyze-orders/:id';
 
         return $resource(resourceUrl, {}, {
@@ -16,8 +16,6 @@
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);
-                        data.startDate = DateUtils.convertDateTimeFromServer(data.startDate);
-                        data.endDate = DateUtils.convertDateTimeFromServer(data.endDate);
                     }
                     return data;
                 }
