@@ -1,9 +1,13 @@
 package com.masterteknoloji.trafficanalyzer.repository;
 
-import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import org.springframework.data.jpa.repository.*;
+import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 
 
 /**
@@ -13,4 +17,6 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface AnalyzeOrderRepository extends JpaRepository<AnalyzeOrder, Long> {
 
+	@Query("select v from AnalyzeOrder v where v.state = ?1")
+	List<AnalyzeOrder> findByState(AnalyzeState analyzeState);
 }

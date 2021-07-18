@@ -22,7 +22,6 @@
             "directions": "Directions",
             "speed": "Speed",
             "jsonData": "Json Data",
-            "state": "State",
             "errorMessage": "Error Message",
             "startDate": "Start Date",
             "endDate": "End Date",

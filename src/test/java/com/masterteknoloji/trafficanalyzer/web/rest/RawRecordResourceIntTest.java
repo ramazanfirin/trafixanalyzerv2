@@ -58,6 +58,9 @@ public class RawRecordResourceIntTest {
     private static final String DEFAULT_EXIT = "AAAAAAAAAA";
     private static final String UPDATED_EXIT = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_MOVED = false;
+    private static final Boolean UPDATED_MOVED = true;
+
     @Autowired
     private RawRecordRepository rawRecordRepository;
 
@@ -101,7 +104,8 @@ public class RawRecordResourceIntTest {
             .objectType(DEFAULT_OBJECT_TYPE)
             .speed(DEFAULT_SPEED)
             .entry(DEFAULT_ENTRY)
-            .exit(DEFAULT_EXIT);
+            .exit(DEFAULT_EXIT)
+            .moved(DEFAULT_MOVED);
         return rawRecord;
     }
 
@@ -131,6 +135,7 @@ public class RawRecordResourceIntTest {
         assertThat(testRawRecord.getSpeed()).isEqualTo(DEFAULT_SPEED);
         assertThat(testRawRecord.getEntry()).isEqualTo(DEFAULT_ENTRY);
         assertThat(testRawRecord.getExit()).isEqualTo(DEFAULT_EXIT);
+        assertThat(testRawRecord.isMoved()).isEqualTo(DEFAULT_MOVED);
     }
 
     @Test
@@ -168,7 +173,8 @@ public class RawRecordResourceIntTest {
             .andExpect(jsonPath("$.[*].objectType").value(hasItem(DEFAULT_OBJECT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].speed").value(hasItem(DEFAULT_SPEED.doubleValue())))
             .andExpect(jsonPath("$.[*].entry").value(hasItem(DEFAULT_ENTRY.toString())))
-            .andExpect(jsonPath("$.[*].exit").value(hasItem(DEFAULT_EXIT.toString())));
+            .andExpect(jsonPath("$.[*].exit").value(hasItem(DEFAULT_EXIT.toString())))
+            .andExpect(jsonPath("$.[*].moved").value(hasItem(DEFAULT_MOVED.booleanValue())));
     }
 
     @Test
@@ -187,7 +193,8 @@ public class RawRecordResourceIntTest {
             .andExpect(jsonPath("$.objectType").value(DEFAULT_OBJECT_TYPE.toString()))
             .andExpect(jsonPath("$.speed").value(DEFAULT_SPEED.doubleValue()))
             .andExpect(jsonPath("$.entry").value(DEFAULT_ENTRY.toString()))
-            .andExpect(jsonPath("$.exit").value(DEFAULT_EXIT.toString()));
+            .andExpect(jsonPath("$.exit").value(DEFAULT_EXIT.toString()))
+            .andExpect(jsonPath("$.moved").value(DEFAULT_MOVED.booleanValue()));
     }
 
     @Test
@@ -215,7 +222,8 @@ public class RawRecordResourceIntTest {
             .objectType(UPDATED_OBJECT_TYPE)
             .speed(UPDATED_SPEED)
             .entry(UPDATED_ENTRY)
-            .exit(UPDATED_EXIT);
+            .exit(UPDATED_EXIT)
+            .moved(UPDATED_MOVED);
 
         restRawRecordMockMvc.perform(put("/api/raw-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -232,6 +240,7 @@ public class RawRecordResourceIntTest {
         assertThat(testRawRecord.getSpeed()).isEqualTo(UPDATED_SPEED);
         assertThat(testRawRecord.getEntry()).isEqualTo(UPDATED_ENTRY);
         assertThat(testRawRecord.getExit()).isEqualTo(UPDATED_EXIT);
+        assertThat(testRawRecord.isMoved()).isEqualTo(UPDATED_MOVED);
     }
 
     @Test

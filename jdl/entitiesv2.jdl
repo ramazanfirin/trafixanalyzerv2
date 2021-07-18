@@ -74,6 +74,8 @@ entity RawRecord{
 	speed Double
 	entry String
 	exit String
+	moved Boolean
+	
 }
 
 entity CameraRecord{
@@ -95,7 +97,7 @@ enum PolygonType {
 }
 
 entity AnalyzeOrder{
-	
+	state AnalyzeState
 }
 
 entity AnalyzeOrderDetails{
@@ -107,7 +109,6 @@ entity AnalyzeOrderDetails{
 	speed TextBlob
 	
 	jsonData TextBlob
-	state AnalyzeState
 	errorMessage String
 	startDate Instant
 	endDate Instant

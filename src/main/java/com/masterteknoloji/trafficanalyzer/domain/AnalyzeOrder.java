@@ -8,6 +8,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
+
 /**
  * A AnalyzeOrder.
  */
@@ -21,6 +23,10 @@ public class AnalyzeOrder implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state")
+    private AnalyzeState state;
 
     @ManyToOne
     private Video video;
@@ -38,6 +44,19 @@ public class AnalyzeOrder implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public AnalyzeState getState() {
+        return state;
+    }
+
+    public AnalyzeOrder state(AnalyzeState state) {
+        this.state = state;
+        return this;
+    }
+
+    public void setState(AnalyzeState state) {
+        this.state = state;
     }
 
     public Video getVideo() {
@@ -104,6 +123,7 @@ public class AnalyzeOrder implements Serializable {
     public String toString() {
         return "AnalyzeOrder{" +
             "id=" + getId() +
+            ", state='" + getState() + "'" +
             "}";
     }
 }

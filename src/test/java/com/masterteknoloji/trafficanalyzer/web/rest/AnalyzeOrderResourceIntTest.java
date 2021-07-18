@@ -1,20 +1,10 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
-import static com.masterteknoloji.trafficanalyzer.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.masterteknoloji.trafficanalyzer.Trafficanalzyzerv2App;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.EntityManager;
+import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
+import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
+import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,24 +20,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.masterteknoloji.trafficanalyzer.Trafficanalzyzerv2App;
-import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
-import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderDetailsRepository;
-import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
-import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
-import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
-import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
-import com.masterteknoloji.trafficanalyzer.web.rest.util.Util;
-import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.AnalyzeOrderDetailVM;
-import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.ConnectionVM;
-import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.DirectionVM;
-import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.PointsVM;
-import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.RegionVM;
-import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.SpeedVM;
-import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.VehicleTypeVM;
+import javax.persistence.EntityManager;
+import java.util.List;
 
+import static com.masterteknoloji.trafficanalyzer.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 /**
  * Test class for the AnalyzeOrderResource REST controller.
  *
@@ -56,6 +38,9 @@ import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.Vehic
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Trafficanalzyzerv2App.class)
 public class AnalyzeOrderResourceIntTest {
+
+    private static final AnalyzeState DEFAULT_STATE = AnalyzeState.NOT_PROCESSED;
+    private static final AnalyzeState UPDATED_STATE = AnalyzeState.STARTED;
 
     @Autowired
     private AnalyzeOrderRepository analyzeOrderRepository;
@@ -76,22 +61,10 @@ public class AnalyzeOrderResourceIntTest {
 
     private AnalyzeOrder analyzeOrder;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-    
-    @Autowired
-    private LineRepository lineRepository;
-
-    @Autowired
-    private PolygonRepository polygonRepository;
-
-    @Autowired
-    private AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository;
-    
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AnalyzeOrderResource analyzeOrderResource = new AnalyzeOrderResource(analyzeOrderRepository,objectMapper,lineRepository,polygonRepository,analyzeOrderDetailsRepository);
+        final AnalyzeOrderResource analyzeOrderResource = new AnalyzeOrderResource(analyzeOrderRepository);
         this.restAnalyzeOrderMockMvc = MockMvcBuilders.standaloneSetup(analyzeOrderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -106,7 +79,8 @@ public class AnalyzeOrderResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static AnalyzeOrder createEntity(EntityManager em) {
-        AnalyzeOrder analyzeOrder = new AnalyzeOrder();
+        AnalyzeOrder analyzeOrder = new AnalyzeOrder()
+            .state(DEFAULT_STATE);
         return analyzeOrder;
     }
 
@@ -130,6 +104,7 @@ public class AnalyzeOrderResourceIntTest {
         List<AnalyzeOrder> analyzeOrderList = analyzeOrderRepository.findAll();
         assertThat(analyzeOrderList).hasSize(databaseSizeBeforeCreate + 1);
         AnalyzeOrder testAnalyzeOrder = analyzeOrderList.get(analyzeOrderList.size() - 1);
+        assertThat(testAnalyzeOrder.getState()).isEqualTo(DEFAULT_STATE);
     }
 
     @Test
@@ -161,7 +136,8 @@ public class AnalyzeOrderResourceIntTest {
         restAnalyzeOrderMockMvc.perform(get("/api/analyze-orders?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(analyzeOrder.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(analyzeOrder.getId().intValue())))
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
     }
 
     @Test
@@ -174,7 +150,8 @@ public class AnalyzeOrderResourceIntTest {
         restAnalyzeOrderMockMvc.perform(get("/api/analyze-orders/{id}", analyzeOrder.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(analyzeOrder.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(analyzeOrder.getId().intValue()))
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()));
     }
 
     @Test
@@ -196,6 +173,8 @@ public class AnalyzeOrderResourceIntTest {
         AnalyzeOrder updatedAnalyzeOrder = analyzeOrderRepository.findOne(analyzeOrder.getId());
         // Disconnect from session so that the updates on updatedAnalyzeOrder are not directly saved in db
         em.detach(updatedAnalyzeOrder);
+        updatedAnalyzeOrder
+            .state(UPDATED_STATE);
 
         restAnalyzeOrderMockMvc.perform(put("/api/analyze-orders")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -206,6 +185,7 @@ public class AnalyzeOrderResourceIntTest {
         List<AnalyzeOrder> analyzeOrderList = analyzeOrderRepository.findAll();
         assertThat(analyzeOrderList).hasSize(databaseSizeBeforeUpdate);
         AnalyzeOrder testAnalyzeOrder = analyzeOrderList.get(analyzeOrderList.size() - 1);
+        assertThat(testAnalyzeOrder.getState()).isEqualTo(UPDATED_STATE);
     }
 
     @Test
@@ -256,125 +236,5 @@ public class AnalyzeOrderResourceIntTest {
         assertThat(analyzeOrder1).isNotEqualTo(analyzeOrder2);
         analyzeOrder1.setId(null);
         assertThat(analyzeOrder1).isNotEqualTo(analyzeOrder2);
-    }
-    
-    @Test
-    public void jsonTest_Classes() throws JsonProcessingException{
-    	String result = objectMapper.writeValueAsString(new VehicleTypeVM());
-    	System.out.println(result);
-    }
-    
-    @Test
-    public void jsonTest_Points() throws JsonProcessingException{
-    	PointsVM pointsVM = preparePoints(100l, 100l);
-    	String result = objectMapper.writeValueAsString(pointsVM);
-    	System.out.println(result);
-    }
-    
-    @Test
-    public void jsonTest_Regions() throws JsonProcessingException{
-    	
-    	RegionVM regionVM = prepareRegions();
-    	String result = objectMapper.writeValueAsString(regionVM);
-    	System.out.println(result);
-    }
-    
-    @Test
-    public void jsonTest_Connection() throws JsonProcessingException{
-    	ConnectionVM connectionVM = prepareConnection();
-    	
-    	String result = objectMapper.writeValueAsString(connectionVM);
-    	System.out.println(result);
-    }
-    
-    @Test
-    public void jsonTest_Direction() throws JsonProcessingException{
-    	DirectionVM direction = prepareDirection();
-    	
-    	String result = objectMapper.writeValueAsString(direction);
-    	System.out.println(result);
-    }
-    
-    @Test
-    public void jsonTest_Speed() throws JsonProcessingException{
-    	List<SpeedVM> speed = prepareSpeed();
-    	
-    	String result = objectMapper.writeValueAsString(speed);
-    	System.out.println(result);
-    }
-    
-    @Test
-    public void jsonTest_All() throws JsonProcessingException{
-    	AnalyzeOrderDetailVM analyzeOrderDetailVM = new AnalyzeOrderDetailVM();
-    	analyzeOrderDetailVM.setCount(true);
-    	analyzeOrderDetailVM.setDirections(prepareDirection());
-    	analyzeOrderDetailVM.setPath("videoPath");
-    	analyzeOrderDetailVM.setSessionId("sessiınID");
-    	analyzeOrderDetailVM.setSpeed(prepareSpeed());
-    	analyzeOrderDetailVM.setVehicleTypeVM(new VehicleTypeVM());
-    	
-    	String result = objectMapper.writeValueAsString(analyzeOrderDetailVM);
-    	System.out.println(result);
-    }
-    
-    @Test
-    public void testConvertCoordinate() {
-    	Long result = Util.convertCoordinate(100l);
-    	System.out.println(result);
-    }
-    
-    public PointsVM preparePoints(Long x,Long y) {
-    	PointsVM pointsVM2 = new PointsVM();
-    	pointsVM2.setX(x);
-    	pointsVM2.setY(y);
-    	return pointsVM2;
-    }
-    
-    public RegionVM prepareRegions() {
-    	RegionVM regionVM = new RegionVM();
-    	regionVM.setLabel("regions1");
-    	
-    	regionVM.getPoints().add(preparePoints(100l, 100l));
-    	regionVM.getPoints().add(preparePoints(200l,200l));
-    	
-    	return regionVM;
-    }
-    
-    public ConnectionVM prepareConnection() {
-    	ConnectionVM connectionVM = new ConnectionVM();
-    	connectionVM.setEntry("enrty");
-    	connectionVM.setExit("exit");
-    	
-    	return connectionVM;
-    }
-    
-    public DirectionVM prepareDirection() {
-    	DirectionVM direction = new DirectionVM();
-    	List<RegionVM> regionList = new ArrayList<RegionVM>();
-    	regionList.add(prepareRegions());
-    	regionList.add(prepareRegions());
-    	direction.setRegions(regionList);
-    	
-    	List<ConnectionVM> connectionList = new ArrayList<ConnectionVM>();
-    	connectionList.add(prepareConnection());
-     	connectionList.add(prepareConnection()); 	
-    	direction.setConnections(connectionList);
-    	
-    	return direction;
-    }
-    
-    public List<SpeedVM> prepareSpeed() {
-    	List<SpeedVM> result = new ArrayList<SpeedVM>();
-    	
-    	SpeedVM speedVM = new SpeedVM();
-    	
-    	speedVM.setLabel("label");
-    	speedVM.setDistance(100l);
-    	
-    	speedVM.getPoints().add(preparePoints(100l, 100l));
-    	speedVM.getPoints().add(preparePoints(200l, 200l));
-    	
-    	result.add(speedVM);
-    	return result;
     }
 }

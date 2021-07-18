@@ -50,10 +50,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="state" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-
             <column name="error_message" type="varchar(255)">
                 <constraints nullable="true" />
             </column>

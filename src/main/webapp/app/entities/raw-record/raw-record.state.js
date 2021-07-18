@@ -130,6 +130,7 @@
                                 speed: null,
                                 entry: null,
                                 exit: null,
+                                moved: null,
                                 id: null
                             };
                         }

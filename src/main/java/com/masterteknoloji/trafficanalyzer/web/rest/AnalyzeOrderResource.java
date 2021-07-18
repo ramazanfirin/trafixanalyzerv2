@@ -1,14 +1,16 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.Instant;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,12 +30,16 @@ import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrderDetails;
 import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
+import com.masterteknoloji.trafficanalyzer.domain.RawRecord;
+import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.PolygonType;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderDetailsRepository;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
 import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
+import com.masterteknoloji.trafficanalyzer.repository.RawRecordRepository;
+import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
@@ -60,14 +66,21 @@ public class AnalyzeOrderResource {
     
     private final PolygonRepository polygonRepository;
     
+    private final RawRecordRepository rawRepository;
+    
+    private final VideoRecordRepository videoRecordRepository;
+    
     private final AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository;
 
-    public AnalyzeOrderResource(AnalyzeOrderRepository analyzeOrderRepository,  ObjectMapper objectMapper, LineRepository lineRepository, PolygonRepository polygonRepository, AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository) {
+    public AnalyzeOrderResource(AnalyzeOrderRepository analyzeOrderRepository,  ObjectMapper objectMapper, LineRepository lineRepository, 
+    		PolygonRepository polygonRepository, AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository,RawRecordRepository rawRepository, VideoRecordRepository videoRecordRepository) {
         this.analyzeOrderRepository = analyzeOrderRepository;
         this.objectMapper = objectMapper;
         this.lineRepository = lineRepository;
         this.polygonRepository = polygonRepository;
         this.analyzeOrderDetailsRepository = analyzeOrderDetailsRepository;
+        this.rawRepository = rawRepository;
+        this.videoRecordRepository = videoRecordRepository;
     }
 
     /**
@@ -84,7 +97,7 @@ public class AnalyzeOrderResource {
         if (analyzeOrder.getId() != null) {
             throw new BadRequestAlertException("A new analyzeOrder cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        
+        analyzeOrder.setState(AnalyzeState.NOT_PROCESSED);
         AnalyzeOrder result = analyzeOrderRepository.save(analyzeOrder);
         
         List<Line> lines = lineRepository.getLineListByScenarioId(result.getScenario().getId());
@@ -164,4 +177,63 @@ public class AnalyzeOrderResource {
         analyzeOrderRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-}
+    
+    @GetMapping("/analyze-orders/checkUnprocessedOrders")
+    @Timed
+    public ResponseEntity<Void> checkUnprocessedOrdersServlet() {
+    	checkUnprocessedOrders();
+    	return ResponseEntity.ok().build();
+    }
+    
+    //@Scheduled(fixedRate = 60000)
+    public void checkUnprocessedOrders() {
+    	List<AnalyzeOrder> list = analyzeOrderRepository.findByState(AnalyzeState.ANALYZE_COMPLETED);
+    	Map<String,Line> lines = prepareLineList();
+    	
+    	for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			AnalyzeOrder analyzeOrder = (AnalyzeOrder) iterator.next();
+			Pageable  pageRequest = new PageRequest(0, 1000);
+			Page<RawRecord> rawRecords = rawRepository.findBySessionId(pageRequest,analyzeOrder.getId().toString(),false);
+			for (Iterator iterator2 = rawRecords.iterator(); iterator2.hasNext();) {
+				RawRecord rawRecord = (RawRecord) iterator2.next();
+				
+				Line line = lines.get(rawRecord.getEntry()+"-"+rawRecord.getExit());
+				insertVideoRecord(rawRecord, analyzeOrder,line);
+				rawRecord.setMoved(true);
+				rawRepository.save(rawRecord);
+			}
+			
+			rawRecords = rawRepository.findBySessionId(pageRequest,analyzeOrder.getId().toString(),false);
+			if(rawRecords.getContent().size()==0) {
+				analyzeOrder.setState(AnalyzeState.ERROR);
+				analyzeOrderRepository.save(analyzeOrder);
+			}
+				
+    	}
+    	
+    }
+    
+    private Map<String,Line> prepareLineList(){
+    	Map<String,Line> result = new HashMap<String, Line>();
+    	List<Line> lines = lineRepository.findAll();
+    	for (Iterator iterator = lines.iterator(); iterator.hasNext();) {
+			Line line = (Line) iterator.next();
+			result.put(line.getStartPolygon().getId()+"-"+line.getEndPolygon().getId(), line);
+		}
+    	
+    	return result;
+    }
+    
+    private void insertVideoRecord(RawRecord rawRecord,AnalyzeOrder analyzeOrder,Line line) {
+    	VideoRecord videoRecord = new VideoRecord();
+    	videoRecord.setAnalyze(analyzeOrder);
+    	videoRecord.setInsertDate(rawRecord.getTime());
+    	videoRecord.setSpeed(rawRecord.getSpeed());
+    	videoRecord.setVehicleType(rawRecord.getObjectType());
+    	videoRecord.setLine(line);
+    	videoRecord.setDuration(100l);
+    	videoRecordRepository.save(videoRecord);
+    }
+}  
+    
+    

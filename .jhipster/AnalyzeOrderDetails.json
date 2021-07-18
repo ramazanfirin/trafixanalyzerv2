@@ -35,11 +35,6 @@
             "fieldTypeBlobContent": "text"
         },
         {
-            "fieldName": "state",
-            "fieldType": "AnalyzeState",
-            "fieldValues": "NOT_PROCESSED,STARTED,ANALYZE_COMPLETED,PROCESS_COMPLETED,ERROR"
-        },
-        {
             "fieldName": "errorMessage",
             "fieldType": "String"
         },

@@ -32,7 +32,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 /**
  * Test class for the AnalyzeOrderDetailsResource REST controller.
  *
@@ -62,9 +61,6 @@ public class AnalyzeOrderDetailsResourceIntTest {
 
     private static final String DEFAULT_JSON_DATA = "AAAAAAAAAA";
     private static final String UPDATED_JSON_DATA = "BBBBBBBBBB";
-
-    private static final AnalyzeState DEFAULT_STATE = AnalyzeState.NOT_PROCESSED;
-    private static final AnalyzeState UPDATED_STATE = AnalyzeState.STARTED;
 
     private static final String DEFAULT_ERROR_MESSAGE = "AAAAAAAAAA";
     private static final String UPDATED_ERROR_MESSAGE = "BBBBBBBBBB";
@@ -126,7 +122,6 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .directions(DEFAULT_DIRECTIONS)
             .speed(DEFAULT_SPEED)
             .jsonData(DEFAULT_JSON_DATA)
-            .state(DEFAULT_STATE)
             .errorMessage(DEFAULT_ERROR_MESSAGE)
             .startDate(DEFAULT_START_DATE)
             .endDate(DEFAULT_END_DATE)
@@ -162,7 +157,6 @@ public class AnalyzeOrderDetailsResourceIntTest {
         assertThat(testAnalyzeOrderDetails.getDirections()).isEqualTo(DEFAULT_DIRECTIONS);
         assertThat(testAnalyzeOrderDetails.getSpeed()).isEqualTo(DEFAULT_SPEED);
         assertThat(testAnalyzeOrderDetails.getJsonData()).isEqualTo(DEFAULT_JSON_DATA);
-        assertThat(testAnalyzeOrderDetails.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testAnalyzeOrderDetails.getErrorMessage()).isEqualTo(DEFAULT_ERROR_MESSAGE);
         assertThat(testAnalyzeOrderDetails.getStartDate()).isEqualTo(DEFAULT_START_DATE);
         assertThat(testAnalyzeOrderDetails.getEndDate()).isEqualTo(DEFAULT_END_DATE);
@@ -207,7 +201,6 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .andExpect(jsonPath("$.[*].directions").value(hasItem(DEFAULT_DIRECTIONS.toString())))
             .andExpect(jsonPath("$.[*].speed").value(hasItem(DEFAULT_SPEED.toString())))
             .andExpect(jsonPath("$.[*].jsonData").value(hasItem(DEFAULT_JSON_DATA.toString())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
             .andExpect(jsonPath("$.[*].errorMessage").value(hasItem(DEFAULT_ERROR_MESSAGE.toString())))
             .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
             .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
@@ -233,7 +226,6 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .andExpect(jsonPath("$.directions").value(DEFAULT_DIRECTIONS.toString()))
             .andExpect(jsonPath("$.speed").value(DEFAULT_SPEED.toString()))
             .andExpect(jsonPath("$.jsonData").value(DEFAULT_JSON_DATA.toString()))
-            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
             .andExpect(jsonPath("$.errorMessage").value(DEFAULT_ERROR_MESSAGE.toString()))
             .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
             .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
@@ -268,7 +260,6 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .directions(UPDATED_DIRECTIONS)
             .speed(UPDATED_SPEED)
             .jsonData(UPDATED_JSON_DATA)
-            .state(UPDATED_STATE)
             .errorMessage(UPDATED_ERROR_MESSAGE)
             .startDate(UPDATED_START_DATE)
             .endDate(UPDATED_END_DATE)
@@ -291,7 +282,6 @@ public class AnalyzeOrderDetailsResourceIntTest {
         assertThat(testAnalyzeOrderDetails.getDirections()).isEqualTo(UPDATED_DIRECTIONS);
         assertThat(testAnalyzeOrderDetails.getSpeed()).isEqualTo(UPDATED_SPEED);
         assertThat(testAnalyzeOrderDetails.getJsonData()).isEqualTo(UPDATED_JSON_DATA);
-        assertThat(testAnalyzeOrderDetails.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testAnalyzeOrderDetails.getErrorMessage()).isEqualTo(UPDATED_ERROR_MESSAGE);
         assertThat(testAnalyzeOrderDetails.getStartDate()).isEqualTo(UPDATED_START_DATE);
         assertThat(testAnalyzeOrderDetails.getEndDate()).isEqualTo(UPDATED_END_DATE);

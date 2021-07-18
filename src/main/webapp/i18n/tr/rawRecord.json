@@ -20,7 +20,8 @@
             "objectType": "Object Type",
             "speed": "Speed",
             "entry": "Entry",
-            "exit": "Exit"
+            "exit": "Exit",
+            "moved": "Moved"
         }
     }
 }

@@ -25,6 +25,10 @@
         {
             "fieldName": "exit",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "moved",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20210716122527",

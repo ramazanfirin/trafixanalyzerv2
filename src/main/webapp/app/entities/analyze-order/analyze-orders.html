@@ -19,6 +19,7 @@
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="state"><span data-translate="trafficanalzyzerv2App.analyzeOrder.state">State</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.analyzeOrder.video">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="scenario.id"><span data-translate="trafficanalzyzerv2App.analyzeOrder.scenario">Scenario</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="orderDetails.id"><span data-translate="trafficanalzyzerv2App.analyzeOrder.orderDetails">Order Details</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -28,6 +29,7 @@
             <tbody>
                 <tr ng-repeat="analyzeOrder in vm.analyzeOrders track by analyzeOrder.id">
                     <td><a ui-sref="analyze-order-detail({id:analyzeOrder.id})">{{analyzeOrder.id}}</a></td>
+                    <td data-translate="{{'trafficanalzyzerv2App.AnalyzeState.' + analyzeOrder.state}}">{{analyzeOrder.state}}</td>
                     <td>
                         <a ui-sref="video-detail({id:analyzeOrder.video.id})">{{analyzeOrder.video.name}}</a>
                     </td>

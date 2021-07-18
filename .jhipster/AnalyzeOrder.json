@@ -20,7 +20,13 @@
             "otherEntityField": "id"
         }
     ],
-    "fields": [],
+    "fields": [
+        {
+            "fieldName": "state",
+            "fieldType": "AnalyzeState",
+            "fieldValues": "NOT_PROCESSED,STARTED,ANALYZE_COMPLETED,PROCESS_COMPLETED,ERROR"
+        }
+    ],
     "changelogDate": "20210716122529",
     "entityTableName": "analyze_order",
     "dto": "no",

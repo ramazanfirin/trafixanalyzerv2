@@ -15,6 +15,7 @@
             "detail": {
                 "title": "Analyze Order"
             },
+            "state": "State",
             "video": "Video",
             "scenario": "Scenario",
             "orderDetails": "Order Details"

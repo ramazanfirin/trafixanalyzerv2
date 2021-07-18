@@ -46,6 +46,7 @@
                 }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('analyzeOrder');
+                    $translatePartialLoader.addPart('analyzeState');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
@@ -68,6 +69,7 @@
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('analyzeOrder');
+                    $translatePartialLoader.addPart('analyzeState');
                     return $translate.refresh();
                 }],
                 entity: ['$stateParams', 'AnalyzeOrder', function($stateParams, AnalyzeOrder) {
@@ -124,6 +126,7 @@
                     resolve: {
                         entity: function () {
                             return {
+                                state: null,
                                 id: null
                             };
                         }

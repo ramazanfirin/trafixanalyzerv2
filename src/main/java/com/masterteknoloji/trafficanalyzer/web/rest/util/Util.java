@@ -164,7 +164,6 @@ public class Util {
 		
 		result.setCount(true);
 		result.setStartDate(Instant.now());
-		result.setState(AnalyzeState.NOT_PROCESSED);
 		result.setSessionId(sessionId);
 		result.setVideoPath(videoPath);
 		

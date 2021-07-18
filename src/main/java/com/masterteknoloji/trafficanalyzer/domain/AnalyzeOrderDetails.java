@@ -9,8 +9,6 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
-import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
-
 /**
  * A AnalyzeOrderDetails.
  */
@@ -49,10 +47,6 @@ public class AnalyzeOrderDetails implements Serializable {
     @Lob
     @Column(name = "json_data")
     private String jsonData;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "state")
-    private AnalyzeState state;
 
     @Column(name = "error_message")
     private String errorMessage;
@@ -169,19 +163,6 @@ public class AnalyzeOrderDetails implements Serializable {
         this.jsonData = jsonData;
     }
 
-    public AnalyzeState getState() {
-        return state;
-    }
-
-    public AnalyzeOrderDetails state(AnalyzeState state) {
-        this.state = state;
-        return this;
-    }
-
-    public void setState(AnalyzeState state) {
-        this.state = state;
-    }
-
     public String getErrorMessage() {
         return errorMessage;
     }
@@ -279,7 +260,6 @@ public class AnalyzeOrderDetails implements Serializable {
             ", directions='" + getDirections() + "'" +
             ", speed='" + getSpeed() + "'" +
             ", jsonData='" + getJsonData() + "'" +
-            ", state='" + getState() + "'" +
             ", errorMessage='" + getErrorMessage() + "'" +
             ", startDate='" + getStartDate() + "'" +
             ", endDate='" + getEndDate() + "'" +

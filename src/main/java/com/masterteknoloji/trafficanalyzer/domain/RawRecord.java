@@ -41,6 +41,9 @@ public class RawRecord implements Serializable {
     @Column(name = "jhi_exit")
     private String exit;
 
+    @Column(name = "moved")
+    private Boolean moved;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -127,6 +130,19 @@ public class RawRecord implements Serializable {
     public void setExit(String exit) {
         this.exit = exit;
     }
+
+    public Boolean isMoved() {
+        return moved;
+    }
+
+    public RawRecord moved(Boolean moved) {
+        this.moved = moved;
+        return this;
+    }
+
+    public void setMoved(Boolean moved) {
+        this.moved = moved;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -159,6 +175,7 @@ public class RawRecord implements Serializable {
             ", speed=" + getSpeed() +
             ", entry='" + getEntry() + "'" +
             ", exit='" + getExit() + "'" +
+            ", moved='" + isMoved() + "'" +
             "}";
     }
 }
