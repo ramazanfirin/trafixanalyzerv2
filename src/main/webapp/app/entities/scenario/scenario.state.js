@@ -188,6 +188,31 @@
                 });
             }]
         })
+        .state('scenario.preview', {
+            parent: 'scenario',
+            url: '/{id}/preview',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/scenario/scenario-dialog-preview.html',
+                    controller: 'ScenarioDialogPreviewController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['Scenario', function(Scenario) {
+                            return Scenario.get({id : $stateParams.id}).$promise;
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('scenario', null, { reload: 'scenario' });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
+        })
         .state('scenario.edit.speed', {
             parent: 'scenario',
             url: '/{id}/editspeed',
