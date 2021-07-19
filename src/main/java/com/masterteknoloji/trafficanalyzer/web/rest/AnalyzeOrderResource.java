@@ -1,6 +1,12 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
 import java.net.URI;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -72,6 +78,8 @@ public class AnalyzeOrderResource {
     
     private final AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository;
 
+    DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    
     public AnalyzeOrderResource(AnalyzeOrderRepository analyzeOrderRepository,  ObjectMapper objectMapper, LineRepository lineRepository, 
     		PolygonRepository polygonRepository, AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository,RawRecordRepository rawRepository, VideoRecordRepository videoRecordRepository) {
         this.analyzeOrderRepository = analyzeOrderRepository;
@@ -231,8 +239,26 @@ public class AnalyzeOrderResource {
     	videoRecord.setSpeed(rawRecord.getSpeed());
     	videoRecord.setVehicleType(rawRecord.getObjectType());
     	videoRecord.setLine(line);
-    	videoRecord.setDuration(100l);
+    	videoRecord.setDuration(prepareDuration(rawRecord.getTime()));
     	videoRecordRepository.save(videoRecord);
+    }
+    
+    private Long prepareDuration(Instant date)  {
+    	
+//    	if(dateValue.length()==14)
+//    	 	dateValue = dateValue.substring(0,11);
+//    	 else if(dateValue.length()==7) {
+//    		dateValue = dateValue+".000";
+//    	 }
+    	
+    	//Date date = sdf.parse("1970-01-01 0"+dateValue);
+    	//return date.getTime();
+    	
+    	Instant one = Instant.now();
+    	Duration res = Duration.between(one, date);
+    	Long sec = res.getSeconds();
+    	
+    	return 100l;
     }
 }  
     
