@@ -193,6 +193,15 @@ public class AnalyzeOrderResource {
     	return ResponseEntity.ok().build();
     }
     
+    @GetMapping("/analyze-orders/getResultOfAnalyzeOrder/{id}")
+    @Timed
+    public ResponseEntity<Void> getResultOfAnalyzeOrder(@PathVariable Long id) {
+    	checkUnprocessedOrders();
+    	return ResponseEntity.ok().build();
+    }
+    
+    
+    
     //@Scheduled(fixedRate = 60000)
     public void checkUnprocessedOrders() {
     	List<AnalyzeOrder> list = analyzeOrderRepository.findByState(AnalyzeState.ANALYZE_COMPLETED);

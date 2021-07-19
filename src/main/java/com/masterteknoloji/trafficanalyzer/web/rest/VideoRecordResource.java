@@ -1,13 +1,15 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
+import java.math.BigInteger;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
-import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
-import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
-import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,14 +17,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
+import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
+import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
+import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
+import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
+import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.VideoRecordSummaryVM;
 
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing VideoRecord.
@@ -124,5 +136,23 @@ public class VideoRecordResource {
         log.debug("REST request to delete VideoRecord : {}", id);
         videoRecordRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    @GetMapping("/video-records/getResultOfAnalyzeOrder/{id}")
+    @Timed
+    public List<VideoRecordSummaryVM> getResultOfAnalyzeOrder(@PathVariable Long id) {
+    	
+    	List<VideoRecordSummaryVM> result = new ArrayList<VideoRecordSummaryVM>();
+    	
+    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getResultOfOrderReport(id);
+    	for (Map<String, Object> map : videoRecords) {
+    		VideoRecordSummaryVM videoRecordSummaryVM = new VideoRecordSummaryVM();
+    		videoRecordSummaryVM.setCount((BigInteger)map.get("counts"));
+    		videoRecordSummaryVM.setDate(map.get("grouptime"));
+    		videoRecordSummaryVM.setDirectionName((String)map.get("line"));
+    		videoRecordSummaryVM.setType((String)map.get("type"));
+    		result.add(videoRecordSummaryVM);
+		}
+    	return result;
     }
 }

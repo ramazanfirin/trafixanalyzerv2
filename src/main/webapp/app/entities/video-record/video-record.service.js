@@ -11,6 +11,7 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'getResultOfAnalyzeOrder': { method: 'GET', isArray: true,url:'/api/video-records/getResultOfAnalyzeOrder/:id'},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

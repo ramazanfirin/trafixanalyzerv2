@@ -1,0 +1,490 @@
+<style>
+
+
+</style>
+<form name="editForm" id="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myScenarioLabel" data-translate="trafficanalzyzerv2App.scenario.home.createOrEditLabel">Create or edit a Scenario</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.scenario.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.scenario.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.scenario.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name" readonly
+                    ng-model="vm.scenario.name"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.scenario.video" for="field_video">Video</label>
+            <select disabled class="form-control" id="field_video" name="video" ng-model="vm.scenario.video" ng-change="vm.update()" ng-options="video as video.name for video in vm.videos track by video.id">
+                <option value=""></option>
+            </select>
+            <span>{{vm.selectVideoMessage}}</span>
+        </div>
+        
+        <div class="form-group">
+<!--         	<img ng-src="content/images/kale.JPG" width="640" height="480"> -->
+			<div id="containerKonva"></div>
+			<div id="buttons">
+<!-- 			      <span>{{vm.addMessage}}</span> -->
+<!-- 			      <input type="button" id="add" value="Seçime Basla" ng-click="vm.addPolygon()" ng-show = "!vm.adding"/> -->
+			      <input type="button" id="save" value="Kaydet" ng-click="vm.showPopup()" ng-show = "vm.adding" data-target="#modal"/>
+			      <input type="button" id="Ä°ptal" value="Ä°ptal" onclick="cancelSelections()" ng-click="vm.cancelPolygon();" ng-show = "vm.adding"/>
+			    </div>
+        </div>
+        
+  
+  
+  <div class="table-responsive">
+        <table id="tableData" class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="">Tarih Araligi</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="insertDate"><span data-translate="">Tip</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="vehicleType"><span data-translate="">Sayi</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="videoRecord in vm.report ">
+                    <td>{{videoRecord.date | date:'medium'}}</td>
+                    <td>{{videoRecord.directionName}}</td>
+                    <td>{{videoRecord.type}}</td>
+                    <td>{{videoRecord.count}}</td>
+                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+        
+    </div>
+     <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+
+    
+    <div id="myModal" class="modal-new">
+
+  <!-- Modal content -->
+  <div class="modal-content-new">
+    <span class="close">&times;</span>
+    <h1>Çizgi Tanımlama</h1>
+    <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.scenario.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.addLineName"
+                    />
+        </div>
+    <div class="clearfix">
+        <button type="button" id="cancelBtn"  ng-click="vm.hidePopup()" class="cancelbtn">Cancel</button>
+        <button type="button" id="submitBtn"  ng-click="vm.addLine()" class="deletebtn">Kaydet</button>
+      </div>
+  </div>
+
+</div>
+</form>
+
+<script>
+
+//Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+var cancelBtn = document.getElementById("cancelBtn");
+var createBtn = document.getElementById("createBtn");
+// Get the <span> element that closes the modal
+//var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+// btn.onclick = function() {
+// 	//alert('sdfsdf');
+//   modal.style.display = "block";
+// }
+
+// document.getElementById('cancelBtn').addEventListener('click', function() {
+// 	modal.style.display = "none";
+// }, false);
+
+// document.getElementById('submitBtn').addEventListener('click', function() {
+// 	  modal.style.display = "none";
+// }, false);
+
+
+
+// When the user clicks on <span> (x), close the modal
+// span.onclick = function() {
+//   modal.style.display = "none";
+// }
+
+// When the user clicks anywhere outside of the modal, close it
+// window.onclick = function(event) {
+//   if (event.target == modal) {
+//     modal.style.display = "none";
+//   }
+// }
+
+var selectedPolygons = [];
+var points = [];
+//var polygons = [];
+var poly = null;
+var polygonListOnScreen=[];
+var lineListOnScreen=[];
+var textListOnScreen=[];
+
+var width = window.innerWidth;
+var height = window.innerHeight;
+
+var stage = new Konva.Stage({
+	container : 'containerKonva',
+	width : 832, // 64x13
+	height : 468, // 36x13
+});
+
+var layerImage = new Konva.Layer();
+var layer = new Konva.Layer();
+
+var darthVaderImg = new Konva.Image({
+	width : 832, // 64x13
+	height : 468, // 36x13
+	z : -1
+});
+
+var scope = angular.element(document.getElementById("editForm")).scope();
+//alert(scope.vm.polygons.length);
+console.log("from script:"+scope.vm.polygons.length);
+
+var imageObj1 = new Image();
+if(scope.vm.scenario!=null && scope.vm.scenario.id != null)
+	imageObj1.src = "http://localhost:8080/api/scenarios/getScreenShoot/"+scope.vm.scenario.id;
+
+
+imageObj1.onload = function() {
+	darthVaderImg.image(imageObj1);
+	layerImage.draw();
+};
+
+//imageObj1.src = 'http://localhost:8080/api/videos/image/1'
+
+
+
+layerImage.add(darthVaderImg);
+
+stage.add(layerImage);
+stage.add(layer);
+
+    var tempId = 0;
+
+	
+// 	document.getElementById('add').addEventListener('click', function() {
+// 		console.log("addLine called");
+// 		tempId = tempId + 1;
+		
+// 		poly = createPolygon(tempId);
+// 		//alert(poly);
+// 		return poly;
+// 	}, false);
+	
+// 	document.getElementById('save').addEventListener('click', function() {
+// 		console.log("addLine called");
+// 		if(selectedPolygons.length !=2){
+// 			alert("2 adet polygon secmelisiniz");
+// 			return;
+// 		}
+// 	}, false);
+
+	
+	stage.on('click', function() {
+// 		var pos = layer.getRelativePointerPosition();
+// 		console.log("poly "+poly);
+
+// 		if ((typeof (poly) !== 'undefined') && (poly !== null)) {
+// 			addPoint(pos.x, pos.y);
+
+// 		} else {
+// 			alert("Nokta eklemek icin, Ekle butonuna basiniz");
+// 		}
+	});
+	
+	
+	scope.$on('ploygonDataReceived', function(params){
+		//alert(scope.vm.polygons.length); 
+	
+		for(var i=0;i<scope.vm.polygons.length;i++){
+			var polyFromDB = scope.vm.polygons[i];
+			poly = createPolygon(polyFromDB.id);
+			tempId = tempId + 1;
+			
+			var allCoords = polyFromDB.points.split(";");
+			for(var y=0;y<allCoords.length;y++){
+				var pointCoords = allCoords[y].split(",");
+				var pointx = pointCoords[0];
+				var pointy = pointCoords[1];
+				addPoint(pointx,pointy);
+				
+				//console.log(pointx +" "+pointy);	
+			}
+			points=[];
+			;
+		}
+		poly = null;
+	});
+	
+	scope.$on('speedPloygonDataReceived', function(params){
+		//alert(scope.vm.polygons.length); 
+	console.log("speedPloygonDataReceived");
+		for(var i=0;i<scope.vm.speedPolygons.length;i++){
+			var polyFromDB = scope.vm.speedPolygons[i];
+			console.log(polyFromDB);
+			poly = createPolygon(polyFromDB.id);
+			tempId = tempId + 1;
+			poly.attrs.id="HIZ"
+			
+			var allCoords = polyFromDB.points.split(";");
+			for(var y=0;y<allCoords.length;y++){
+				var pointCoords = allCoords[y].split(",");
+				var pointx = pointCoords[0];
+				var pointy = pointCoords[1];
+				addPoint(pointx,pointy);
+				
+				//console.log(pointx +" "+pointy);	
+			}
+			points=[];
+			;
+		}
+		poly = null;
+	});
+	
+	scope.$on('lineDataReceived', function(params){
+		console.log("lineDataReceived");
+	    console.log("lines"+" "+scope.vm.lines);
+		for(var i=0;i<scope.vm.lines.length;i++){
+			var line = scope.vm.lines[i];
+			var linePoly = createLinePolygon(line.id);
+			linePoly.fill("yellow");
+			tempId = tempId + 1;
+			
+			var allCoords = line.calculatedPolygon.points.split(";");
+			console.log(allCoords);
+			var totalx = 0;
+			var totaly = 0;
+			for(var y=0;y<allCoords.length;y++){
+				var pointCoords = allCoords[y].split(",");
+				var pointx = pointCoords[0];
+				var pointy = pointCoords[1];
+				totalx= totalx +parseInt(pointx);
+				totaly= totaly +parseInt(pointy);
+				
+				console.log("pointx "+ pointx);
+				console.log("pointy "+ pointy);
+				
+				linePoly.attrs.points.push(pointx);
+				linePoly.attrs.points.push(pointy);
+			}
+		
+			disabledPolygon(line.startPolygon.id);
+			disabledPolygon(line.endPolygon.id);
+			
+			var centerx = totalx / allCoords.length;
+			var centery = totaly / allCoords.length;
+			
+			createText(centerx,centery,line.name);
+// 			console.log(totalx+ " " +totaly+ " "+line.name);
+// 			console.log(centerx+ " " +centery+ " "+line.name);
+			
+			drawDirectionArrow(line);
+			points=[];
+			
+		}
+		
+		
+		
+		
+		poly = null;
+	});
+	
+	
+	function drawDirectionArrow(line){
+		var poly1 = getPolygonById(line.startPolygon.id);
+		var poly2 = getPolygonById(line.endPolygon.id);
+		
+		var box1 = poly1.getClientRect();
+		var box2 = poly2.getClientRect();
+		
+		var arrow = new Konva.Arrow({
+	        points: [box1.x + box1.width / 2, box1.y + box1.height / 2, box2.x + box2.width / 2, box2.y + box2.height / 2],
+	        //pointerLength: 20,
+	        //pointerWidth: 20,
+	        fill: 'black',
+	        stroke: 'black',
+	        strokeWidth: 2,
+	      });
+		
+		layer.add(arrow);
+	}
+	
+	
+	function getPolygonById(polygonId){
+		var result ;
+		for(var i=0;i<polygonListOnScreen.length;i++){
+			console.log("disabledPolygon:polygonListOnScreen "+polygonListOnScreen[i].attrs.id)
+			if(polygonListOnScreen[i].attrs.id==polygonId){
+					result = polygonListOnScreen[i];
+			}
+		}	
+		return result;
+	}
+	
+	function disabledPolygon(polygonId){
+		console.log("disabledPolygon:polygonId "+polygonId)
+		for(var i=0;i<polygonListOnScreen.length;i++){
+			console.log("disabledPolygon:polygonListOnScreen "+polygonListOnScreen[i].attrs.id)
+			if(polygonListOnScreen[i].attrs.id==polygonId){
+				polygonListOnScreen[i].attrs.selectable=false;
+				polygonListOnScreen[i].fill(null);
+				polygonListOnScreen[i].stroke(null);
+				console.log("disabledPolygon:disabled edildi "+polygonListOnScreen[i].attrs.id);
+// 				polygonListOnScreen[i].destroy();
+// 				layer.draw();
+			}	
+		}
+	}
+	
+	console.log(scope);
+	function addPoint(pointx, pointy) {
+		points.push(parseInt(pointx, 10)+","+parseInt(pointy, 10));
+		console.log(points);
+
+		poly.attrs.points.push(pointx);
+		poly.attrs.points.push(pointy);
+
+		if (points.length == 2) {
+			createText(pointx,pointy,poly.attrs.id);
+		}
+
+		layer.draw();
+
+	}
+	
+	function createLinePolygon(id){
+		var polyNew = new Konva.Line({
+			points : [],
+			fill : 'lightgreen',
+			stroke : 'lightgreen',
+			//strokeWidth: 5,
+			draggable : false,
+			closed : true,
+			opacity : 0.5,
+		//tension:5
+		//id :"1"
+		});
+		//console.log("polygonId="+id);
+		lineListOnScreen.push(polyNew);
+		polyNew.id(id);
+		layer.add(polyNew);
+		return polyNew;
+	}	
+	
+	function createPolygon(id){
+		var polyNew = new Konva.Line({
+			points : [],
+			fill : 'lightgreen',
+			stroke : 'lightgreen',
+			//strokeWidth: 5,
+			draggable : false,
+			closed : true,
+			opacity : 0.5,
+		//tension:5
+		//id :"1"
+		});
+		//console.log("polygonId="+id);
+		polygonListOnScreen.push(polyNew);
+		polyNew.id(id);
+		layer.add(polyNew);
+		polyNew.attrs.selectable = true;
+		
+		polyNew.on('mousedown', function () {
+// 	        console.log('Mouseup circle');
+// 	        console.log(this.attrs.fill);
+// 	        console.log(this);
+
+			if(!this.attrs.selectable)
+				return;
+			
+			if(scope.vm.adding == false){
+				alert("Çizgi eklemek icin, Secime Basla butonuna basiniz");
+				return;
+			}
+
+			
+	        
+			if(this.attrs.selected == null || this.attrs.selected == false){
+				if(selectedPolygons.length >1){
+					alert("En fazla 2 polygon secilebilir");
+					return;
+				}
+				this.attrs.selected=true;
+	        	this.fill("red");
+	        	selectedPolygons.push(this);
+	        }else{
+	          	this.attrs.selected=false;
+	        	this.fill("lightgreen");
+	        	removeFromSelectedList(this);
+	        	return;
+	        }	
+			
+			
+	        console.log(this.attrs.selected);
+	        
+		});
+		
+		return polyNew;
+	}
+	
+	function removeFromSelectedList(polygon){
+		for(var i=0;i<selectedPolygons.length;i++){
+			console.log(selectedPolygons[i].attrs.id+ "- "+ polygon.attrs.id);
+			if(selectedPolygons[i].attrs.id== polygon.attrs.id)
+				selectedPolygons.splice(i);
+		}
+	}
+	
+	function cancelSelections(){
+		console.log("cancel selection");
+		for(var i=0;i<selectedPolygons.length;i++){
+			selectedPolygons[i].fill("lightgreen");;
+		}
+		
+		selectedPolygons = [];	
+	}
+	
+	function createText(pointx,pointy,text){
+		//alert(text);
+		var simpleText = new Konva.Text({
+			x : pointx,
+			y : pointy,
+			text : '1',
+			fontSize : 15,
+			fontFamily : 'Calibri',
+			fill : 'red',
+		});
+		
+		textListOnScreen.push(simpleText);
+		simpleText.text(text);
+		layer.add(simpleText);
+	}
+</script>

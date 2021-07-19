@@ -110,6 +110,7 @@
                 });
             }]
         })
+        
         .state('analyze-order.new', {
             parent: 'analyze-order',
             url: '/new',
@@ -148,6 +149,31 @@
                 $uibModal.open({
                     templateUrl: 'app/entities/analyze-order/analyze-order-dialog.html',
                     controller: 'AnalyzeOrderDialogController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['AnalyzeOrder', function(AnalyzeOrder) {
+                            return AnalyzeOrder.get({id : $stateParams.id}).$promise;
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('analyze-order', null, { reload: 'analyze-order' });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
+        })
+        .state('analyze-order.result', {
+            parent: 'analyze-order',
+            url: '/{id}/result',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/analyze-order/anaylze-order-result.html',
+                    controller: 'AnalyzeOrderResultController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
