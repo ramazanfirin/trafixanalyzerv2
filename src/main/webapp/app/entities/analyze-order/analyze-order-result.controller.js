@@ -10,6 +10,7 @@
     function AnalyzeOrderResultController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line, VideoRecord) {
         var vm = this;
 
+		vm.analyzeOrder = entity;
         vm.scenario = entity.scenario;
         vm.clear = clear;
         vm.save = save;
@@ -187,7 +188,7 @@
         }
 
         function save () {
-         $uibModalInstance.close();
+//         $uibModalInstance.close();
 //            vm.isSaving = true;
 //            if (vm.scenario.id !== null) {
 //                Scenario.update(vm.scenario, onSaveSuccess, onSaveError);

@@ -1,15 +1,23 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,9 +35,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
+import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
+import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
+import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
+import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
+import com.masterteknoloji.trafficanalyzer.web.rest.util.ExcelExporter;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.VideoRecordSummaryVM;
@@ -48,9 +61,15 @@ public class VideoRecordResource {
     private static final String ENTITY_NAME = "videoRecord";
 
     private final VideoRecordRepository videoRecordRepository;
+    
+    private final AnalyzeOrderRepository analyzeOrderRepository;
+    
+    private final LineRepository lineRepository;
 
-    public VideoRecordResource(VideoRecordRepository videoRecordRepository) {
+    public VideoRecordResource(VideoRecordRepository videoRecordRepository,AnalyzeOrderRepository analyzeOrderRepository,LineRepository lineRepository) {
         this.videoRecordRepository = videoRecordRepository;
+        this.analyzeOrderRepository = analyzeOrderRepository;
+        this.lineRepository = lineRepository;
     }
 
     /**
@@ -154,5 +173,60 @@ public class VideoRecordResource {
     		result.add(videoRecordSummaryVM);
 		}
     	return result;
+    }
+
+    @GetMapping("/video-records/getResultOfAnalyzeOrderAndLineId/{id}/{lineId}")
+    @Timed
+    public List<VideoRecordSummaryVM> getResultOfAnalyzeOrder(@PathVariable Long id,@PathVariable Long lineId) {
+    	
+    	List<VideoRecordSummaryVM> result = new ArrayList<VideoRecordSummaryVM>();
+    	
+    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getResultOfOrderReport(id,lineId);
+    	for (Map<String, Object> map : videoRecords) {
+    		VideoRecordSummaryVM videoRecordSummaryVM = new VideoRecordSummaryVM();
+    		videoRecordSummaryVM.setCount((BigInteger)map.get("counts"));
+    		videoRecordSummaryVM.setDate(map.get("grouptime"));
+    		videoRecordSummaryVM.setDirectionName((String)map.get("line"));
+    		videoRecordSummaryVM.setType((String)map.get("type"));
+    		result.add(videoRecordSummaryVM);
+		}
+    	return result;
+    }
+    
+    @GetMapping("/video-records/generateExcelFile/{id}")
+    @Timed
+    public void generateExcelFile(@PathVariable Long id,HttpServletResponse response) throws IOException {
+    	
+    	
+    	response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+         
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=analyze_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+         
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        ExcelExporter excelExporter = new ExcelExporter();
+        
+        AnalyzeOrder analyzeOrder = analyzeOrderRepository.findOne(id);
+    	List<VideoRecordSummaryVM> result = getResultOfAnalyzeOrder(id);
+        XSSFSheet allSheet = excelExporter.createSheet(workbook, "All");
+        excelExporter.writeData(workbook, allSheet, result);
+        
+        List<Line> lines = lineRepository.getLineListByScenarioId(analyzeOrder.getScenario().getId());
+        for (Iterator iterator = lines.iterator(); iterator.hasNext();) {
+			Line line = (Line) iterator.next();
+			List<VideoRecordSummaryVM> tempList = getResultOfAnalyzeOrder(id, line.getId());
+			XSSFSheet sheetTemp = excelExporter.createSheet(workbook, line.getName());
+			excelExporter.writeData(workbook, sheetTemp, tempList);
+		}
+        
+        excelExporter.export(workbook,response);   
+    	
+    }
+    
+    public void calculateTotalForSheet() {
+    	
     }
 }
