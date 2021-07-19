@@ -108,7 +108,8 @@
             "speed": "Hız Ayarları",
             "direction": "Yön Ayarları",
             "polygon": "Polygon Ayarları",
-            "line": ": Çizgi Ayarları"
+            "line": ": Çizgi Ayarları",
+            "viewReport": "Raporu Görüntüle"
         },
         "detail": {
             "field": "Alan",

@@ -108,7 +108,8 @@
             "speed": "Speed Settings",
             "direction": "Direction Settings",
             "polygon": "Polygon Settings",
-            "line": "Line Settings"
+            "line": "Line Settings",
+            "viewReport": "View report"
         },
         "detail": {
             "field": "Field",
