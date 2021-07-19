@@ -213,7 +213,7 @@ public class AnalyzeOrderResource {
 			
 			rawRecords = rawRepository.findBySessionId(pageRequest,analyzeOrder.getId().toString(),false);
 			if(rawRecords.getContent().size()==0) {
-				analyzeOrder.setState(AnalyzeState.ERROR);
+				analyzeOrder.setState(AnalyzeState.PROCESS_COMPLETED);
 				analyzeOrderRepository.save(analyzeOrder);
 			}
 				
