@@ -124,6 +124,10 @@ enum AnalyzeState {
   ERROR
 }
 
+entity FileUploadTest{
+	file ImageBlob
+}
+
 relationship ManyToOne {
 	Location{district} to District
 	District{city} to City

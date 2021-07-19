@@ -1,0 +1,21 @@
+{
+    "trafficanalzyzerv2App": {
+        "fileUploadTest" : {
+            "home": {
+                "title": "File Upload Tests",
+                "createLabel": "Create a new File Upload Test",
+                "createOrEditLabel": "Create or edit a File Upload Test"
+            },
+            "created": "A new File Upload Test is created with identifier {{ param }}",
+            "updated": "A File Upload Test is updated with identifier {{ param }}",
+            "deleted": "A File Upload Test is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete File Upload Test {{ id }}?"
+            },
+            "detail": {
+                "title": "File Upload Test"
+            },
+            "file": "File"
+        }
+    }
+}

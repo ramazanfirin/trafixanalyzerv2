@@ -1,0 +1,17 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "file",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        }
+    ],
+    "changelogDate": "20210719195347",
+    "entityTableName": "file_upload_test",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

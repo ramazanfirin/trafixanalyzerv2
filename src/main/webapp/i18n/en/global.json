@@ -21,6 +21,7 @@
                 "rawRecord": "Raw Record",
                 "analyzeOrder": "Analyze Order",
                 "analyzeOrderDetails": "Analyze Order Details",
+                "fileUploadTest": "File Upload Test",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

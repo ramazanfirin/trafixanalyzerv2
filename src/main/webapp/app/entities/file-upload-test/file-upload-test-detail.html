@@ -1,0 +1,28 @@
+
+<div>
+    <h2><span data-translate="trafficanalzyzerv2App.fileUploadTest.detail.title">File Upload Test</span> {{vm.fileUploadTest.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="trafficanalzyzerv2App.fileUploadTest.file">File</span></dt>
+        <dd>
+            <div ng-if="vm.fileUploadTest.file">
+                <a ng-click="vm.openFile(vm.fileUploadTest.fileContentType, vm.fileUploadTest.file)">
+                    <img data-ng-src="{{'data:' + vm.fileUploadTest.fileContentType + ';base64,' + vm.fileUploadTest.file}}" style="max-width: 100%;" alt="fileUploadTest image"/>
+                </a>
+                {{vm.fileUploadTest.fileContentType}}, {{vm.byteSize(vm.fileUploadTest.file)}}
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="file-upload-test-detail.edit({id:vm.fileUploadTest.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

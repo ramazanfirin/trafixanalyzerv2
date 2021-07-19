@@ -58,6 +58,7 @@ public class CacheConfiguration {
             cm.createCache(com.masterteknoloji.trafficanalyzer.domain.RawRecord.class.getName(), jcacheConfiguration);
             cm.createCache(com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder.class.getName(), jcacheConfiguration);
             cm.createCache(com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrderDetails.class.getName(), jcacheConfiguration);
+            cm.createCache(com.masterteknoloji.trafficanalyzer.domain.FileUploadTest.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

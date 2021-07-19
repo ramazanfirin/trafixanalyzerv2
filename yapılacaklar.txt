@@ -7,10 +7,17 @@
 7 - çizgi çizerken iptal butonu
 ----------------------------------------8 - senaryo datasında, resim saklanması
 ----------------------------------------9 - analiz emri yapısı
-10 - entegrasyon tablosu
+-----------------------------------------10 - entegrasyon tablosu
 -----------------------------------------11 - dizini otomatik tarama
 -----------------------------------------12 - işlem sonucunu otomatik tarama
 -----------------------------------------13 - pşoygon sil refresh ve line sil..
 -----------------------------------------14 - resim boyutuna göre, koordinate hesabı
 15 - notify servisi
 -----------------------------------------16 - senaryoyu ekrana çizme
+-----------------------------------------17-excel export
+18-mysql milisecods problem
+19-excel tarih problemi
+20-excel e resim ekleme
+21-analyze order, line başı gösterim
+22-menu düzenleme
+23-dil düzenleme
