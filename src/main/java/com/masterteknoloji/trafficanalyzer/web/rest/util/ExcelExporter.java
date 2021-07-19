@@ -9,7 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -38,6 +43,25 @@ public class ExcelExporter {
         createCell(row, 3, "Count", style);	
         
         return sheet;
+    }
+    
+    public void writeImage(XSSFWorkbook workbook,XSSFSheet sheet,byte[] image) {
+    	final int pictureIndex = workbook.addPicture(image, Workbook.PICTURE_TYPE_PNG);
+    	
+    	CreationHelper helper = workbook.getCreationHelper();
+    	   //Creates the top-level drawing patriarch.
+    	   Drawing drawing = sheet.createDrawingPatriarch();
+
+    	   //Create an anchor that is attached to the worksheet
+    	   ClientAnchor anchor = helper.createClientAnchor();
+    	   
+    	   anchor.setCol1(1); //Column B
+    	   anchor.setRow1(2); //Row 3
+    	   anchor.setCol2(2); //Column C
+    	   anchor.setRow2(3); //Row 4
+
+    	   Picture pict = drawing.createPicture(anchor, pictureIndex);
+    	   pict.resize();
     }
     
     public void writeData(XSSFWorkbook workbook,XSSFSheet sheet,List<VideoRecordSummaryVM> dataList) {

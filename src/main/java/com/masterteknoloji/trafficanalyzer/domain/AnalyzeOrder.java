@@ -28,6 +28,13 @@ public class AnalyzeOrder implements Serializable {
     @Column(name = "state")
     private AnalyzeState state;
 
+    @Lob
+    @Column(name = "screen_shoot")
+    private byte[] screenShoot;
+
+    @Column(name = "screen_shoot_content_type")
+    private String screenShootContentType;
+
     @ManyToOne
     private Video video;
 
@@ -57,6 +64,32 @@ public class AnalyzeOrder implements Serializable {
 
     public void setState(AnalyzeState state) {
         this.state = state;
+    }
+
+    public byte[] getScreenShoot() {
+        return screenShoot;
+    }
+
+    public AnalyzeOrder screenShoot(byte[] screenShoot) {
+        this.screenShoot = screenShoot;
+        return this;
+    }
+
+    public void setScreenShoot(byte[] screenShoot) {
+        this.screenShoot = screenShoot;
+    }
+
+    public String getScreenShootContentType() {
+        return screenShootContentType;
+    }
+
+    public AnalyzeOrder screenShootContentType(String screenShootContentType) {
+        this.screenShootContentType = screenShootContentType;
+        return this;
+    }
+
+    public void setScreenShootContentType(String screenShootContentType) {
+        this.screenShootContentType = screenShootContentType;
     }
 
     public Video getVideo() {
@@ -124,6 +157,8 @@ public class AnalyzeOrder implements Serializable {
         return "AnalyzeOrder{" +
             "id=" + getId() +
             ", state='" + getState() + "'" +
+            ", screenShoot='" + getScreenShoot() + "'" +
+            ", screenShootContentType='" + getScreenShootContentType() + "'" +
             "}";
     }
 }

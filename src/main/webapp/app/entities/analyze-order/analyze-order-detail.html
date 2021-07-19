@@ -8,6 +8,15 @@
         <dd>
             <span data-translate="{{'trafficanalzyzerv2App.AnalyzeState.' + vm.analyzeOrder.state}}">{{vm.analyzeOrder.state}}</span>
         </dd>
+        <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.screenShoot">Screen Shoot</span></dt>
+        <dd>
+            <div ng-if="vm.analyzeOrder.screenShoot">
+                <a ng-click="vm.openFile(vm.analyzeOrder.screenShootContentType, vm.analyzeOrder.screenShoot)">
+                    <img data-ng-src="{{'data:' + vm.analyzeOrder.screenShootContentType + ';base64,' + vm.analyzeOrder.screenShoot}}" style="max-width: 100%;" alt="analyzeOrder image"/>
+                </a>
+                {{vm.analyzeOrder.screenShootContentType}}, {{vm.byteSize(vm.analyzeOrder.screenShoot)}}
+            </div>
+        </dd>
         <dt><span data-translate="trafficanalzyzerv2App.analyzeOrder.video">Video</span></dt>
         <dd>
             <a ui-sref="video-detail({id:vm.analyzeOrder.video.id})">{{vm.analyzeOrder.video.id}}</a>

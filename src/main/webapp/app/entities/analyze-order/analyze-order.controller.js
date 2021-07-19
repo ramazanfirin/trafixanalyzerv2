@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('AnalyzeOrderController', AnalyzeOrderController);
 
-    AnalyzeOrderController.$inject = ['$state', 'AnalyzeOrder', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    AnalyzeOrderController.$inject = ['$state', 'DataUtils', 'AnalyzeOrder', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function AnalyzeOrderController($state, AnalyzeOrder, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function AnalyzeOrderController($state, DataUtils, AnalyzeOrder, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
 
@@ -16,6 +16,8 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.openFile = DataUtils.openFile;
+        vm.byteSize = DataUtils.byteSize;
 
         loadAll();
 

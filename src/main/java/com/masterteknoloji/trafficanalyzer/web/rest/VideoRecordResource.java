@@ -210,6 +210,11 @@ public class VideoRecordResource {
         ExcelExporter excelExporter = new ExcelExporter();
         
         AnalyzeOrder analyzeOrder = analyzeOrderRepository.findOne(id);
+        
+        XSSFSheet scenario = excelExporter.createSheet(workbook, "Scenario");
+        excelExporter.writeImage(workbook, scenario, analyzeOrder.getScreenShoot());
+        
+        
     	List<VideoRecordSummaryVM> result = getResultOfAnalyzeOrder(id);
         XSSFSheet allSheet = excelExporter.createSheet(workbook, "All");
         excelExporter.writeData(workbook, allSheet, result);

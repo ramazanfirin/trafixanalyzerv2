@@ -16,6 +16,7 @@
                 "title": "Analyze Order"
             },
             "state": "State",
+            "screenShoot": "Screen Shoot",
             "video": "Video",
             "scenario": "Scenario",
             "orderDetails": "Order Details"

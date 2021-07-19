@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -41,6 +42,11 @@ public class AnalyzeOrderResourceIntTest {
 
     private static final AnalyzeState DEFAULT_STATE = AnalyzeState.NOT_PROCESSED;
     private static final AnalyzeState UPDATED_STATE = AnalyzeState.STARTED;
+
+    private static final byte[] DEFAULT_SCREEN_SHOOT = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_SCREEN_SHOOT = TestUtil.createByteArray(2, "1");
+    private static final String DEFAULT_SCREEN_SHOOT_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_SCREEN_SHOOT_CONTENT_TYPE = "image/png";
 
     @Autowired
     private AnalyzeOrderRepository analyzeOrderRepository;
@@ -80,7 +86,9 @@ public class AnalyzeOrderResourceIntTest {
      */
     public static AnalyzeOrder createEntity(EntityManager em) {
         AnalyzeOrder analyzeOrder = new AnalyzeOrder()
-            .state(DEFAULT_STATE);
+            .state(DEFAULT_STATE)
+            .screenShoot(DEFAULT_SCREEN_SHOOT)
+            .screenShootContentType(DEFAULT_SCREEN_SHOOT_CONTENT_TYPE);
         return analyzeOrder;
     }
 
@@ -105,6 +113,8 @@ public class AnalyzeOrderResourceIntTest {
         assertThat(analyzeOrderList).hasSize(databaseSizeBeforeCreate + 1);
         AnalyzeOrder testAnalyzeOrder = analyzeOrderList.get(analyzeOrderList.size() - 1);
         assertThat(testAnalyzeOrder.getState()).isEqualTo(DEFAULT_STATE);
+        assertThat(testAnalyzeOrder.getScreenShoot()).isEqualTo(DEFAULT_SCREEN_SHOOT);
+        assertThat(testAnalyzeOrder.getScreenShootContentType()).isEqualTo(DEFAULT_SCREEN_SHOOT_CONTENT_TYPE);
     }
 
     @Test
@@ -137,7 +147,9 @@ public class AnalyzeOrderResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(analyzeOrder.getId().intValue())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
+            .andExpect(jsonPath("$.[*].screenShootContentType").value(hasItem(DEFAULT_SCREEN_SHOOT_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].screenShoot").value(hasItem(Base64Utils.encodeToString(DEFAULT_SCREEN_SHOOT))));
     }
 
     @Test
@@ -151,7 +163,9 @@ public class AnalyzeOrderResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(analyzeOrder.getId().intValue()))
-            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()));
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
+            .andExpect(jsonPath("$.screenShootContentType").value(DEFAULT_SCREEN_SHOOT_CONTENT_TYPE))
+            .andExpect(jsonPath("$.screenShoot").value(Base64Utils.encodeToString(DEFAULT_SCREEN_SHOOT)));
     }
 
     @Test
@@ -174,7 +188,9 @@ public class AnalyzeOrderResourceIntTest {
         // Disconnect from session so that the updates on updatedAnalyzeOrder are not directly saved in db
         em.detach(updatedAnalyzeOrder);
         updatedAnalyzeOrder
-            .state(UPDATED_STATE);
+            .state(UPDATED_STATE)
+            .screenShoot(UPDATED_SCREEN_SHOOT)
+            .screenShootContentType(UPDATED_SCREEN_SHOOT_CONTENT_TYPE);
 
         restAnalyzeOrderMockMvc.perform(put("/api/analyze-orders")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -186,6 +202,8 @@ public class AnalyzeOrderResourceIntTest {
         assertThat(analyzeOrderList).hasSize(databaseSizeBeforeUpdate);
         AnalyzeOrder testAnalyzeOrder = analyzeOrderList.get(analyzeOrderList.size() - 1);
         assertThat(testAnalyzeOrder.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testAnalyzeOrder.getScreenShoot()).isEqualTo(UPDATED_SCREEN_SHOOT);
+        assertThat(testAnalyzeOrder.getScreenShootContentType()).isEqualTo(UPDATED_SCREEN_SHOOT_CONTENT_TYPE);
     }
 
     @Test

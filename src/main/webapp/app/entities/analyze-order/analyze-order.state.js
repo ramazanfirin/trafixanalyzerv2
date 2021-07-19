@@ -110,7 +110,6 @@
                 });
             }]
         })
-        
         .state('analyze-order.new', {
             parent: 'analyze-order',
             url: '/new',
@@ -128,6 +127,8 @@
                         entity: function () {
                             return {
                                 state: null,
+                                screenShoot: null,
+                                screenShootContentType: null,
                                 id: null
                             };
                         }

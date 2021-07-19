@@ -25,6 +25,11 @@
             "fieldName": "state",
             "fieldType": "AnalyzeState",
             "fieldValues": "NOT_PROCESSED,STARTED,ANALYZE_COMPLETED,PROCESS_COMPLETED,ERROR"
+        },
+        {
+            "fieldName": "screenShoot",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
         }
     ],
     "changelogDate": "20210716122529",

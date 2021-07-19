@@ -58,8 +58,12 @@
         function save () {
             vm.isSaving = true;
             if (vm.analyzeOrder.id !== null) {
+            	
                 AnalyzeOrder.update(vm.analyzeOrder, onSaveSuccess, onSaveError);
             } else {
+            var dataURL = $window.stage.toDataURL();
+                vm.analyzeOrder.screenShoot=dataURL.replace('data:image/png;base64,','');
+                vm.analyzeOrder.screenShootContentType='image/png';
                 AnalyzeOrder.save(vm.analyzeOrder, onSaveSuccess, onSaveError);
             }
         }
