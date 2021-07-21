@@ -18,6 +18,9 @@
 18-mysql milisecods problem
 19-excel tarih problemi
 -----------------------------------------20-excel e resim ekleme
-21-analyze order, line başı gösterim
+-----------------------------------------21-analyze order, line başı gösterim
 22-menu düzenleme
 23-dil düzenleme
+
+
+localhost:8080/api/raw-records/parseData/parseData

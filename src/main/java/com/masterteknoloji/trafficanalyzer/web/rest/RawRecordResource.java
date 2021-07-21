@@ -180,8 +180,8 @@ public class RawRecordResource {
 					entry = "1";
 					exit = "2";
 				}else if (lineId.equals("1")) {
-					entry = "3";
-					exit = "4";
+					entry = "4";
+					exit = "5";
 			
 				}else
 					throw new RuntimeException("line bulunamadı");
@@ -209,10 +209,10 @@ public class RawRecordResource {
 	private Instant prepareDateValue(String dateValue) throws ParseException {
 
 		if (dateValue.length() == 14)
-			dateValue = dateValue.substring(0, 12);
+			dateValue = dateValue.substring(0, 11);
 		else // if(dateValue.length()==7)
 		{
-			dateValue = dateValue + ".000";
+			dateValue = dateValue + ".00";
 		}
 
 		Date date = sdf.parse("2000-01-01 0" + dateValue);
