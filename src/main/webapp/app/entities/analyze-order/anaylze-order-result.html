@@ -62,7 +62,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="videoRecord in vm.report ">
-                    <td>{{videoRecord.date | date:'medium'}}</td>
+                    <td>{{videoRecord.date | date:'HH:mm:ss'}}</td>
                     <td>{{videoRecord.directionName}}</td>
                     <td>{{videoRecord.type}}</td>
                     <td>{{videoRecord.count}}</td>

@@ -2,6 +2,7 @@ package com.masterteknoloji.trafficanalyzer.web.rest.util;
  
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
@@ -23,6 +24,8 @@ import com.masterteknoloji.trafficanalyzer.web.rest.vm.VideoRecordSummaryVM;
  
 public class ExcelExporter {
     
+	SimpleDateFormat dateFormatForTime = new SimpleDateFormat("HH:mm:ss");
+	
 	public ExcelExporter() {
     }
  
@@ -99,8 +102,7 @@ public class ExcelExporter {
         } else if (value instanceof Boolean) {
             cell.setCellValue((Boolean) value);
         } else if (value instanceof java.sql.Timestamp) {
-            cell.setCellValue(((Timestamp) value));
-        
+        	cell.setCellValue(dateFormatForTime.format(value));
         }else {
             cell.setCellValue((String) value);
         }

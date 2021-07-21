@@ -21,8 +21,8 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 	  		+ "from_unixtime(FLOOR(UNIX_TIMESTAMP(insert_date)/(1*60))*(1*60)) GroupTime,\n"
 	  		+ "line.name as line,\n"
 	  		+ "COUNT(*) as counts\n"
-	  		+ "FROM trafficanalyzer3.video_record i\n"
-	  		+ "INNER JOIN trafficanalyzer3.line as line ON i.line_id=line.id\n"
+	  		+ "FROM video_record i\n"
+	  		+ "INNER JOIN line as line ON i.line_id=line.id\n"
 	  		+ "where i.analyze_id= :analyzeOrderId\n"
 	  		+ "GROUP BY GroupTime,vehicle_type,line.name "
 	  		+ "order by line.name",nativeQuery=true)
@@ -33,8 +33,8 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 		  		+ "from_unixtime(FLOOR(UNIX_TIMESTAMP(insert_date)/(1*60))*(1*60)) GroupTime,\n"
 		  		+ "line.name as line,\n"
 		  		+ "COUNT(*) as counts\n"
-		  		+ "FROM trafficanalyzer3.video_record i\n"
-		  		+ "INNER JOIN trafficanalyzer3.line as line ON i.line_id=line.id\n"
+		  		+ "FROM video_record i\n"
+		  		+ "INNER JOIN line as line ON i.line_id=line.id\n"
 		  		+ "where i.analyze_id= :analyzeOrderId and line.id = :lineId \n" 
 		  		+ "GROUP BY GroupTime,vehicle_type,line.name "
 		  		+ "order by line.name",nativeQuery=true)
