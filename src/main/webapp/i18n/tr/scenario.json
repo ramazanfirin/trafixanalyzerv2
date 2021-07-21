@@ -2,21 +2,21 @@
     "trafficanalzyzerv2App": {
         "scenario" : {
             "home": {
-                "title": "Scenarios",
-                "createLabel": "Create a new Scenario",
-                "createOrEditLabel": "Create or edit a Scenario"
+                "title": "Senaryolar",
+                "createLabel": "Senaryo Oluştur",
+                "createOrEditLabel": "Senaryo Oluştur/Güncelle"
             },
-            "created": "A new Scenario is created with identifier {{ param }}",
-            "updated": "A Scenario is updated with identifier {{ param }}",
-            "deleted": "A Scenario is deleted with identifier {{ param }}",
+            "created": "Senaryo Oluşturuldu {{ param }}",
+            "updated": "Senaryo Güncellendi {{ param }}",
+            "deleted": "Senaryo Silindi {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Scenario {{ id }}?"
+                "question": "silmek istediğinize emin misiniz? {{ id }}?"
             },
             "detail": {
-                "title": "Scenario"
+                "title": "Senaryo"
             },
-            "name": "Name",
-            "screenShot": "Screen Shot",
+            "name": "İsim",
+            "screenShot": "Ekran Görüntüsü",
             "video": "Video",
             "lines": "Çizgiler"
         }

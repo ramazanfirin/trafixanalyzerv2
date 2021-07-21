@@ -16,11 +16,13 @@
 -----------------------------------------16 - senaryoyu ekrana çizme
 -----------------------------------------17-excel export
 -----------------------------------------18-mysql milisecods problem
-19-excel tarih problemi
+-----------------------------------------19-excel tarih problemi
 -----------------------------------------20-excel e resim ekleme
 -----------------------------------------21-analyze order, line başı gösterim
-22-menu düzenleme
+-----------------------------------------22-menu düzenleme
 23-dil düzenleme
+24-client side pagign
+25-line hesaplama
 
 
 localhost:8080/api/raw-records/parseData/parseData

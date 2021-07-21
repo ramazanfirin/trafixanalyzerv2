@@ -2,20 +2,20 @@
     "trafficanalzyzerv2App": {
         "city" : {
             "home": {
-                "title": "Cities",
-                "createLabel": "Create a new City",
-                "createOrEditLabel": "Create or edit a City"
+                "title": "Şehirler",
+                "createLabel": "Şehir Ekle",
+                "createOrEditLabel": "Şehir Ekle/Düzenle"
             },
-            "created": "A new City is created with identifier {{ param }}",
-            "updated": "A City is updated with identifier {{ param }}",
-            "deleted": "A City is deleted with identifier {{ param }}",
+            "created": "Yeni Şehir Oluşturuldu {{ param }}",
+            "updated": "Şehir Güncellendi {{ param }}",
+            "deleted": "Şehir Silindi {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete City {{ id }}?"
+                "question": "Silmek istediğinize emin misiniz ? {{ id }}?"
             },
             "detail": {
-                "title": "City"
+                "title": "Şehir"
             },
-            "name": "Name"
+            "name": "İsim"
         }
     }
 }

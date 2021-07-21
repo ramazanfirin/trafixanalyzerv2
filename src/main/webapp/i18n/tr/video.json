@@ -2,26 +2,26 @@
     "trafficanalzyzerv2App": {
         "video" : {
             "home": {
-                "title": "Videos",
-                "createLabel": "Create a new Video",
-                "createOrEditLabel": "Create or edit a Video"
+                "title": "Videolar",
+                "createLabel": "Yeni Video Oluştur",
+                "createOrEditLabel": "Video Oluştur/Güncelle"
             },
-            "created": "A new Video is created with identifier {{ param }}",
-            "updated": "A Video is updated with identifier {{ param }}",
-            "deleted": "A Video is deleted with identifier {{ param }}",
+            "created": "Yeni Video Oluştur {{ param }}",
+            "updated": "Video Oluşturuldu {{ param }}",
+            "deleted": "Video Silindi {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Video {{ id }}?"
+                "question": "Silmek istediğinize emin misiniz ? {{ id }}?"
             },
             "detail": {
                 "title": "Video"
             },
-            "path": "Path",
-            "name": "Name",
+            "path": "Diskteki Adresi",
+            "name": "İsim",
             "processDate": "Process Date",
             "startDate": "Start Date",
             "endDate": "End Date",
             "state": "State",
-            "location": "Location"
+            "location": "Lokasyon"
         }
     }
 }

@@ -2,21 +2,21 @@
     "trafficanalzyzerv2App": {
         "district" : {
             "home": {
-                "title": "Districts",
-                "createLabel": "Create a new District",
-                "createOrEditLabel": "Create or edit a District"
+                "title": "İlçeler",
+                "createLabel": "Yeni İlçe Oluştur",
+                "createOrEditLabel": "İlçe Oluştur/Güncelle"
             },
-            "created": "A new District is created with identifier {{ param }}",
-            "updated": "A District is updated with identifier {{ param }}",
-            "deleted": "A District is deleted with identifier {{ param }}",
+            "created": "Yeni ilçe oluşturuldu {{ param }}",
+            "updated": "İlçe güncellendi {{ param }}",
+            "deleted": "İlçe silindi {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete District {{ id }}?"
+                "question": "Silmek istediğinize emin misiniz? {{ id }}?"
             },
             "detail": {
-                "title": "District"
+                "title": "İlçe"
             },
-            "name": "Name",
-            "city": "City"
+            "name": "İsim",
+            "city": "Şehir"
         }
     }
 }

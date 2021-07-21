@@ -2,24 +2,24 @@
     "trafficanalzyzerv2App": {
         "analyzeOrder" : {
             "home": {
-                "title": "Analyze Orders",
-                "createLabel": "Create a new Analyze Order",
-                "createOrEditLabel": "Create or edit a Analyze Order"
+                "title": "Analiz",
+                "createLabel": "Yeni Analiz Başlat",
+                "createOrEditLabel": "Analiz Başlat/Güncelle"
             },
-            "created": "A new Analyze Order is created with identifier {{ param }}",
-            "updated": "A Analyze Order is updated with identifier {{ param }}",
-            "deleted": "A Analyze Order is deleted with identifier {{ param }}",
+            "created": "Yeni Analiz Oluşturuldu {{ param }}",
+            "updated": "Analiz Güncellendi {{ param }}",
+            "deleted": "Analiz Silindi {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Analyze Order {{ id }}?"
+                "question": "Silmek istediğinize emin misiniz ? {{ id }}?"
             },
             "detail": {
-                "title": "Analyze Order"
+                "title": "Analiz"
             },
-            "state": "State",
-            "screenShoot": "Screen Shoot",
+            "state": "Durum",
+            "screenShoot": "Ekran Görüntüsü",
             "video": "Video",
-            "scenario": "Scenario",
-            "orderDetails": "Order Details"
+            "scenario": "Senaryo",
+            "orderDetails": "Ayrıntılar"
         }
     }
 }

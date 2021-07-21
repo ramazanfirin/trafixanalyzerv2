@@ -2,21 +2,21 @@
     "trafficanalzyzerv2App": {
         "location" : {
             "home": {
-                "title": "Locations",
-                "createLabel": "Create a new Location",
-                "createOrEditLabel": "Create or edit a Location"
+                "title": "Lokasyonlar",
+                "createLabel": "Yeni Lokasyon Oluştur",
+                "createOrEditLabel": "Lokasyon Oluştur/Güncelle"
             },
-            "created": "A new Location is created with identifier {{ param }}",
-            "updated": "A Location is updated with identifier {{ param }}",
-            "deleted": "A Location is deleted with identifier {{ param }}",
+            "created": "Yeni lokasyon Oluşturuldu {{ param }}",
+            "updated": "Lokasyon Güncellendi {{ param }}",
+            "deleted": "Lokasyon Silindi {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Location {{ id }}?"
+                "question": "Silmek istediğinize emin misiniz? {{ id }}?"
             },
             "detail": {
-                "title": "Location"
+                "title": "Lokasyon"
             },
             "name": "Name",
-            "district": "District"
+            "district": "İlçe"
         }
     }
 }

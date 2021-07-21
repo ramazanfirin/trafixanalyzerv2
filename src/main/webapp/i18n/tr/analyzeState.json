@@ -2,11 +2,11 @@
     "trafficanalzyzerv2App": {
         "AnalyzeState" : {
             "null": "",
-            "NOT_PROCESSED": "NOT_PROCESSED",
-            "STARTED": "STARTED",
-            "ANALYZE_COMPLETED": "ANALYZE_COMPLETED",
-            "PROCESS_COMPLETED": "PROCESS_COMPLETED",
-            "ERROR": "ERROR"
+            "NOT_PROCESSED": "HENUZ BAŞLAMADI",
+            "STARTED": "DEVAM EDIYOR",
+            "ANALYZE_COMPLETED": "AKTARIM YAPILIYOR",
+            "PROCESS_COMPLETED": "TAMAMLANDI",
+            "ERROR": "HATA"
         }
     }
 }
