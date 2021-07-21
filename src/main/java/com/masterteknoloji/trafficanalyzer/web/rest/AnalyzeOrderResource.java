@@ -254,6 +254,7 @@ public class AnalyzeOrderResource {
     
     private Long prepareDuration(Instant date)  {
     	
+    	Long result = -1l;
 //    	if(dateValue.length()==14)
 //    	 	dateValue = dateValue.substring(0,11);
 //    	 else if(dateValue.length()==7) {
@@ -263,11 +264,16 @@ public class AnalyzeOrderResource {
     	//Date date = sdf.parse("1970-01-01 0"+dateValue);
     	//return date.getTime();
     	
-    	Instant one = Instant.now();
-    	Duration res = Duration.between(one, date);
-    	Long sec = res.getSeconds();
+    	try {
+			Date start = sdf.parse("2000-01-01 00:00:00.000");;
+			Duration res = Duration.between(start.toInstant(), date);
+			result = res.toMillis();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
-    	return 100l;
+    	return result;
     }
 }  
     
