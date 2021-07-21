@@ -20,10 +20,10 @@
 -----------------------------------------20-excel e resim ekleme
 -----------------------------------------21-analyze order, line başı gösterim
 -----------------------------------------22-menu düzenleme
-23-dil düzenleme
+-----------------------------------------23-dil düzenleme
 24-client side pagign
 25-line hesaplama
-
+26-video dosyası seçim
 
 localhost:8080/api/raw-records/parseData/parseData
 localhost:8080/api/analyze-orders/checkUnprocessedOrders
