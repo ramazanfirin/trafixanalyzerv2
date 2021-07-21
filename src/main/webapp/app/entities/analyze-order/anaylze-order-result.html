@@ -42,6 +42,12 @@
 			    </div>
         </div>
         
+         <div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.scenario.lines" for="field_video">Video</label>
+            <select class="form-control" id="field_line" name="line" ng-model="vm.selectedLine" ng-change="vm.updateLine()" ng-options="line as line.name for line in vm.lines track by line.id">
+                <option value=""></option>
+            </select>
+        </div>
   
   
   <div class="table-responsive">

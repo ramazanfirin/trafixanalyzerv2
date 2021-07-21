@@ -25,6 +25,7 @@
 		vm.addLine = addLine;
 		vm.deleteLine = deleteLine;
 		vm.report =[];
+		vm.updateLine=updateLine;
 
 		vm.addMessageBefore = "Çizgi eklemek için, Ekle butonuna basınız"
 	    vm.addMessageAfter = "Çizgi ekleyebilirsiniz"
@@ -174,6 +175,16 @@
 	    	Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListSuccess,onSaveError);
 	    }
 
+		function updateLine () {
+			if(vm.selectedLine==null)
+				VideoRecord.getResultOfAnalyzeOrder({id:entity.id},getResultOfAnalyzeOrderSucccess,onSaveError);
+			else
+			    VideoRecord.getResultOfAnalyzeOrderByLineId({id:entity.id,lineId:vm.selectedLine.id},updateLineSuccess,onSaveError);
+	    }
+		
+		function updateLineSuccess(result){
+			vm.report = result;
+		}
 		
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
