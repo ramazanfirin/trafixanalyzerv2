@@ -22,7 +22,7 @@
             "endDate": "End Date",
             "state": "State",
             "location": "Lokasyon",
-            "fileSelection": "Lütfen Dosya seçiniz"
+            "fileSelection": "Dosya Seçmek için Çift Tıklayınız..."
         }
     }
 }

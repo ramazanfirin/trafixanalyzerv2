@@ -31,6 +31,7 @@
         $window.addEventListener("onPickItem", function(evt) {
     		vm.video.path = vm.ftpDirectoryPath+evt.detail;
     		vm.video.name = evt.detail
+    		//alert(evt.detail + " dosyasını seçtiniz");
 		}, false);
 
         $timeout(function (){

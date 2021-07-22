@@ -69,7 +69,7 @@ function(e, r) {
         }, e.setTemplate = function(r) {
             d.setItem("viewTemplate", r), e.viewTemplate = r
         }, e.changeLanguage = function(e) {
-            return e ? (d.setItem("language", e), a.use(e)) : void a.use(d.getItem("language") || t.defaultLang)
+            return e 
         }, e.isSelected = function(r) {
             return -1 !== e.temps.indexOf(r)
         }, e.selectOrUnselect = function(r, n) {
