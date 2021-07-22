@@ -21,7 +21,8 @@
             "startDate": "Start Date",
             "endDate": "End Date",
             "state": "State",
-            "location": "Lokasyon"
+            "location": "Lokasyon",
+            "fileSelection": "Dosya Seçmek için Çift Tıklayınız..."
         }
     }
 }

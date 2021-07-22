@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('VideoDialogController', VideoDialogController);
 
-    VideoDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Video', 'Location'];
+    VideoDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Video', 'Location', '$window'];
 
-    function VideoDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Video, Location) {
+    function VideoDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Video, Location,  $window) {
         var vm = this;
 
         vm.video = entity;
@@ -16,6 +16,23 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         vm.locations = Location.query();
+        vm.ftpDirectoryPath = ""	;
+        
+        getFtpDirectoryPath();
+        
+        function getFtpDirectoryPath(){
+        	Video.getFtpDirectoryPath({},getFtpDirectoryPathSucccess,onSaveError)
+        }
+        
+        function getFtpDirectoryPathSucccess(result){
+			vm.ftpDirectoryPath = result.value;        
+        }
+        
+        $window.addEventListener("onPickItem", function(evt) {
+    		vm.video.path = vm.ftpDirectoryPath+evt.detail;
+    		vm.video.name = evt.detail
+    		//alert(evt.detail + " dosyasını seçtiniz");
+		}, false);
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

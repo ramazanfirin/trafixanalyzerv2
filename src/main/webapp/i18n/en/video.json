@@ -21,7 +21,8 @@
             "startDate": "Start Date",
             "endDate": "End Date",
             "state": "State",
-            "location": "Location"
+            "location": "Location",
+            "fileSelection": "Double click for file selection..."
         }
     }
 }

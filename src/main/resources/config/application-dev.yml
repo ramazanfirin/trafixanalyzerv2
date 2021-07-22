@@ -40,7 +40,7 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3307/trafficanalyzer5?useUnicode=true&characterEncoding=utf8&useSSL=false
+        url: jdbc:mysql://localhost:3307/trafficanalyzer6?useUnicode=true&characterEncoding=utf8&useSSL=false
         username: root
         password: ra5699mo
         hikari:
@@ -160,3 +160,4 @@ jhipster:
 # ===================================================================
 
 application:
+    ftpDirectory: D:/KBB/gultepe

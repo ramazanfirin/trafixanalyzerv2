@@ -9,6 +9,7 @@ import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertExcept
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.Util;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.ParameterVM;
 
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -151,5 +152,15 @@ public class VideoResource {
         
         return baos.toByteArray();
       
+    }
+    
+    @GetMapping(value = "/videos/getFtpDirectoryPath")
+    public ParameterVM getFtpDirectoryPath() throws IOException {
+        
+    	ParameterVM result = new ParameterVM();
+    	result.setName("name");
+    	result.setValue(applicationProperties.getFtpDirectory());
+    	
+    	return result;
     }
 }
