@@ -153,6 +153,7 @@ var poly = null;
 var polygonListOnScreen=[];
 var lineListOnScreen=[];
 var textListOnScreen=[];
+var arrowListOnScreen=[];
 
 var width = window.innerWidth;
 var height = window.innerHeight;
@@ -317,6 +318,7 @@ stage.add(layer);
 	        strokeWidth: 2,
 	      });
 		
+		arrowListOnScreen.push(arrow);
 		layer.add(arrow);
 	}
 	

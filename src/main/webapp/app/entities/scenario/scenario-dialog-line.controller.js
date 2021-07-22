@@ -93,6 +93,7 @@
 //				selectedPolygons[i].fill("lightgreen");;
 //			}
             resetAll();
+            loadAll();
 			vm.addLineName= "";
 			hidePopup();
  			       
@@ -104,13 +105,14 @@
         	deleteFromScreen($window.polygonListOnScreen);	
         	deleteFromScreen($window.lineListOnScreen);
         	deleteFromScreen($window.textListOnScreen);
-        	
+        	deleteFromScreen($window.arrowListOnScreen);
         
         	$window.selectedPolygons = [];
             $window.polygonListOnScreen=[];
 			$window.lineListOnScreen=[];
 			$window.textListOnScreen=[];
             $window.selectedPolygons = [];
+            $window.arrowListOnScreen = [];
             $window.poly = null;
             //loadAll();
             //$window.layer = new Konva.Layer();
@@ -137,9 +139,17 @@
 
 		function deleteLine(lineId){
 			 
-			 Line.delete({id: lineId},loadAll,onSaveError);
+			 Line.delete({id: lineId},deleteLineSuccess,onSaveError);
 			 
 		}
+		
+		function deleteLineSuccess(){
+			resetAll();
+            loadAll();
+			vm.addLineName= "";
+			hidePopup();
+		}
+		
 		
 		function onPolygonSaveSuccess (result) {
              Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListSuccess,onSaveError);
