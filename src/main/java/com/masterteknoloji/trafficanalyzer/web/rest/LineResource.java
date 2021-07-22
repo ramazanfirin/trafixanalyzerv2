@@ -213,6 +213,8 @@ public class LineResource {
 	public List<Point> calculateNeigberhood(Polygon p1, Polygon p2) {
 		// p1.npoints
 
+		TreeMap<Double,DistancePointVM> distanceMap = new TreeMap<Double,DistancePointVM>();
+		
 		List<Point> neigburPOints = new ArrayList<Point>();
 
 		String[] p1Points = p1.getPoints().split(";");
@@ -223,7 +225,7 @@ public class LineResource {
 
 			int x1 = Integer.parseInt(p1Point[0]);
 			int y1 = Integer.parseInt(p1Point[1]);
-			TreeMap<Double,DistancePointVM> distanceMap = new TreeMap<Double,DistancePointVM>();
+			
 			for (int j = 0; j < p2Points.length; j++) {
 				String[] p2Point = p2Points[j].split(",");
 				int x2 = Integer.parseInt(p2Point[0]);
@@ -232,23 +234,27 @@ public class LineResource {
 				double dis = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 				DistancePointVM distancePointVM= new DistancePointVM(); 
 				distancePointVM.setDistance(dis);
-				distancePointVM.setPoint(new Point(x2,y2));
+				distancePointVM.setStartPoint(new Point(x1, y1));
+				distancePointVM.setEndPoint(new Point(x2, y2));
 				distanceMap.put(dis, distancePointVM);
 				
-				
 			}
 			
-			List<Double> employeeByKey = new ArrayList<>(distanceMap.keySet());
-			Collections.sort(employeeByKey);
-			DistancePointVM closer = distanceMap.get(employeeByKey.get(0));
 			
-			if (closer.getDistance() < 20) {
-				neigburPOints.add(new Point(x1, y1));
-				neigburPOints.add(closer.getPoint());
-				
-			}
 		}
 
+		List<Double> employeeByKey = new ArrayList<>(distanceMap.keySet());
+		Collections.sort(employeeByKey);
+		DistancePointVM closerOne = distanceMap.get(employeeByKey.get(0));
+		DistancePointVM closerTwo = distanceMap.get(employeeByKey.get(1));
+		
+		neigburPOints.add(closerOne.getStartPoint());
+		neigburPOints.add(closerOne.getEndPoint());
+		
+		neigburPOints.add(closerTwo.getStartPoint());
+		neigburPOints.add(closerTwo.getEndPoint());
+
+		
 		return neigburPOints;
 
 	}

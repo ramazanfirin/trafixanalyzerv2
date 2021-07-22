@@ -6,8 +6,10 @@ public class DistancePointVM implements Comparable<DistancePointVM>{
 	
 	Double distance;
 	
-	Point point;
+	Point startPoint;
 
+	Point endPoint;
+	
 	public Double getDistance() {
 		return distance;
 	}
@@ -16,17 +18,25 @@ public class DistancePointVM implements Comparable<DistancePointVM>{
 		this.distance = distance;
 	}
 
-	public Point getPoint() {
-		return point;
-	}
-
-	public void setPoint(Point point) {
-		this.point = point;
-	}
-
 	@Override
 	public int compareTo(DistancePointVM o) {
 		return (int)(this.distance - o.getDistance());
+	}
+
+	public Point getStartPoint() {
+		return startPoint;
+	}
+
+	public void setStartPoint(Point startPoint) {
+		this.startPoint = startPoint;
+	}
+
+	public Point getEndPoint() {
+		return endPoint;
+	}
+
+	public void setEndPoint(Point endPoint) {
+		this.endPoint = endPoint;
 	}
 	
 	
