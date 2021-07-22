@@ -16,9 +16,21 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         vm.locations = Location.query();
+        vm.ftpDirectoryPath = ""	;
+        
+        getFtpDirectoryPath();
+        
+        function getFtpDirectoryPath(){
+        	Video.getFtpDirectoryPath({},getFtpDirectoryPathSucccess,onSaveError)
+        }
+        
+        function getFtpDirectoryPathSucccess(result){
+			vm.ftpDirectoryPath = result.value;        
+        }
         
         $window.addEventListener("onPickItem", function(evt) {
-    		alert(evt.detail);
+    		vm.video.path = vm.ftpDirectoryPath+evt.detail;
+    		vm.video.name = evt.detail
 		}, false);
 
         $timeout(function (){

@@ -11,6 +11,7 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'getFtpDirectoryPath': { method: 'GET', isArray: false, url: '/api/videos/getFtpDirectoryPath'},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

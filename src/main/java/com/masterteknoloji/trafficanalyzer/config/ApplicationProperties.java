@@ -10,5 +10,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
+	
+	String ftpDirectory;
+
+	public String getFtpDirectory() {
+		return ftpDirectory;
+	}
+
+	public void setFtpDirectory(String ftpDirectory) {
+		this.ftpDirectory = ftpDirectory;
+	}
+	
+	
 
 }

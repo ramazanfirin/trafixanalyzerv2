@@ -56,6 +56,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.masterteknoloji.trafficanalyzer.config.ApplicationProperties;
+
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
@@ -112,23 +114,14 @@ import net.minidev.json.JSONValue;
 @RequestMapping("/bridges/php")
 public class AngularFileManagerServlet {
 
-    public AngularFileManagerServlet() {
+	private final ApplicationProperties applicationProperties;
+	
+	private String REPOSITORY_BASE_PATH ;
+	
+    public AngularFileManagerServlet(ApplicationProperties applicationProperties) {
 		super();
-		
-//            final String enabledActions = getInitParameter("enabled.action").toLowerCase();
-//            Pattern movePattern = Pattern.compile("\\bmove\\b");
-            enabledAction = new HashMap<>();
-            enabledAction.put(Mode.rename,true);
-            enabledAction.put(Mode.move,true);
-            enabledAction.put(Mode.remove,true);
-            enabledAction.put(Mode.edit,true);
-            enabledAction.put(Mode.createFolder,true);
-            enabledAction.put(Mode.changePermissions ,true);
-            enabledAction.put(Mode.compress ,true);
-            enabledAction.put(Mode.extract ,true);
-            enabledAction.put(Mode.copy, true);
-            enabledAction.put(Mode.upload, true);
-        
+        this.applicationProperties = applicationProperties;
+        REPOSITORY_BASE_PATH = applicationProperties.getFtpDirectory();
 	}
 
 	private static final Logger LOG = LoggerFactory.getLogger(AngularFileManagerServlet.class);
@@ -142,7 +135,6 @@ public class AngularFileManagerServlet {
         list, rename, move, copy, remove, edit, getContent, createFolder, changePermissions, compress, extract, upload
     }
 
-    private String REPOSITORY_BASE_PATH = "D://KBB//gultepe";
     // private String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss"; // (2001-07-04 12:08:56)
     private String DATE_FORMAT = "EEE, d MMM yyyy HH:mm:ss z"; // (Wed, 4 Jul 2001 12:08:56)
 

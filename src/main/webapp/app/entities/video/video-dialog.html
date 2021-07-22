@@ -7,7 +7,7 @@
         <h4 class="modal-title" id="myVideoLabel" data-translate="trafficanalzyzerv2App.video.home.createOrEditLabel">Create or edit a Video</h4>
     </div>
     
-    <angular-filemanager ></angular-filemanager>
+    
     
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
@@ -16,6 +16,13 @@
             <input type="text" class="form-control" id="id" name="id"
                     ng-model="vm.video.id" readonly />
         </div>
+        
+        <div class="form-group" ng-show="!vm.video.id">
+            <label for="id" data-translate="trafficanalzyzerv2App.video.fileSelection">ID</label>
+            <angular-filemanager ></angular-filemanager>
+        </div>
+        
+        
         <div class="form-group">
             <label class="control-label" data-translate="trafficanalzyzerv2App.video.path" for="field_path">Path</label>
             <input type="text" class="form-control" name="path" id="field_path"

@@ -4,7 +4,7 @@
 var gulp = require('gulp');
 var templateCache = require('gulp-angular-templatecache');
 var uglify = require('gulp-uglify');
-var minifyCss = require('gulp-clean-css');
+//var minifyCss = require('gulp-clean-css');
 var concat = require('gulp-concat');
 var eslint = require('gulp-eslint');
 var del = require('del');
@@ -43,12 +43,7 @@ gulp.task('concat-uglify-js', ['cache-templates'], function() {
     .pipe(gulp.dest(dst));
 });
 
-gulp.task('minify-css', function() {
-  return gulp.src(src + 'css/*.css')
-    .pipe(minifyCss({compatibility: 'ie8'}))
-    .pipe(concat(cssFile))
-    .pipe(gulp.dest(dst));
-});
+
 
 gulp.task('lint', function () {
   return gulp.src([src + 'js/app.js', src + 'js/*/*.js'])

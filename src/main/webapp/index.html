@@ -294,11 +294,12 @@ angular.module('FileManagerApp').config(['fileManagerConfigProvider', function (
   config.set({
     appName: 'ftp_directory',
     searchForm: true,
-    sidebar: false,
+    sidebar: true,
     hideDate: true,
     hidePermissions: true,
     hideSize:true,
     showSizeForDirectories: false,
+    breadcrumb:false,
     pickCallback: function(item) {
       var msg = 'Picked %s "%s" for external use ramazan'
         .replace('%s', item.type)
