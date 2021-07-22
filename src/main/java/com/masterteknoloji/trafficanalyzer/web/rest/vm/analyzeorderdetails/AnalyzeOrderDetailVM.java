@@ -11,7 +11,7 @@ public class AnalyzeOrderDetailVM {
 	
 	Boolean count=true;
 	
-	VehicleTypeVM vehicleTypeVM = new VehicleTypeVM();
+	VehicleTypeVM classes = new VehicleTypeVM();
 	
 	DirectionVM directions = new DirectionVM();
 	
@@ -41,14 +41,6 @@ public class AnalyzeOrderDetailVM {
 		this.count = count;
 	}
 
-	public VehicleTypeVM getVehicleTypeVM() {
-		return vehicleTypeVM;
-	}
-
-	public void setVehicleTypeVM(VehicleTypeVM vehicleTypeVM) {
-		this.vehicleTypeVM = vehicleTypeVM;
-	}
-
 	public DirectionVM getDirections() {
 		return directions;
 	}
@@ -63,6 +55,14 @@ public class AnalyzeOrderDetailVM {
 
 	public void setSpeed(List<SpeedVM> speed) {
 		this.speed = speed;
+	}
+
+	public VehicleTypeVM getClasses() {
+		return classes;
+	}
+
+	public void setClasses(VehicleTypeVM classes) {
+		this.classes = classes;
 	}
 
 		

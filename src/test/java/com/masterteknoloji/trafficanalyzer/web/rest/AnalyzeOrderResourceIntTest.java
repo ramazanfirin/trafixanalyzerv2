@@ -1,10 +1,20 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
-import com.masterteknoloji.trafficanalyzer.Trafficanalzyzerv2App;
+import static com.masterteknoloji.trafficanalyzer.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
-import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
-import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,16 +31,25 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static com.masterteknoloji.trafficanalyzer.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.masterteknoloji.trafficanalyzer.Trafficanalzyzerv2App;
+import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
+import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderDetailsRepository;
+import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
+import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
+import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
+import com.masterteknoloji.trafficanalyzer.repository.RawRecordRepository;
+import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
+import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.AnalyzeOrderDetailVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.ConnectionVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.DirectionVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.PointsVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.RegionVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.SpeedVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.VehicleTypeVM;
 /**
  * Test class for the AnalyzeOrderResource REST controller.
  *
@@ -67,10 +86,32 @@ public class AnalyzeOrderResourceIntTest {
 
     private AnalyzeOrder analyzeOrder;
 
+    @Autowired
+    ObjectMapper objectMapper; 
+    
+    @Autowired
+    LineRepository lineRepository; 
+	
+    @Autowired
+    PolygonRepository polygonRepository;
+    
+    @Autowired
+    AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository;
+    
+    @Autowired
+    RawRecordRepository rawRepository;
+    
+    @Autowired
+    VideoRecordRepository videoRecordRepository;
+    
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AnalyzeOrderResource analyzeOrderResource = new AnalyzeOrderResource(analyzeOrderRepository);
+//        final AnalyzeOrderResource analyzeOrderResource = new AnalyzeOrderResource(analyzeOrderRepository,objectMapper,lineRepository,polygonRepository,
+//        		analyzeOrderDetailsRepository,analyzeOrderDetailsRepository,rawRepository, videoRecordRepository);
+//       
+        AnalyzeOrderResource analyzeOrderResource = new AnalyzeOrderResource(analyzeOrderRepository, objectMapper, lineRepository, polygonRepository, analyzeOrderDetailsRepository, rawRepository, videoRecordRepository);
+        
         this.restAnalyzeOrderMockMvc = MockMvcBuilders.standaloneSetup(analyzeOrderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -254,5 +295,118 @@ public class AnalyzeOrderResourceIntTest {
         assertThat(analyzeOrder1).isNotEqualTo(analyzeOrder2);
         analyzeOrder1.setId(null);
         assertThat(analyzeOrder1).isNotEqualTo(analyzeOrder2);
+    }
+    
+    @Test
+    public void jsonTest_Classes() throws JsonProcessingException{
+    	String result = objectMapper.writeValueAsString(new VehicleTypeVM());
+    	System.out.println(result);
+    }
+    
+    @Test
+    public void jsonTest_Points() throws JsonProcessingException{
+    	PointsVM pointsVM = preparePoints(100l, 100l);
+    	String result = objectMapper.writeValueAsString(pointsVM);
+    	System.out.println(result);
+    }
+    
+    @Test
+    public void jsonTest_Regions() throws JsonProcessingException{
+    	
+    	RegionVM regionVM = prepareRegions();
+    	String result = objectMapper.writeValueAsString(regionVM);
+    	System.out.println(result);
+    }
+    
+    @Test
+    public void jsonTest_Connection() throws JsonProcessingException{
+    	ConnectionVM connectionVM = prepareConnection();
+    	
+    	String result = objectMapper.writeValueAsString(connectionVM);
+    	System.out.println(result);
+    }
+    
+    @Test
+    public void jsonTest_Direction() throws JsonProcessingException{
+    	DirectionVM direction = prepareDirection();
+    	
+    	String result = objectMapper.writeValueAsString(direction);
+    	System.out.println(result);
+    }
+    
+    @Test
+    public void jsonTest_Speed() throws JsonProcessingException{
+    	List<SpeedVM> speed = prepareSpeed();
+    	
+    	String result = objectMapper.writeValueAsString(speed);
+    	System.out.println(result);
+    }
+    
+    @Test
+    public void jsonTest_All() throws JsonProcessingException{
+    	AnalyzeOrderDetailVM analyzeOrderDetailVM = new AnalyzeOrderDetailVM();
+    	analyzeOrderDetailVM.setCount(true);
+    	analyzeOrderDetailVM.setDirections(prepareDirection());
+    	analyzeOrderDetailVM.setPath("videoPath");
+    	analyzeOrderDetailVM.setSessionId("sessiınID");
+    	analyzeOrderDetailVM.setSpeed(prepareSpeed());
+    	analyzeOrderDetailVM.setClasses(new VehicleTypeVM());
+    	
+    	String result = objectMapper.writeValueAsString(analyzeOrderDetailVM);
+    	System.out.println(result);
+    }
+    public PointsVM preparePoints(Long x,Long y) {
+    	PointsVM pointsVM2 = new PointsVM();
+    	pointsVM2.setX(x);
+    	pointsVM2.setY(y);
+    	return pointsVM2;
+    }
+    
+    public RegionVM prepareRegions() {
+    	RegionVM regionVM = new RegionVM();
+    	regionVM.setLabel("regions1");
+    	
+    	regionVM.getPoints().add(preparePoints(100l, 100l));
+    	regionVM.getPoints().add(preparePoints(200l,200l));
+    	
+    	return regionVM;
+    }
+    
+    public ConnectionVM prepareConnection() {
+    	ConnectionVM connectionVM = new ConnectionVM();
+    	connectionVM.setEntry("enrty");
+    	connectionVM.setExit("exit");
+    	
+    	return connectionVM;
+    }
+    
+    public DirectionVM prepareDirection() {
+    	DirectionVM direction = new DirectionVM();
+    	List<RegionVM> regionList = new ArrayList<RegionVM>();
+    	regionList.add(prepareRegions());
+    	regionList.add(prepareRegions());
+    	direction.setRegions(regionList);
+    	
+    	List<ConnectionVM> connectionList = new ArrayList<ConnectionVM>();
+    	connectionList.add(prepareConnection());
+     	connectionList.add(prepareConnection()); 	
+    	direction.setConnections(connectionList);
+    	
+    	return direction;
+    }
+    
+    public List<SpeedVM> prepareSpeed() {
+    	List<SpeedVM> result = new ArrayList<SpeedVM>();
+    	
+    	SpeedVM speedVM = new SpeedVM();
+    	
+    	speedVM.setLabel("label");
+    	speedVM.setDistance(100l);
+    	
+    	speedVM.getPoints().add(preparePoints(100l, 100l));
+    	speedVM.getPoints().add(preparePoints(200l, 200l));
+    	
+    	result.add(speedVM);
+    	return result;
     }
 }

@@ -180,7 +180,7 @@ public class Util {
 		analyzeOrderDetailVM.setPath(path);
 		analyzeOrderDetailVM.setSessionId(sessionId);
 		analyzeOrderDetailVM.setSpeed(speed);
-		analyzeOrderDetailVM.setVehicleTypeVM(vehicleTypeVM);
+		analyzeOrderDetailVM.setClasses(vehicleTypeVM);
 		
 		return analyzeOrderDetailVM;
 	}
