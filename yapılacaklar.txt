@@ -4,7 +4,7 @@
 ----------------------------------------4 - name alanının dialog lardan kaldırılması
 ----------------------------------------5 - line eklemede, 50 pixel problemi
 6 - silme işlemlerinde onay
-7 - çizgi çizerken iptal butonu
+----------------------------------------7 - çizgi çizerken iptal butonu
 ----------------------------------------8 - senaryo datasında, resim saklanması
 ----------------------------------------9 - analiz emri yapısı
 -----------------------------------------10 - entegrasyon tablosu
