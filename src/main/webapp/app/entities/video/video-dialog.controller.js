@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('VideoDialogController', VideoDialogController);
 
-    VideoDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Video', 'Location'];
+    VideoDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Video', 'Location','$window'];
 
-    function VideoDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Video, Location) {
+    function VideoDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Video, Location,$window) {
         var vm = this;
 
         vm.video = entity;
@@ -16,6 +16,10 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         vm.locations = Location.query();
+        
+        $window.addEventListener("onPickItem", function(evt) {
+    		alert(evt.detail);
+		}, false);
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
