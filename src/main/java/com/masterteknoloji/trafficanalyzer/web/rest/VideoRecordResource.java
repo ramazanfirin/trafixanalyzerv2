@@ -45,6 +45,8 @@ import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertExcept
 import com.masterteknoloji.trafficanalyzer.web.rest.util.ExcelExporter;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.ClassificationResultDetailsVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.ClassificationResultVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.VideoRecordSummaryVM;
 
 import io.github.jhipster.web.util.ResponseUtil;
@@ -231,7 +233,37 @@ public class VideoRecordResource {
     	
     }
     
-    public void calculateTotalForSheet() {
+    @GetMapping("/video-records/getClassificationData/{id}")
+    @Timed
+    public List<ClassificationResultVM> getClassificationData(@PathVariable Long id) {
     	
+    	List<ClassificationResultVM> result = new ArrayList<ClassificationResultVM>();
+    	
+    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getVehicleTypeGroups(id);
+    	for (Map<String, Object> map : videoRecords) {
+    		
+    		ClassificationResultVM classificationResultVM = getclassificationResultByName(result, (String)map.get("linename"));
+    		
+    		ClassificationResultDetailsVM itemVM = new ClassificationResultDetailsVM();
+    		itemVM.setType((String)map.get("vehicle_type"));
+    		itemVM.setCount(((BigInteger)map.get("count")).longValue());
+    		
+    		classificationResultVM.getDatas().add(itemVM);
+		}
+    	return result;
+    }
+    
+    private ClassificationResultVM getclassificationResultByName(List<ClassificationResultVM> list,String name) {
+    	
+    	for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			ClassificationResultVM classificationResultVM = (ClassificationResultVM) iterator.next();
+			if(classificationResultVM.getLineName().equals(name))
+				return classificationResultVM;
+		}
+    	
+    	ClassificationResultVM result = new ClassificationResultVM();
+    	result.setLineName(name);
+    	list.add(result);
+    	return result;
     }
 }

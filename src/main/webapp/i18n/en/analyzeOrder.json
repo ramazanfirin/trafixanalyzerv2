@@ -19,7 +19,11 @@
             "screenShoot": "Screen Shoot",
             "video": "Video",
             "scenario": "Scenario",
-            "orderDetails": "Order Details"
+            "orderDetails": "Order Details",
+            "classificationTabLabel": "Classification",
+            "countingTabLabel": "Counting",
+            "speedTabLabel": "Speed",
+            "excelTabLabel": "Excel Data"
         }
     }
 }

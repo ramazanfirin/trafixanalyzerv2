@@ -16,6 +16,7 @@
             'ui.router',
             'infinite-scroll',
             'FileManagerApp',
+            'zingchart-angularjs',
             // jhipster-needle-angularjs-add-module JHipster will add new module here
             'angular-loading-bar'
         ])

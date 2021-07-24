@@ -41,8 +41,58 @@
 	    //vm.createPolygon = vm.createPolygon();
 	    vm.polygonType="COUNTING";
 
+		vm.showClassification=showClassification;
+		vm.showCounting=showCounting;
+		vm.showSpeed=showSpeed;
+		vm.showExcel=showExcel;
+		
+		vm.showClassificationTab=true;
+		vm.showCountingTab=false;
+		vm.showSpeedTab=false;
+		vm.showExcelTab=false;
+
+		vm.classificationData=[];
+		vm.classificationChartList=[];
+
 		loadAll();
 
+		vm.myJson = {
+  type: 'line',
+  series: [
+    { values: [54,23,34,23,43] },
+    { values: [10,15,16,20,40] }
+  ]
+};
+
+
+vm.myJson2 = {
+    type: "pie",
+    title: {
+      textAlign: 'center',
+      text: "My title"
+    },
+    plot: {
+      slice: 50 //to make a donut
+    },
+    series: [{
+      values: [3],
+      text: "Total Commits"
+
+    }, {
+      values: [4],
+      text: "Issues Solved"
+
+    }, {
+      values: [8],
+      text: "Issues Submitted"
+    }, {
+      values: [7],
+      text: "Number of Clones"
+
+    }]
+  };
+		
+        
         function loadAll () {
         //$("#exampleModal").modal("show");
         	
@@ -69,9 +119,105 @@
 		
 		function getLineListForFirstTime(result){
 			vm.lines = result;
-			
+			getClassificationData();
 			$scope.$broadcast('lineDataReceived', "ramazan");
 		}
+        
+        function getClassificationData(){
+        	VideoRecord.getClassificationData({id:vm.analyzeOrder.id},getClassificationDataSuccess,onSaveError)
+        }
+        
+        function getClassificationDataSuccess(result){
+        	vm.classificationData = result;
+        	for(var i=0;i<result.length;i++){
+        		var item = result[i];
+        		var chart = createClassificationChart(item);
+        		vm.classificationChartList.push(chart);
+        	}
+        }
+        
+        function createClassificationChart(item){
+        	var myJson2 = {
+				    type: "pie",
+				    title: {
+				      textAlign: 'center',
+				      text: item.lineName
+				    },
+				     "legend": {
+    "x": "75%",
+    "y": "15%",
+    "border-width": 1,
+    "border-color": "gray",
+    "border-radius": "5px",
+    "header": {
+      "text": "Legend",
+      "font-family": "Georgia",
+      "font-size": 12,
+      "font-color": "#3333cc",
+      "font-weight": "normal"
+    },
+    "marker": {
+      "type": "circle"
+    },
+    "toggle-action": "remove",
+    "minimize": true,
+    "icon": {
+      "line-color": "#9999ff"
+    },
+    "max-items": 8,
+    "overflow": "scroll"
+  },
+				    plot: {
+				      slice: 50, //to make a donut
+				      'value-box': {
+					      text: "%pie-total-value",
+					      placement: "center",
+					      'font-color': "black",
+					      'font-size':35,
+					      'font-family': "Georgia",
+					      'font-weight': "normal",
+					      rules: [
+					        {
+					          rule: "%p != 0",
+					          visible: false
+					        }
+      						]
+   					 },
+   					 tooltip: {
+				      text: "%t: %v (%npv%)",
+				      'font-color': "black",
+				      'font-family': "Georgia",
+				      'text-alpha':1,
+				      'background-color': "white",
+				      alpha:0.7,
+				      'border-width': 1,
+				      'border-color': "#cccccc",
+				      'line-style': "dotted",
+				      'border-radius': "10px",
+				      padding: "10%",
+				      placement: "node:out" //"node:out" or "node:center"
+   					 },
+				    },
+				    series: []
+			}	    
+			
+			for(var i=0;i<item.datas.length;i++){
+				var data=item.datas[i];
+				var seriesData = createSeriesData(data);
+				myJson2.series.push(seriesData);
+			}
+			
+			return myJson2;
+        }
+        
+        function createSeriesData(data){
+        	var values = {
+		      values: [data.count],
+		      text: data.type
+		    }
+		    
+		    return values;
+        }
         
         function getSpeedPolygonsSuccess(result){
         	vm.speedPolygons = result;
@@ -218,6 +364,32 @@
             vm.isSaving = false;
         }
 
+		function resetTabs(){
+			//alert('sdf');
+			vm.showClassificationTab=false;
+			vm.showCountingTab=false;
+			vm.showSpeedTab=false;
+			vm.showExcelTab=false;
+		}
 
+		function showClassification(){
+			resetTabs();
+			vm.showClassificationTab=true;
+		}
+		
+		function showCounting(){
+			resetTabs();
+			vm.showCountingTab=true;
+		}
+		
+		function showSpeed(){
+			resetTabs();
+			vm.showSpeedTab=true;
+		}
+		
+		function showExcel(){
+			resetTabs();
+			vm.showExcelTab=true;
+		}
     }
 })();

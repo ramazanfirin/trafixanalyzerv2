@@ -27,3 +27,6 @@
 
 localhost:8080/api/raw-records/parseData/parseData
 localhost:8080/api/analyze-orders/checkUnprocessedOrders
+
+bower install zingchart-angularjs
+bower install angular-filemanager

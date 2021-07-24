@@ -19,7 +19,11 @@
             "screenShoot": "Ekran Görüntüsü",
             "video": "Video",
             "scenario": "Senaryo",
-            "orderDetails": "Ayrıntılar"
+            "orderDetails": "Ayrıntılar",
+            "classificationTabLabel": "Classification",
+            "countingTabLabel": "Counting",
+            "speedTabLabel": "Speed",
+            "excelTabLabel": "Excel Data"
         }
     }
 }

@@ -38,5 +38,12 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 		  		+ "where i.analyze_id= :analyzeOrderId and line.id = :lineId \n" 
 		  		+ "GROUP BY GroupTime,vehicle_type,line.name "
 		  		+ "order by line.name",nativeQuery=true)
-			public  Iterable<Map<String,Object>> getResultOfOrderReport(@Param("analyzeOrderId") Long analyzeOrderId,@Param("lineId") Long lineId);
+	  public  Iterable<Map<String,Object>> getResultOfOrderReport(@Param("analyzeOrderId") Long analyzeOrderId,@Param("lineId") Long lineId);
+	  
+	  @Query(value="SELECT line.name as lineName,vehicle_type,count(*) as count FROM video_record "
+	  		     + "INNER JOIN line as line ON line_id=line.id "
+	  		     + "where "
+	  		     + "analyze_id=:analyzeOrderId "
+	  		     + "group by line.name,vehicle_type;",nativeQuery=true)
+	  public  Iterable<Map<String,Object>> getVehicleTypeGroups(@Param("analyzeOrderId") Long analyzeOrderId);
 }

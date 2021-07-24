@@ -36,9 +36,9 @@
 			<div id="containerKonva"></div>
 			<div id="buttons">
 <!-- 			      <span>{{vm.addMessage}}</span> -->
-<!-- 			      <input type="button" id="add" value="Seçime Basla" ng-click="vm.addPolygon()" ng-show = "!vm.adding"/> -->
+<!-- 			      <input type="button" id="add" value="SeÃ§ime Basla" ng-click="vm.addPolygon()" ng-show = "!vm.adding"/> -->
 			      <input type="button" id="save" value="Kaydet" ng-click="vm.showPopup()" ng-show = "vm.adding" data-target="#modal"/>
-			      <input type="button" id="Ä°ptal" value="Ä°ptal" onclick="cancelSelections()" ng-click="vm.cancelPolygon();" ng-show = "vm.adding"/>
+			      <input type="button" id="Ã„Â°ptal" value="Ã„Â°ptal" onclick="cancelSelections()" ng-click="vm.cancelPolygon();" ng-show = "vm.adding"/>
 			    </div>
         </div>
         
@@ -48,32 +48,8 @@
                 <option value=""></option>
             </select>
         </div>
-  
-  
-  <div class="table-responsive">
-        <table id="tableData" class="jh-table table table-striped">
-            <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span data-translate="">Tarih Araligi</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="insertDate"><span data-translate="">Tip</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="vehicleType"><span data-translate="">Sayi</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="videoRecord in vm.report ">
-                    <td>{{videoRecord.date | date:'HH:mm:ss'}}</td>
-                    <td>{{videoRecord.directionName}}</td>
-                    <td>{{videoRecord.type}}</td>
-                    <td>{{videoRecord.count}}</td>
-                    
-                </tr>
-            </tbody>
-        </table>
-    </div>
         
-    </div>
-     <div class="modal-footer">
+         <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
         </button>
@@ -84,31 +60,95 @@
         	</a>
         </button>
     </div>
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active">
+			    <a aria-controls="uploadTab" ng-click="vm.showClassification();" role="tab" data-toggle="tab">Classification</a></li>
+			<li role="presentation">
+				<a aria-controls="browseTab" ng-click="vm.showCounting();" role="tab" data-toggle="tab">Counting</a></li>
+			<li role="presentation">
+				<a aria-controls="browseTab" ng-click="vm.showSpeed();" role="tab" data-toggle="tab">Counting</a></li>	
+		</ul>
 
-    
-    <div id="myModal" class="modal-new">
 
-  <!-- Modal content -->
-  <div class="modal-content-new">
-    <span class="close">&times;</span>
-    <h1>Çizgi Tanımlama</h1>
-    <div class="form-group">
-            <label class="control-label" data-translate="trafficanalzyzerv2App.scenario.name" for="field_name">Name</label>
-            <input type="text" class="form-control" name="name" id="field_name"
-                    ng-model="vm.addLineName"
-                    />
-        </div>
-    <div class="clearfix">
-        <button type="button" id="cancelBtn"  ng-click="vm.hidePopup()" class="cancelbtn">Cancel</button>
-        <button type="button" id="submitBtn"  ng-click="vm.addLine()" class="deletebtn">Kaydet</button>
-      </div>
-  </div>
+		<div class="tab-pane" id="excelData "
+			ng-show="vm.showClassificationTab" id="4a">
+			<div class="table-responsive">
+				<table id="tableData" class="jh-table table table-striped">
+					<thead>
+						<tr jh-sort="vm.predicate" ascending="vm.reverse"
+							callback="vm.transition()">
+							<th jh-sort-by="id"><span data-translate="">Tarih
+									Araligi</span> <span class="glyphicon glyphicon-sort"></span></th>
+							<th jh-sort-by="insertDate"><span data-translate="">Tip</span>
+								<span class="glyphicon glyphicon-sort"></span></th>
+							<th jh-sort-by="vehicleType"><span data-translate="">Sayi</span>
+								<span class="glyphicon glyphicon-sort"></span></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="videoRecord in vm.report ">
+							<td>{{videoRecord.date | date:'HH:mm:ss'}}</td>
+							<td>{{videoRecord.directionName}}</td>
+							<td>{{videoRecord.type}}</td>
+							<td>{{videoRecord.count}}</td>
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+		
+		<div class="tab-pane" id="counting"
+			ng-show="vm.showCountingTab">
+			
+			
+			<div class="row">
+			
+			
+			
+			
+			<div class="col-xs-6"  ng-repeat="chart in vm.classificationChartList ">
+				<zingchart  data-zc-json="chart" data-zc-height=300 data-zc-width=400></zingchart>			
+			</div>
+			
+			
+			
+		</div>
+		
+		
+			</div>
+			
+		
+			<div class="tab-pane" id="counting"
+			ng-show="vm.showSpeedTab">
+			
+			
+			<div class="row">
+			
+			
+			
+			
+			<div class="col-md-6"  ng-repeat="chart in vm.classificationChartList ">
+				<zingchart  data-zc-json="chart" data-zc-height=300 data-zc-width=300></zingchart>			
+			</div>
+			
+			
+		</div>
+		
+		
+			</div>
+			
+		</form>
 
 </div>
-</form>
+
+
+
+
 
 <script>
-
 //Get the modal
 var modal = document.getElementById("myModal");
 
@@ -435,7 +475,7 @@ stage.add(layer);
 				return;
 			
 			if(scope.vm.adding == false){
-				alert("Çizgi eklemek icin, Secime Basla butonuna basiniz");
+				alert("Ã‡izgi eklemek icin, Secime Basla butonuna basiniz");
 				return;
 			}
 

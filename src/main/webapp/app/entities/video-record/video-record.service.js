@@ -13,6 +13,7 @@
             'query': { method: 'GET', isArray: true},
             'getResultOfAnalyzeOrder': { method: 'GET', isArray: true,url:'/api/video-records/getResultOfAnalyzeOrder/:id'},
             'getResultOfAnalyzeOrderByLineId': { method: 'GET', isArray: true,url:'/api/video-records/getResultOfAnalyzeOrderAndLineId/:id/:lineId'},
+            'getClassificationData': { method: 'GET', isArray: true, url: '/api/video-records/getClassificationData/:id'},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
