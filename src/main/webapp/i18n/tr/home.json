@@ -1,19 +1,19 @@
 {
     "home": {
-        "title": "Merhaba, Java Hipster!",
-        "subtitle": "Burası Ana Sayfanız",
+        "title": "Merhaba, Trafix'e Hoşgeldiniz!",
+        "subtitle": "Yeni Nesil Trafik Analiz Sistemi",
         "logged": {
             "message": "\"{{username}}\" olarak giriş yaptınız."
         },
-        "question": "JHipster hakkında sorularınız için:",
+        "question": "Trafix hakkında sorularınız için web sitemizi ziyaret edebilirsiniz:",
         "link": {
-            "homepage": "JHipster ana sayfa",
+            "homepage": "www.trafix.pro",
             "stackoverflow": "Stack Overflow'da JHipster",
             "bugtracker": "JHipster hata yönetimi",
             "chat": "JHipster genel sohbet odası",
             "follow": "Twitter'da @java_hipster adresinden ulaşabilirsiniz"
         },
-        "like": "JHipster'ı beğendiysenizi yıldız vermeyi unutmayın",
-        "github": "GitHub"
+        "like": "",
+        "github": ""
     }
 }

@@ -169,7 +169,7 @@
 			console.log("update bitti");
 	    	//setTimeout(resetMessage, 1);
 	    	resetMessage();
-	    	$window.location.reload();
+	    	//$window.location.reload();
 	    }
 	    
 

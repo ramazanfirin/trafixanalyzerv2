@@ -24,6 +24,8 @@
 24-client side pagign
 -----------------------------------------25-line hesaplama
 -----------------------------------------26-video dosyası seçim
+-----------------------------------------27-classificaiton type chart
+-----------------------------------------28-speedchart
 
 localhost:8080/api/raw-records/parseData/parseData
 localhost:8080/api/analyze-orders/checkUnprocessedOrders

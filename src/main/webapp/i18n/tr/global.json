@@ -1,25 +1,25 @@
 {
     "global": {
-        "title": "Trafficanalzyzerv2",
+        "title": "Traffix",
         "browsehappy": "<strong>Çok eski</strong> bir tarayıcı kullanıyorsunuz. Lütfen kullanım kalitenizi arttırmak için <a href=\"http://browsehappy.com/?locale=tr\">tarayıcınızı yükseltin</a>.",
         "menu": {
             "home": "Ana Sayfa",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Varlıklar",
-                "city": "City",
-                "district": "District",
-                "location": "Location",
-                "camera": "Camera",
-                "video": "Video",
-                "scenario": "Scenario",
+                "city": "Şehirler",
+                "district": "İlçeler",
+                "location": "Lokasyonlar",
+                "camera": "Kamera",
+                "video": "Videolar",
+                "scenario": "Senaryolar",
                 "line": "Line",
                 "polygon": "Polygon",
                 "direction": "Direction",
                 "videoRecord": "Video Record",
                 "cameraRecord": "Camera Record",
                 "rawRecord": "Raw Record",
-                "analyzeOrder": "Analyze Order",
+                "analyzeOrder": "Analizler",
                 "analyzeOrderDetails": "Analyze Order Details",
                 "fileUploadTest": "File Upload Test",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
