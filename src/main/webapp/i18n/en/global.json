@@ -109,7 +109,8 @@
             "direction": "Direction Settings",
             "polygon": "Polygon Settings",
             "line": "Line Settings",
-            "viewReport": "View report"
+            "viewReport": "View report",
+            "close": "Close"
         },
         "detail": {
             "field": "Field",

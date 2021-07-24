@@ -23,7 +23,8 @@
             "classificationTabLabel": "Classification",
             "countingTabLabel": "Counting",
             "speedTabLabel": "Speed",
-            "excelTabLabel": "Excel Data"
+            "excelTabLabel": "Details",
+            "downloadExcelFile":"Download Excel File"
         }
     }
 }

@@ -109,7 +109,8 @@
             "direction": "Yön Ayarları",
             "polygon": "Polygon Ayarları",
             "line": ": Çizgi Ayarları",
-            "viewReport": "Raporu Görüntüle"
+            "viewReport": "Raporu Görüntüle",
+            "close": "Kapat"
         },
         "detail": {
             "field": "Alan",

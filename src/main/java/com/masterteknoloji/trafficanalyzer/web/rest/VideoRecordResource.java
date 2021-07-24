@@ -266,4 +266,21 @@ public class VideoRecordResource {
     	list.add(result);
     	return result;
     }
+    
+    @GetMapping("/video-records/getAverageSpeedData/{id}")
+    @Timed
+    public List<ClassificationResultVM> getAverageSpeedData(@PathVariable Long id) {
+    	
+    	List<ClassificationResultVM> result = new ArrayList<ClassificationResultVM>();
+    	
+    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getAverageSpeed(id);
+    	for (Map<String, Object> map : videoRecords) {
+    		
+    		ClassificationResultVM classificationResultVM = getclassificationResultByName(result, (String)map.get("linename"));
+    		Double speed = (Double)map.get("speed");
+    		classificationResultVM.setAverageSpeed(speed.longValue());
+    	}
+    	
+    	return result;
+    }
 }

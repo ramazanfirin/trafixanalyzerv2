@@ -20,10 +20,11 @@
             "video": "Video",
             "scenario": "Senaryo",
             "orderDetails": "Ayrıntılar",
-            "classificationTabLabel": "Classification",
-            "countingTabLabel": "Counting",
-            "speedTabLabel": "Speed",
-            "excelTabLabel": "Excel Data"
+            "classificationTabLabel": "Sınıflandırma",
+            "countingTabLabel": "Sayım",
+            "speedTabLabel": "Hız",
+            "excelTabLabel": "Detay",
+            "downloadExcelFile":"Excel İndir"
         }
     }
 }

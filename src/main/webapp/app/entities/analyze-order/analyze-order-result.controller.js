@@ -51,9 +51,16 @@
 		vm.showSpeedTab=false;
 		vm.showExcelTab=false;
 
+		vm.showClassificationTabActive="active";
+		vm.showCountingTabActive="";
+		vm.showSpeedTabActive="";
+		vm.showExcelTabActive="";
+
 		vm.classificationData=[];
 		vm.classificationChartList=[];
 
+		vm.speedChartList=[];
+		
 		loadAll();
 
 		vm.myJson = {
@@ -124,7 +131,8 @@ vm.myJson2 = {
 		}
         
         function getClassificationData(){
-        	VideoRecord.getClassificationData({id:vm.analyzeOrder.id},getClassificationDataSuccess,onSaveError)
+        	VideoRecord.getClassificationData({id:vm.analyzeOrder.id},getClassificationDataSuccess,onSaveError);
+        	VideoRecord.getAverageSpeedData({id:vm.analyzeOrder.id},getAverageSpeedDataSuccess,onSaveError)
         }
         
         function getClassificationDataSuccess(result){
@@ -136,87 +144,13 @@ vm.myJson2 = {
         	}
         }
         
-        function createClassificationChart(item){
-        	var myJson2 = {
-				    type: "pie",
-				    title: {
-				      textAlign: 'center',
-				      text: item.lineName
-				    },
-				     "legend": {
-    "x": "75%",
-    "y": "15%",
-    "border-width": 1,
-    "border-color": "gray",
-    "border-radius": "5px",
-    "header": {
-      "text": "Legend",
-      "font-family": "Georgia",
-      "font-size": 12,
-      "font-color": "#3333cc",
-      "font-weight": "normal"
-    },
-    "marker": {
-      "type": "circle"
-    },
-    "toggle-action": "remove",
-    "minimize": true,
-    "icon": {
-      "line-color": "#9999ff"
-    },
-    "max-items": 8,
-    "overflow": "scroll"
-  },
-				    plot: {
-				      slice: 50, //to make a donut
-				      'value-box': {
-					      text: "%pie-total-value",
-					      placement: "center",
-					      'font-color': "black",
-					      'font-size':35,
-					      'font-family': "Georgia",
-					      'font-weight': "normal",
-					      rules: [
-					        {
-					          rule: "%p != 0",
-					          visible: false
-					        }
-      						]
-   					 },
-   					 tooltip: {
-				      text: "%t: %v (%npv%)",
-				      'font-color': "black",
-				      'font-family': "Georgia",
-				      'text-alpha':1,
-				      'background-color': "white",
-				      alpha:0.7,
-				      'border-width': 1,
-				      'border-color': "#cccccc",
-				      'line-style': "dotted",
-				      'border-radius': "10px",
-				      padding: "10%",
-				      placement: "node:out" //"node:out" or "node:center"
-   					 },
-				    },
-				    series: []
-			}	    
-			
-			for(var i=0;i<item.datas.length;i++){
-				var data=item.datas[i];
-				var seriesData = createSeriesData(data);
-				myJson2.series.push(seriesData);
-			}
-			
-			return myJson2;
-        }
-        
-        function createSeriesData(data){
-        	var values = {
-		      values: [data.count],
-		      text: data.type
-		    }
-		    
-		    return values;
+        function getAverageSpeedDataSuccess(result){
+        	vm.classificationData = result;
+        	for(var i=0;i<result.length;i++){
+        		var item = result[i];
+        		var chart = createSpeedChart(item);
+        		vm.speedChartList.push(chart);
+        	}
         }
         
         function getSpeedPolygonsSuccess(result){
@@ -370,26 +304,194 @@ vm.myJson2 = {
 			vm.showCountingTab=false;
 			vm.showSpeedTab=false;
 			vm.showExcelTab=false;
+			
+			vm.showClassificationTabActive = "";
+			vm.showCountingTabActive="";
+			vm.showSpeedTabActive="";
+			vm.showExcelTabActive="";
 		}
 
 		function showClassification(){
 			resetTabs();
 			vm.showClassificationTab=true;
+			vm.showClassificationTabActive = "active";
 		}
 		
 		function showCounting(){
 			resetTabs();
 			vm.showCountingTab=true;
+			vm.showCountingTabActive="active";
 		}
 		
 		function showSpeed(){
 			resetTabs();
 			vm.showSpeedTab=true;
+			vm.showSpeedTabActive="active";
 		}
 		
 		function showExcel(){
 			resetTabs();
 			vm.showExcelTab=true;
+			vm.showSpeedTabActive="";
 		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		function createClassificationChart(item){
+        	var myJson2 = {
+				    type: "pie",
+				    title: {
+				      textAlign: 'center',
+				      text: item.lineName
+				    },
+				     "legend": {
+    "x": "75%",
+    "y": "15%",
+    "border-width": 1,
+    "border-color": "gray",
+    "border-radius": "5px",
+    "header": {
+      "text": "Legend",
+      "font-family": "Georgia",
+      "font-size": 12,
+      "font-color": "#3333cc",
+      "font-weight": "normal"
+    },
+    "marker": {
+      "type": "circle"
+    },
+    "toggle-action": "remove",
+    "minimize": true,
+    "icon": {
+      "line-color": "#9999ff"
+    },
+    "max-items": 8,
+    "overflow": "scroll"
+  },
+				    plot: {
+				      slice: 50, //to make a donut
+				      'value-box': {
+					      text: "%pie-total-value",
+					      placement: "center",
+					      'font-color': "black",
+					      'font-size':35,
+					      'font-family': "Georgia",
+					      'font-weight': "normal",
+					      rules: [
+					        {
+					          rule: "%p != 0",
+					          visible: false
+					        }
+      						]
+   					 },
+   					 tooltip: {
+				      text: "%t: %v (%npv%)",
+				      'font-color': "black",
+				      'font-family': "Georgia",
+				      'text-alpha':1,
+				      'background-color': "white",
+				      alpha:0.7,
+				      'border-width': 1,
+				      'border-color': "#cccccc",
+				      'line-style': "dotted",
+				      'border-radius': "10px",
+				      padding: "10%",
+				      placement: "node:out" //"node:out" or "node:center"
+   					 },
+				    },
+				    series: []
+			}	    
+			
+			for(var i=0;i<item.datas.length;i++){
+				var data=item.datas[i];
+				var seriesData = createSeriesData(data);
+				myJson2.series.push(seriesData);
+			}
+			
+			return myJson2;
+        }
+        
+        function createSeriesData(data){
+        	var values = {
+		      values: [data.count],
+		      text: data.type
+		    }
+		    
+		    return values;
+        }
+        
+        
+        
+        function createSpeedChart(item){
+			var myConfig6 = {
+				"type": "gauge",
+				"title": {
+					"textAlign": 'center',
+					"text": item.lineName
+				},
+				"scale-r": {
+					"aperture": 200,
+					"values": "0:200:20",
+					"item": {    //Scale Label Styling
+						'font-size': 12,
+						'font-weight': "bold",     //or "normal"
+						'font-style': "normal",    //or "italic"
+						'offset-r': -60  //To adjust the placement of your scale labels.
+						//To adjust the angle of your scale labels.
+					},
+					"center": {
+						"size": 35,
+						"background-color": "#66CCFF #FFCCFF",
+						"border-color": "none"
+					},
+					"ring": {  //Ring with Rules
+						"size": 20,
+						"rules": [
+							{
+								"rule": "%v >= 40 && %v <= 80",
+								"background-color": "blue"
+							},
+
+							{
+								"rule": "%v >= 80 && %v <= 120",
+								"background-color": "green"
+							},
+							{
+								"rule": "%v >= 120 && %v <=160",
+								"background-color": "yellow"
+							},
+							{
+								"rule": "%v >= 160 && %v <=180",
+								"background-color": "red"
+							}
+						]
+					}
+				},
+				"plot": {
+					"csize": "10%",
+					"size": "100%",
+					"background-color": "#000000",
+					"valueBox": {
+						placement: 'center',
+						text: '%v km/s', //default
+						fontSize: 15,
+					}
+				},
+				"series": [
+					{ "values": [item.averageSpeed] }
+				]
+			};
+
+			
+			return myConfig6;
+		}
+        
     }
 })();

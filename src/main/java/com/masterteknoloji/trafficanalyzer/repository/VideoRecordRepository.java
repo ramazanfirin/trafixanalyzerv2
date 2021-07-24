@@ -46,4 +46,10 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 	  		     + "analyze_id=:analyzeOrderId "
 	  		     + "group by line.name,vehicle_type;",nativeQuery=true)
 	  public  Iterable<Map<String,Object>> getVehicleTypeGroups(@Param("analyzeOrderId") Long analyzeOrderId);
+	  
+	  @Query(value="SELECT line.name as lineName,avg(speed) as speed FROM video_record "
+	  			 + "INNER JOIN line as line ON line_id=line.id "
+	  			 + "where analyze_id=:analyzeOrderId  "
+	  			 + "group by line.name;",nativeQuery=true)
+	  public  Iterable<Map<String,Object>> getAverageSpeed(@Param("analyzeOrderId") Long analyzeOrderId);
 }

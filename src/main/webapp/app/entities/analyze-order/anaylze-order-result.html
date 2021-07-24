@@ -7,7 +7,7 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myScenarioLabel" data-translate="trafficanalzyzerv2App.scenario.home.createOrEditLabel">Create or edit a Scenario</h4>
+        <h4 class="modal-title" id="myScenarioLabel" data-translate="trafficanalzyzerv2App.analyzeOrder.home.createOrEditLabel">Create or edit a Scenario</h4>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
@@ -17,14 +17,14 @@
                     ng-model="vm.scenario.id" readonly />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="trafficanalzyzerv2App.scenario.name" for="field_name">Name</label>
+            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrder.scenario" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name" readonly
                     ng-model="vm.scenario.name"
                     />
         </div>
 
         <div class="form-group">
-            <label data-translate="trafficanalzyzerv2App.scenario.video" for="field_video">Video</label>
+            <label data-translate="trafficanalzyzerv2App.analyzeOrder.video" for="field_video">Video</label>
             <select disabled class="form-control" id="field_video" name="video" ng-model="vm.scenario.video" ng-change="vm.update()" ng-options="video as video.name for video in vm.videos track by video.id">
                 <option value=""></option>
             </select>
@@ -42,31 +42,40 @@
 			    </div>
         </div>
         
-         <div class="form-group">
-            <label data-translate="trafficanalzyzerv2App.scenario.lines" for="field_video">Video</label>
-            <select class="form-control" id="field_line" name="line" ng-model="vm.selectedLine" ng-change="vm.updateLine()" ng-options="line as line.name for line in vm.lines track by line.id">
-                <option value=""></option>
-            </select>
-        </div>
+<!--          <div class="form-group"> -->
+<!--             <label data-translate="trafficanalzyzerv2App.scenario.lines" for="field_video">Video</label> -->
+<!--             <select class="form-control" id="field_line" name="line" ng-model="vm.selectedLine" ng-change="vm.updateLine()" ng-options="line as line.name for line in vm.lines track by line.id"> -->
+<!--                 <option value=""></option> -->
+<!--             </select> -->
+<!--         </div> -->
         
          <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
-        </button>
+<!--         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()"> -->
+<!--             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span> -->
+<!--         </button> -->
         <button type="submit" class="btn btn-secondary">
             <a href="/api/video-records/generateExcelFile/{{vm.analyzeOrder.id}}">
             	<span class="glyphicon glyphicon-save"></span>&nbsp;
-            	Download
+            	 <label data-translate="trafficanalzyzerv2App.analyzeOrder.downloadExcelFile" for="field_video">Video</label>
         	</a>
         </button>
     </div>
 		<ul class="nav nav-tabs" role="tablist">
-			<li role="presentation" class="active">
-			    <a aria-controls="uploadTab" ng-click="vm.showClassification();" role="tab" data-toggle="tab">Classification</a></li>
-			<li role="presentation">
-				<a aria-controls="browseTab" ng-click="vm.showCounting();" role="tab" data-toggle="tab">Counting</a></li>
-			<li role="presentation">
-				<a aria-controls="browseTab" ng-click="vm.showSpeed();" role="tab" data-toggle="tab">Counting</a></li>	
+			<li role="presentation" class="{{vm.showClassificationTabActive}}">
+			    <a aria-controls="uploadTab" ng-click="vm.showClassification();" role="tab" class= "fileselector" data-toggle="tab">
+			    <label data-translate="trafficanalzyzerv2App.analyzeOrder.excelTabLabel" for="field_video">Video</label>
+            
+			    </a>
+			</li>
+			<li role="presentation" class="{{vm.showCountingTabActive}}">
+				<a aria-controls="browseTab" ng-click="vm.showCounting();" role="tab" class= "fileselector" data-toggle="tab">
+				<label data-translate="trafficanalzyzerv2App.analyzeOrder.countingTabLabel" for="field_video">Video</label>
+				</a>
+				</li>
+			<li role="presentation" class="{{vm.showSpeedTabActive}}">
+				<a aria-controls="browseTab" ng-click="vm.showSpeed();" role="tab" class= "fileselector" data-toggle="tab">
+				<label data-translate="trafficanalzyzerv2App.analyzeOrder.speedTabLabel" for="field_video">Video</label>
+				</a></li>	
 		</ul>
 
 
@@ -127,10 +136,7 @@
 			
 			<div class="row">
 			
-			
-			
-			
-			<div class="col-md-6"  ng-repeat="chart in vm.classificationChartList ">
+			<div class="col-md-6"  ng-repeat="chart in vm.speedChartList ">
 				<zingchart  data-zc-json="chart" data-zc-height=300 data-zc-width=300></zingchart>			
 			</div>
 			
@@ -139,6 +145,14 @@
 		
 		
 			</div>
+			
+			
+	   <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.close">Kapat</span>
+        </button>
+        
+    </div>		
 			
 		</form>
 

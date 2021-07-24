@@ -8,6 +8,10 @@ public class ClassificationResultVM {
 	String lineName;
 	
 	List<ClassificationResultDetailsVM> datas = new ArrayList<ClassificationResultDetailsVM>();
+	
+	Long averageSpeed;
+	
+	
 
 	public String getLineName() {
 		return lineName;
@@ -23,6 +27,14 @@ public class ClassificationResultVM {
 
 	public void setDatas(List<ClassificationResultDetailsVM> datas) {
 		this.datas = datas;
+	}
+
+	public Long getAverageSpeed() {
+		return averageSpeed;
+	}
+
+	public void setAverageSpeed(Long averageSpeed) {
+		this.averageSpeed = averageSpeed;
 	}
 
 	
