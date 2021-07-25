@@ -115,10 +115,12 @@ entity AnalyzeOrderDetails{
 	endDate Instant
 	processDuration Long
 	videoDuration Long
+	
+	state AnalyzeState
 }
 
 enum AnalyzeState {
-  NOT_PROCESSED,
+  NOT_STARTED,
   STARTED,
   ANALYZE_COMPLETED,
   PROCESS_COMPLETED,

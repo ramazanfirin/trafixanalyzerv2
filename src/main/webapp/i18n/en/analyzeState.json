@@ -2,7 +2,7 @@
     "trafficanalzyzerv2App": {
         "AnalyzeState" : {
             "null": "",
-            "NOT_PROCESSED": "NOT_PROCESSED",
+            "NOT_STARTED": "NOT_STARTED",
             "STARTED": "STARTED",
             "ANALYZE_COMPLETED": "ANALYZE_COMPLETED",
             "PROCESS_COMPLETED": "PROCESS_COMPLETED",

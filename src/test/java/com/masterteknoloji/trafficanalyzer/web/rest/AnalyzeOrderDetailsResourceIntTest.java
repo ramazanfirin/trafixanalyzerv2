@@ -32,6 +32,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 /**
  * Test class for the AnalyzeOrderDetailsResource REST controller.
  *
@@ -76,6 +77,9 @@ public class AnalyzeOrderDetailsResourceIntTest {
 
     private static final Long DEFAULT_VIDEO_DURATION = 1L;
     private static final Long UPDATED_VIDEO_DURATION = 2L;
+
+    private static final AnalyzeState DEFAULT_STATE = AnalyzeState.NOT_STARTED;
+    private static final AnalyzeState UPDATED_STATE = AnalyzeState.STARTED;
 
     @Autowired
     private AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository;
@@ -126,7 +130,8 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .startDate(DEFAULT_START_DATE)
             .endDate(DEFAULT_END_DATE)
             .processDuration(DEFAULT_PROCESS_DURATION)
-            .videoDuration(DEFAULT_VIDEO_DURATION);
+            .videoDuration(DEFAULT_VIDEO_DURATION)
+            .state(DEFAULT_STATE);
         return analyzeOrderDetails;
     }
 
@@ -162,6 +167,7 @@ public class AnalyzeOrderDetailsResourceIntTest {
         assertThat(testAnalyzeOrderDetails.getEndDate()).isEqualTo(DEFAULT_END_DATE);
         assertThat(testAnalyzeOrderDetails.getProcessDuration()).isEqualTo(DEFAULT_PROCESS_DURATION);
         assertThat(testAnalyzeOrderDetails.getVideoDuration()).isEqualTo(DEFAULT_VIDEO_DURATION);
+        assertThat(testAnalyzeOrderDetails.getState()).isEqualTo(DEFAULT_STATE);
     }
 
     @Test
@@ -205,7 +211,8 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
             .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
             .andExpect(jsonPath("$.[*].processDuration").value(hasItem(DEFAULT_PROCESS_DURATION.intValue())))
-            .andExpect(jsonPath("$.[*].videoDuration").value(hasItem(DEFAULT_VIDEO_DURATION.intValue())));
+            .andExpect(jsonPath("$.[*].videoDuration").value(hasItem(DEFAULT_VIDEO_DURATION.intValue())))
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
     }
 
     @Test
@@ -230,7 +237,8 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
             .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
             .andExpect(jsonPath("$.processDuration").value(DEFAULT_PROCESS_DURATION.intValue()))
-            .andExpect(jsonPath("$.videoDuration").value(DEFAULT_VIDEO_DURATION.intValue()));
+            .andExpect(jsonPath("$.videoDuration").value(DEFAULT_VIDEO_DURATION.intValue()))
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()));
     }
 
     @Test
@@ -264,7 +272,8 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .startDate(UPDATED_START_DATE)
             .endDate(UPDATED_END_DATE)
             .processDuration(UPDATED_PROCESS_DURATION)
-            .videoDuration(UPDATED_VIDEO_DURATION);
+            .videoDuration(UPDATED_VIDEO_DURATION)
+            .state(UPDATED_STATE);
 
         restAnalyzeOrderDetailsMockMvc.perform(put("/api/analyze-order-details")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -287,6 +296,7 @@ public class AnalyzeOrderDetailsResourceIntTest {
         assertThat(testAnalyzeOrderDetails.getEndDate()).isEqualTo(UPDATED_END_DATE);
         assertThat(testAnalyzeOrderDetails.getProcessDuration()).isEqualTo(UPDATED_PROCESS_DURATION);
         assertThat(testAnalyzeOrderDetails.getVideoDuration()).isEqualTo(UPDATED_VIDEO_DURATION);
+        assertThat(testAnalyzeOrderDetails.getState()).isEqualTo(UPDATED_STATE);
     }
 
     @Test

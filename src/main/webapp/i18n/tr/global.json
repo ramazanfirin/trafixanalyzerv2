@@ -22,6 +22,7 @@
                 "analyzeOrder": "Analizler",
                 "analyzeOrderDetails": "Analyze Order Details",
                 "fileUploadTest": "File Upload Test",
+                "analyzeOrder": "Analyze Order",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

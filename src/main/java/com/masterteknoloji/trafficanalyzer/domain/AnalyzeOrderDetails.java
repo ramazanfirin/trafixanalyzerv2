@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
+
 /**
  * A AnalyzeOrderDetails.
  */
@@ -62,6 +64,10 @@ public class AnalyzeOrderDetails implements Serializable {
 
     @Column(name = "video_duration")
     private Long videoDuration;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state")
+    private AnalyzeState state;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -227,6 +233,19 @@ public class AnalyzeOrderDetails implements Serializable {
     public void setVideoDuration(Long videoDuration) {
         this.videoDuration = videoDuration;
     }
+
+    public AnalyzeState getState() {
+        return state;
+    }
+
+    public AnalyzeOrderDetails state(AnalyzeState state) {
+        this.state = state;
+        return this;
+    }
+
+    public void setState(AnalyzeState state) {
+        this.state = state;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -265,6 +284,7 @@ public class AnalyzeOrderDetails implements Serializable {
             ", endDate='" + getEndDate() + "'" +
             ", processDuration=" + getProcessDuration() +
             ", videoDuration=" + getVideoDuration() +
+            ", state='" + getState() + "'" +
             "}";
     }
 }

@@ -59,7 +59,7 @@ import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.Vehic
 @SpringBootTest(classes = Trafficanalzyzerv2App.class)
 public class AnalyzeOrderResourceIntTest {
 
-    private static final AnalyzeState DEFAULT_STATE = AnalyzeState.NOT_PROCESSED;
+    private static final AnalyzeState DEFAULT_STATE = AnalyzeState.NOT_STARTED;
     private static final AnalyzeState UPDATED_STATE = AnalyzeState.STARTED;
 
     private static final byte[] DEFAULT_SCREEN_SHOOT = TestUtil.createByteArray(1, "0");

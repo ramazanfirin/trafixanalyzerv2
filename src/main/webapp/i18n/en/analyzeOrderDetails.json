@@ -26,7 +26,8 @@
             "startDate": "Start Date",
             "endDate": "End Date",
             "processDuration": "Process Duration",
-            "videoDuration": "Video Duration"
+            "videoDuration": "Video Duration",
+            "state": "State"
         }
     }
 }

@@ -53,6 +53,11 @@
         {
             "fieldName": "videoDuration",
             "fieldType": "Long"
+        },
+        {
+            "fieldName": "state",
+            "fieldType": "AnalyzeState",
+            "fieldValues": "NOT_STARTED,STARTED,ANALYZE_COMPLETED,PROCESS_COMPLETED,ERROR"
         }
     ],
     "changelogDate": "20210716122530",

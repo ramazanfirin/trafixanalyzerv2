@@ -163,9 +163,10 @@ public class Util {
 		result.setSpeed(objectMapper.writeValueAsString(speedVMs));
 		
 		result.setCount(true);
-		result.setStartDate(Instant.now());
+		//result.setStartDate(Instant.now());
 		result.setSessionId(sessionId);
 		result.setVideoPath(videoPath);
+		result.setState(AnalyzeState.NOT_STARTED);
 		
 		AnalyzeOrderDetailVM analyzeOrderDetailVM = prepareAllData(vehicleTypeVM, directionVM, speedVMs, videoPath, sessionId);
 		result.setJsonData(objectMapper.writeValueAsString(analyzeOrderDetailVM));

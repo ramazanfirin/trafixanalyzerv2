@@ -24,7 +24,7 @@
         {
             "fieldName": "state",
             "fieldType": "AnalyzeState",
-            "fieldValues": "NOT_PROCESSED,STARTED,ANALYZE_COMPLETED,PROCESS_COMPLETED,ERROR"
+            "fieldValues": "NOT_STARTED,STARTED,ANALYZE_COMPLETED,PROCESS_COMPLETED,ERROR"
         },
         {
             "fieldName": "screenShoot",

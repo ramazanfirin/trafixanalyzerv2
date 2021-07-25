@@ -2,7 +2,7 @@
     "trafficanalzyzerv2App": {
         "AnalyzeState" : {
             "null": "",
-            "NOT_PROCESSED": "HENUZ BAŞLAMADI",
+            "NOT_STARTED": "HENUZ BAŞLAMADI",
             "STARTED": "DEVAM EDIYOR",
             "ANALYZE_COMPLETED": "AKTARIM YAPILIYOR",
             "PROCESS_COMPLETED": "TAMAMLANDI",

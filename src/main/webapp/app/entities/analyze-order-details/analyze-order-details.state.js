@@ -46,6 +46,7 @@
                 }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('analyzeOrderDetails');
+                    $translatePartialLoader.addPart('analyzeState');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
@@ -68,6 +69,7 @@
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('analyzeOrderDetails');
+                    $translatePartialLoader.addPart('analyzeState');
                     return $translate.refresh();
                 }],
                 entity: ['$stateParams', 'AnalyzeOrderDetails', function($stateParams, AnalyzeOrderDetails) {
@@ -136,6 +138,7 @@
                                 endDate: null,
                                 processDuration: null,
                                 videoDuration: null,
+                                state: null,
                                 id: null
                             };
                         }
