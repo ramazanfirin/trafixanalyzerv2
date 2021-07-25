@@ -26,8 +26,8 @@
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
-            if(vm.analyzeOrder.scenario.id != null)
-            	scenarioChanged();
+//            if(vm.analyzeOrder.scenario.id != null)
+//            	scenarioChanged();
             
         });
 
@@ -41,6 +41,7 @@
 		}
 		
 		function scenarioChanged(){
+		resetAll();
 			Polygon.getPolygonListByScenarioId({id:vm.analyzeOrder.scenario.id,type:vm.polygonType},getPolygonListSuccess,onSaveError);
 		}
 
@@ -54,6 +55,31 @@
 			vm.lines = result;
 			$scope.$broadcast('lineDataReceived', "ramazan");
 		}
+
+		function deleteFromScreen(list){
+        	 for(var i=0;i<list.length;i++){
+				list[i].destroy();
+			}
+        }
+
+		function resetAll(){
+        
+        
+        	deleteFromScreen($window.polygonListOnScreen);	
+        	deleteFromScreen($window.lineListOnScreen);
+        	deleteFromScreen($window.textListOnScreen);
+        	deleteFromScreen($window.arrowListOnScreen);
+        
+        	$window.selectedPolygons = [];
+            $window.polygonListOnScreen=[];
+			$window.lineListOnScreen=[];
+			$window.textListOnScreen=[];
+            $window.selectedPolygons = [];
+            $window.arrowListOnScreen = [];
+            $window.poly = null;
+            //loadAll();
+            //$window.layer = new Konva.Layer();
+        }
 
         function save () {
             vm.isSaving = true;

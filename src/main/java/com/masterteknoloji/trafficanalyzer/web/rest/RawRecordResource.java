@@ -177,11 +177,11 @@ public class RawRecordResource {
 				
 				String lineId = strings[2];
 				if (lineId.equals("0")) {
-					entry = "31";
-					exit = "32";
+					entry = "1";
+					exit = "2";
 				}else if (lineId.equals("1")) {
-					entry = "33";
-					exit = "34";
+					entry = "3";
+					exit = "4";
 			
 				}else
 					throw new RuntimeException("line bulunamadı");

@@ -26,6 +26,8 @@
 -----------------------------------------26-video dosyası seçim
 -----------------------------------------27-classificaiton type chart
 -----------------------------------------28-speedchart
+29-line eşleştirme hata mesajı
+30-scenario insert screenshoot error
 
 localhost:8080/api/raw-records/parseData/parseData
 localhost:8080/api/analyze-orders/checkUnprocessedOrders
