@@ -52,4 +52,13 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 	  			 + "where analyze_id=:analyzeOrderId  "
 	  			 + "group by line.name;",nativeQuery=true)
 	  public  Iterable<Map<String,Object>> getAverageSpeed(@Param("analyzeOrderId") Long analyzeOrderId);
+	  
+	  @Query(value="Select "
+		  		+ "vehicle_type as type, \n"
+		  		+ "duration as duration,\n"
+		  		+ "line_id as line \n"
+		  		+ "FROM video_record i\n"
+		  		+ "where i.analyze_id= :analyzeOrderId\n"
+		  		+ "order by id",nativeQuery=true)
+	 public  Iterable<Map<String,Object>> getVisulationData(@Param("analyzeOrderId") Long analyzeOrderId);
 }

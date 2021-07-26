@@ -47,6 +47,7 @@ import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.ClassificationResultDetailsVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.ClassificationResultVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.LineCrossedVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.VideoRecordSummaryVM;
 
 import io.github.jhipster.web.util.ResponseUtil;
@@ -281,6 +282,23 @@ public class VideoRecordResource {
     		classificationResultVM.setAverageSpeed(speed.longValue());
     	}
     	
+    	return result;
+    }
+    
+    @GetMapping("/video-records/getVisulationData/{id}")
+    @Timed
+    public List<LineCrossedVM> getVisulationData(@PathVariable Long id) {
+    	
+    	List<LineCrossedVM> result = new ArrayList<LineCrossedVM>();
+    	
+    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getVisulationData(id);
+    	for (Map<String, Object> map : videoRecords) {
+    		LineCrossedVM lineCrossedVM = new LineCrossedVM();
+    		lineCrossedVM.setType((String)map.get("type"));
+    		lineCrossedVM.setDuration(((BigInteger)map.get("duration")).longValue());
+    		lineCrossedVM.setLineId(((BigInteger)map.get("line")).longValue());
+    		result.add(lineCrossedVM);
+		}
     	return result;
     }
 }

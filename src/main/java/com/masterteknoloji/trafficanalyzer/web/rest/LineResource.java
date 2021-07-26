@@ -6,7 +6,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +42,7 @@ import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.Util;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.DistancePointVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.LineSummaryVM;
 
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -259,5 +258,21 @@ public class LineResource {
 
 	}
     
-    
+	@GetMapping("/lines/getLineSummaryListByScenarioId/{id}")
+    @Timed
+    public List<LineSummaryVM> getLineSummaryListByScenarioId(@PathVariable Long id) {
+        log.debug("REST request to get Polygon : {}", id);
+        List<LineSummaryVM> result = new ArrayList<LineSummaryVM>(); 
+        List<Line> lines = lineRepository.getLineListByScenarioId(id);
+        for (Iterator iterator = lines.iterator(); iterator.hasNext();) {
+			Line line = (Line) iterator.next();
+			LineSummaryVM item = new LineSummaryVM();
+			item.setId(line.getId());
+			item.setName(line.getName());
+			item.setPoints(line.getCalculatedPolygon().getPoints());
+			result.add(item);
+		}
+        
+        return result;
+    }
 }

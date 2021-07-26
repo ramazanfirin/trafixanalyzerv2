@@ -6,6 +6,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -50,6 +53,7 @@ import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertExcept
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.Util;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.AnalyzeOrderSummaryVM;
 
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -79,6 +83,9 @@ public class AnalyzeOrderResource {
     private final AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository;
 
     DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    
+    DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            .withZone(ZoneId.systemDefault());
     
     public AnalyzeOrderResource(AnalyzeOrderRepository analyzeOrderRepository,  ObjectMapper objectMapper, LineRepository lineRepository, 
     		PolygonRepository polygonRepository, AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository,RawRecordRepository rawRepository, VideoRecordRepository videoRecordRepository) {
@@ -198,6 +205,34 @@ public class AnalyzeOrderResource {
     public ResponseEntity<Void> getResultOfAnalyzeOrder(@PathVariable Long id) {
     	checkUnprocessedOrders();
     	return ResponseEntity.ok().build();
+    }
+    
+    @GetMapping("/analyze-orders/getAllSummary")
+    @Timed
+    public List<AnalyzeOrderSummaryVM> getAllSummary(Pageable pageable) {
+    
+    	List<AnalyzeOrderSummaryVM> result = new ArrayList<AnalyzeOrderSummaryVM>();;
+    	
+    	Page<AnalyzeOrder> page = analyzeOrderRepository.findAll(pageable);
+    	for (Iterator iterator = page.getContent().iterator(); iterator.hasNext();) {
+    		AnalyzeOrder analyzeOrder = (AnalyzeOrder) iterator.next();
+			
+    		AnalyzeOrderSummaryVM item = new AnalyzeOrderSummaryVM();
+    		item.setId(analyzeOrder.getId());
+    		item.setScenarioPath(analyzeOrder.getScenario().getName());
+    		item.setState(analyzeOrder.getState().toString());
+    		item.setVideoName(analyzeOrder.getVideo().getName());
+    		item.setVideoPath(analyzeOrder.getVideo().getPath());
+    		item.setScenarioId(analyzeOrder.getScenario().getId());
+    		if(analyzeOrder.getOrderDetails().getStartDate()!=null)
+    			item.setStartDate(DATE_TIME_FORMATTER.format(analyzeOrder.getOrderDetails().getStartDate()));
+    		
+    		if(analyzeOrder.getOrderDetails().getEndDate()!=null)
+        		item.setEndDate(DATE_TIME_FORMATTER.format(analyzeOrder.getOrderDetails().getEndDate()));
+    		result.add(item);
+		}
+    	
+    	return result;
     }
     
     
