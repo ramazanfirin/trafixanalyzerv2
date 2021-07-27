@@ -56,6 +56,7 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 	  @Query(value="Select "
 		  		+ "vehicle_type as type, \n"
 		  		+ "duration as duration,\n"
+		  		+ "speed as speed,\n"
 		  		+ "line_id as line \n"
 		  		+ "FROM video_record i\n"
 		  		+ "where i.analyze_id= :analyzeOrderId\n"

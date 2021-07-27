@@ -5,6 +5,8 @@ public class LineCrossedVM {
 	String type;
 	Long duration;
 	Long lineId;
+	Double speed;
+	
 	public String getType() {
 		return type;
 	}
@@ -22,6 +24,12 @@ public class LineCrossedVM {
 	}
 	public void setLineId(Long lineId) {
 		this.lineId = lineId;
+	}
+	public Double getSpeed() {
+		return speed;
+	}
+	public void setSpeed(Double speed) {
+		this.speed = speed;
 	}
 	
 	
