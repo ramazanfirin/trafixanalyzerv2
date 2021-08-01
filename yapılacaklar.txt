@@ -29,7 +29,7 @@
 29-line eşleştirme hata mesajı
 30-scenario insert screenshoot error
 
-localhost:8080/api/raw-records/parseData/parseData
+localhost:8080/api/raw-records/parseData
 localhost:8080/api/analyze-orders/checkUnprocessedOrders
 
 bower install zingchart-angularjs

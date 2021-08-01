@@ -163,6 +163,13 @@ public class ScenarioResource {
     @GetMapping("/scenarios/getScreenShoot/{id}")
     public @ResponseBody void getScreenShoot(@PathVariable Long id,HttpServletResponse response) throws IOException {
     	Scenario scenario = scenarioRepository.findOne(id);
+    	if(scenario.getScreenShot()==null) {
+    		if(scenario.getVideo()!=null) {
+            	ByteArrayOutputStream os = Util.getScreenshotOfVideo(scenario.getVideo().getPath());
+            	scenario.setScreenShot(os.toByteArray());
+            	scenarioRepository.save(scenario);
+            }
+    	}
     	InputStream targetStream = new ByteArrayInputStream(scenario.getScreenShot());
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         IOUtils.copy(targetStream, response.getOutputStream());

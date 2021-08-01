@@ -160,7 +160,7 @@ public class RawRecordResource {
 		List<RawRecord> tempList = new ArrayList<RawRecord>();
 
 		int i = 0;
-		try (CSVReader reader = new CSVReader(new FileReader("D:\\KBB\\gultepe\\gundux.csv"))) {
+		try (CSVReader reader = new CSVReader(new FileReader("D:\\KBB\\gultepe\\kizilay.csv"))) {
 			List<String[]> r = reader.readAll();
 			for (String[] strings : r) {
 
@@ -177,11 +177,11 @@ public class RawRecordResource {
 				
 				String lineId = strings[2];
 				if (lineId.equals("0")) {
-					entry = "16";
-					exit = "17";
+					entry = "26";
+					exit = "27";
 				}else if (lineId.equals("1")) {
-					entry = "18";
-					exit = "19";
+					entry = "28";
+					exit = "29";
 			
 				}else
 					throw new RuntimeException("line bulunamadı");
@@ -190,7 +190,7 @@ public class RawRecordResource {
 				videoRecord.setExit(exit);
 				
 				videoRecord.setSpeed(prepareSpeed(strings[3]));
-				videoRecord.setSessionID("4");
+				videoRecord.setSessionID("5");
 				videoRecord.setMoved(false);
 				rawRecordRepository.save(videoRecord);
 				i++;
