@@ -40,10 +40,10 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        #url: jdbc:mysql://89.19.30.126:3306/u0221508_trafix?useUnicode=true&characterEncoding=utf8&useSSL=false
-        #username: u0221508_ramazan
-        url: jdbc:mysql://localhost:3307/trafficanalyzer7?useUnicode=true&characterEncoding=utf8&useSSL=false
-        username: root
+        url: jdbc:mysql://89.19.30.126:3306/u0221508_trafix?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: u0221508_ramazan
+        #url: jdbc:mysql://localhost:3307/trafficanalyzer7?useUnicode=true&characterEncoding=utf8&useSSL=false
+        #username: root
         password: ra5699mo
         hikari:
             data-source-properties:
