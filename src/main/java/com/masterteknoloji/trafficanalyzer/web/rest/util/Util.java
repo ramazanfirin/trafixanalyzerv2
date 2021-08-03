@@ -142,7 +142,7 @@ public class Util {
 		
 		g.stop();
 		
-		bimConverter.close();
+		//bimConverter.close();
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		  ImageIO.write(image, "jpg", baos);

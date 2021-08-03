@@ -166,6 +166,6 @@ jhipster:
 # ===================================================================
 
 application:
-    ftpDirectory: D:/KBB/gultepe
+    ftpDirectory: /home/ramazan/Desktop
     aiScriptPath: /home/ramazan/Desktop/aitest
     aiScriptName: pipeline.py
