@@ -319,19 +319,20 @@ public class AnalyzeOrderResource {
     }
     
     public void startAIScript(AnalyzeOrder analyzeOrder)  {
-		log.info(applicationProperties.getAiScriptPath()+ " script will be call");
+    	String sciptPath = applicationProperties.getAiScriptPath()+"/"+applicationProperties.getAiScriptName();
+		log.info(sciptPath+ " script will be call");
     	
     	String[] cmd = { "python", 
-				applicationProperties.getAiScriptPath(), 
+    			sciptPath, 
 				"--sessionId",
 				analyzeOrder.getId().toString(), };
 		try {
 			Runtime.getRuntime().exec(cmd);
-			log.info(applicationProperties.getAiScriptPath()+ " script called");
+			log.info(sciptPath+ " script called");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			log.error(applicationProperties.getAiScriptPath()+ " script called but there is errror",e);
+			log.error(sciptPath+ " script called but there is errror",e);
 		}
     }
 }  

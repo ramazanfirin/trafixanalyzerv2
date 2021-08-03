@@ -1,7 +1,7 @@
 version: '2'
 services:
     trafix:
-        image: ramazanfirin/trafix:test_001
+        image: ramazanfirin/trafix:test_0.0.4
         environment:
             - SPRING_PROFILES_ACTIVE=dev,swagger
             #- EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
@@ -10,8 +10,11 @@ services:
             - SPRING_DATASOURCE_USERNAME=u0221508_ramazan
             - SPRING_DATASOURCE_PASSWORD=ra5699mo
             - APPLICATION_FTPDIRECTORY=/ftpDirectory
+            - APPLICATION_AISCRIPTPATH=/aiScriptPath
+            - APPLICATION_AISCRIPTNAME=pipeline.py
             - JHIPSTER_SLEEP=5 # gives time for the JHipster Registry to boot before the application
         volumes:
             - /home/ramazan/Desktop:/ftpDirectory
+            - /home/ramazan/Desktop/aitest:/aiScriptPath
         ports:
             - 8080:8080

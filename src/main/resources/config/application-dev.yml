@@ -167,4 +167,5 @@ jhipster:
 
 application:
     ftpDirectory: D:/KBB/gultepe
-    aiScriptPath: /home/ramazan/Desktop/aitest/pipeline.py
+    aiScriptPath: /home/ramazan/Desktop/aitest
+    aiScriptName: pipeline.py

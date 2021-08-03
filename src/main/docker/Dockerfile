@@ -1,4 +1,5 @@
 FROM openjdk:8-jre-alpine
+#COPY --from=python:3.6 / /
 
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
     JHIPSTER_SLEEP=0 \

@@ -14,6 +14,8 @@ public class ApplicationProperties {
 	String ftpDirectory;
 	
 	String aiScriptPath;
+	
+	String aiScriptName;
 
 	public String getFtpDirectory() {
 		return ftpDirectory;
@@ -29,6 +31,14 @@ public class ApplicationProperties {
 
 	public void setAiScriptPath(String aiScriptPath) {
 		this.aiScriptPath = aiScriptPath;
+	}
+
+	public String getAiScriptName() {
+		return aiScriptName;
+	}
+
+	public void setAiScriptName(String aiScriptName) {
+		this.aiScriptName = aiScriptName;
 	}
 	
 	
