@@ -12,6 +12,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ApplicationProperties {
 	
 	String ftpDirectory;
+	
+	String aiScriptPath;
 
 	public String getFtpDirectory() {
 		return ftpDirectory;
@@ -19,6 +21,14 @@ public class ApplicationProperties {
 
 	public void setFtpDirectory(String ftpDirectory) {
 		this.ftpDirectory = ftpDirectory;
+	}
+
+	public String getAiScriptPath() {
+		return aiScriptPath;
+	}
+
+	public void setAiScriptPath(String aiScriptPath) {
+		this.aiScriptPath = aiScriptPath;
 	}
 	
 	

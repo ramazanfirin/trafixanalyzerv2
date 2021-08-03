@@ -1,5 +1,6 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
+import java.io.IOException;
 import java.net.URI;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.masterteknoloji.trafficanalyzer.config.ApplicationProperties;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrderDetails;
 import com.masterteknoloji.trafficanalyzer.domain.Line;
@@ -81,6 +83,8 @@ public class AnalyzeOrderResource {
     private final VideoRecordRepository videoRecordRepository;
     
     private final AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository;
+    
+    private final ApplicationProperties applicationProperties;
 
     DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     
@@ -88,7 +92,8 @@ public class AnalyzeOrderResource {
             .withZone(ZoneId.systemDefault());
     
     public AnalyzeOrderResource(AnalyzeOrderRepository analyzeOrderRepository,  ObjectMapper objectMapper, LineRepository lineRepository, 
-    		PolygonRepository polygonRepository, AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository,RawRecordRepository rawRepository, VideoRecordRepository videoRecordRepository) {
+    		PolygonRepository polygonRepository, AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository,RawRecordRepository rawRepository, 
+    		VideoRecordRepository videoRecordRepository, ApplicationProperties applicationProperties) {
         this.analyzeOrderRepository = analyzeOrderRepository;
         this.objectMapper = objectMapper;
         this.lineRepository = lineRepository;
@@ -96,6 +101,7 @@ public class AnalyzeOrderResource {
         this.analyzeOrderDetailsRepository = analyzeOrderDetailsRepository;
         this.rawRepository = rawRepository;
         this.videoRecordRepository = videoRecordRepository;
+        this.applicationProperties = applicationProperties;
     }
 
     /**
@@ -122,6 +128,7 @@ public class AnalyzeOrderResource {
         
         result.setOrderDetails(analyzeOrderDetails);
         result = analyzeOrderRepository.save(analyzeOrder);
+        startAIScript(analyzeOrder);
         
         return ResponseEntity.created(new URI("/api/analyze-orders/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -309,6 +316,23 @@ public class AnalyzeOrderResource {
 		}
     	
     	return result;
+    }
+    
+    public void startAIScript(AnalyzeOrder analyzeOrder)  {
+		log.info(applicationProperties.getAiScriptPath()+ " script will be call");
+    	
+    	String[] cmd = { "python", 
+				applicationProperties.getAiScriptPath(), 
+				"--sessionId",
+				analyzeOrder.getId().toString(), };
+		try {
+			Runtime.getRuntime().exec(cmd);
+			log.info(applicationProperties.getAiScriptPath()+ " script called");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error(applicationProperties.getAiScriptPath()+ " script called but there is errror",e);
+		}
     }
 }  
     
