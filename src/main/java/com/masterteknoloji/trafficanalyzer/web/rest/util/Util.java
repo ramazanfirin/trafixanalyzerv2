@@ -121,10 +121,19 @@ public class Util {
 	
 	public static ByteArrayOutputStream getScreenshotOfVideo(String filePath) throws IOException {
 		File file = new File(filePath);
-    	file.exists();
+    	if(!file.exists())
+    		throw new RuntimeException("file not found :"+ filePath);	
     	
     	
-    	FFmpegFrameGrabber g = new FFmpegFrameGrabber(filePath);
+    	FFmpegFrameGrabber g;
+		try {
+			g = new FFmpegFrameGrabber(filePath);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);	
+			
+		}
 		g.start();
 
 		Java2DFrameConverter bimConverter = new Java2DFrameConverter();

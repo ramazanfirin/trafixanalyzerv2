@@ -113,3 +113,6 @@ jhipster:
 # ===================================================================
 
 application:
+     getScriptOutput: true
+     aiScriptName: pipelinetest.py
+     longProcessKillTreshold: 5

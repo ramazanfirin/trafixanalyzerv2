@@ -16,6 +16,10 @@ public class ApplicationProperties {
 	String aiScriptPath;
 	
 	String aiScriptName;
+	
+	Boolean getScriptOutput;
+	
+	Long longProcessKillTreshold;
 
 	public String getFtpDirectory() {
 		return ftpDirectory;
@@ -39,6 +43,22 @@ public class ApplicationProperties {
 
 	public void setAiScriptName(String aiScriptName) {
 		this.aiScriptName = aiScriptName;
+	}
+
+	public Boolean getGetScriptOutput() {
+		return getScriptOutput;
+	}
+
+	public void setGetScriptOutput(Boolean getScriptOutput) {
+		this.getScriptOutput = getScriptOutput;
+	}
+
+	public Long getLongProcessKillTreshold() {
+		return longProcessKillTreshold;
+	}
+
+	public void setLongProcessKillTreshold(Long longProcessKillTreshold) {
+		this.longProcessKillTreshold = longProcessKillTreshold;
 	}
 	
 	

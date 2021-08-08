@@ -147,9 +147,17 @@ public class VideoResource {
     public @ResponseBody byte[] getImage(@PathVariable Long id) throws IOException {
         
     	Video video = videoRepository.findOne(id);
+    	log.info("this video file will be read. id ="+id+" path="+video.getPath());
+    	
+    	File file = new File(video.getPath());
+    	if(!file.exists()) {
+    		log.info("file not found:"+video.getPath());
+    	}
     	
     	ByteArrayOutputStream baos = Util.getScreenshotOfVideo(video.getPath());
         
+    	log.info("this video file readeded. id ="+id+" path="+video.getPath());
+    	
         return baos.toByteArray();
       
     }

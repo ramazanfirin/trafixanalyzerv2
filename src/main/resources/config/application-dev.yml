@@ -169,3 +169,5 @@ application:
     ftpDirectory: /home/ramazan/Desktop
     aiScriptPath: /home/ramazan/Desktop/aitest
     aiScriptName: pipeline.py
+    getScriptOutput: false
+    longProcessKillTreshold: 43200

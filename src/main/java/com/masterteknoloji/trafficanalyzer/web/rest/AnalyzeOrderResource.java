@@ -1,6 +1,5 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
-import java.io.IOException;
 import java.net.URI;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -51,6 +50,7 @@ import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
 import com.masterteknoloji.trafficanalyzer.repository.RawRecordRepository;
 import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
+import com.masterteknoloji.trafficanalyzer.service.LinuxCommandService;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
@@ -85,6 +85,8 @@ public class AnalyzeOrderResource {
     private final AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository;
     
     private final ApplicationProperties applicationProperties;
+    
+    private final LinuxCommandService linuxCommandService;
 
     DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     
@@ -93,7 +95,7 @@ public class AnalyzeOrderResource {
     
     public AnalyzeOrderResource(AnalyzeOrderRepository analyzeOrderRepository,  ObjectMapper objectMapper, LineRepository lineRepository, 
     		PolygonRepository polygonRepository, AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository,RawRecordRepository rawRepository, 
-    		VideoRecordRepository videoRecordRepository, ApplicationProperties applicationProperties) {
+    		VideoRecordRepository videoRecordRepository, ApplicationProperties applicationProperties,LinuxCommandService linuxCommandService) {
         this.analyzeOrderRepository = analyzeOrderRepository;
         this.objectMapper = objectMapper;
         this.lineRepository = lineRepository;
@@ -102,6 +104,7 @@ public class AnalyzeOrderResource {
         this.rawRepository = rawRepository;
         this.videoRecordRepository = videoRecordRepository;
         this.applicationProperties = applicationProperties;
+        this.linuxCommandService = linuxCommandService;
     }
 
     /**
@@ -128,7 +131,7 @@ public class AnalyzeOrderResource {
         
         result.setOrderDetails(analyzeOrderDetails);
         result = analyzeOrderRepository.save(analyzeOrder);
-        startAIScript(analyzeOrder);
+        linuxCommandService.startAIScript(analyzeOrder.getId().toString(),false);
         
         return ResponseEntity.created(new URI("/api/analyze-orders/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -211,6 +214,13 @@ public class AnalyzeOrderResource {
     @Timed
     public ResponseEntity<Void> getResultOfAnalyzeOrder(@PathVariable Long id) {
     	checkUnprocessedOrders();
+    	return ResponseEntity.ok().build();
+    }
+    
+    @GetMapping("/analyze-orders/scriptTest")
+    @Timed
+    public ResponseEntity<Void> scriptTest() {
+    	linuxCommandService.startAIScript("30");
     	return ResponseEntity.ok().build();
     }
     
@@ -318,23 +328,9 @@ public class AnalyzeOrderResource {
     	return result;
     }
     
-    public void startAIScript(AnalyzeOrder analyzeOrder)  {
-    	String sciptPath = applicationProperties.getAiScriptPath()+"/"+applicationProperties.getAiScriptName();
-		log.info(sciptPath+ " script will be call");
-    	
-    	String[] cmd = { "python", 
-    			sciptPath, 
-				"--sessionId",
-				analyzeOrder.getId().toString(), };
-		try {
-			Runtime.getRuntime().exec(cmd);
-			log.info(sciptPath+ " script called");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			log.error(sciptPath+ " script called but there is errror",e);
-		}
-    }
+    
+    
+    
 }  
     
     
