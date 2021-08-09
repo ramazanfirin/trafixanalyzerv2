@@ -17,4 +17,7 @@ import com.masterteknoloji.trafficanalyzer.domain.RawRecord;
 public interface RawRecordRepository extends JpaRepository<RawRecord, Long> {
 	@Query("select v from RawRecord v where v.sessionID = ?1 and v.moved= ?2")
 	Page<RawRecord> findBySessionId(Pageable pageable,String sessionId,Boolean moved);
+	
+	@Query("select count(v) from RawRecord v where v.sessionID = ?1 and v.moved= ?2")
+	Long getCountBySessionId(String sessionId,Boolean moved);
 }

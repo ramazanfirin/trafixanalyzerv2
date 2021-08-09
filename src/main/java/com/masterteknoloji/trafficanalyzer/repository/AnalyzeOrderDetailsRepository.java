@@ -20,4 +20,7 @@ public interface AnalyzeOrderDetailsRepository extends JpaRepository<AnalyzeOrde
 
 	@Query("select v from AnalyzeOrderDetails v where v.sessionId = ?1")
 	List<AnalyzeOrderDetails> findBySessionId(String sessionId);
+	
+	@Query("select v from AnalyzeOrderDetails v where v.state = ?1")
+	List<AnalyzeOrderDetails> findByState(AnalyzeState analyzeState);
 }

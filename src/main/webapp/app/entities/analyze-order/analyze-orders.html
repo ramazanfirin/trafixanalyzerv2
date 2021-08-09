@@ -29,7 +29,7 @@
             <tbody>
                 <tr ng-repeat="analyzeOrder in vm.analyzeOrders track by analyzeOrder.id">
                     <td><a ui-sref="analyze-order-detail({id:analyzeOrder.id})">{{analyzeOrder.id}}</a></td>
-                    <td data-translate="{{'trafficanalzyzerv2App.AnalyzeState.' + analyzeOrder.state}}">{{analyzeOrder.state}}</td>
+                    <td data-translate="{{'trafficanalzyzerv2App.AnalyzeState.' + analyzeOrder.orderDetails.state}}">{{analyzeOrder.orderDetails.state}}</td>
                     <td>
                         <a ui-sref="video-detail({id:analyzeOrder.video.id})">{{analyzeOrder.video.name}}</a>
                     </td>

@@ -27,7 +27,7 @@ public class RawRecord implements Serializable {
     private String sessionID;
 
     @Column(name = "jhi_time")
-    private Instant time;
+    private String time;
 
     @Column(name = "object_type")
     private String objectType;
@@ -66,16 +66,16 @@ public class RawRecord implements Serializable {
         this.sessionID = sessionID;
     }
 
-    public Instant getTime() {
+    public String getTime() {
         return time;
     }
 
-    public RawRecord time(Instant time) {
+    public RawRecord time(String time) {
         this.time = time;
         return this;
     }
 
-    public void setTime(Instant time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

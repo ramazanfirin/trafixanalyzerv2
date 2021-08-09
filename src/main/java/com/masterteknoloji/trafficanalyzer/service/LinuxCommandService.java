@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.masterteknoloji.trafficanalyzer.config.ApplicationProperties;
@@ -159,7 +160,7 @@ public class LinuxCommandService {
 		return result;
 	}
      
-	
+	//@Scheduled(fixedRate = 60000)//${fixedRate.in.milliseconds}
 	public void killLongTimeProcess(String getScriptName) {
 		log.info("killLongTimeProcess"+ " started");
 		
@@ -168,6 +169,28 @@ public class LinuxCommandService {
 		for (Iterator iterator = runningProcessList.iterator(); iterator.hasNext();) {
 			LinuxProcessDetailsVM linuxProcessDetailsVM = (LinuxProcessDetailsVM) iterator.next();
 			if(linuxProcessDetailsVM.getDuration()>applicationProperties.getLongProcessKillTreshold())
+				killProcess(linuxProcessDetailsVM.getPid().toString());
+			    List<AnalyzeOrderDetails> analyzeOrderDetails = analyzeOrderDetailsRepository.findBySessionId(linuxProcessDetailsVM.getSessionId());
+				for (Iterator iterator2 = analyzeOrderDetails.iterator(); iterator2.hasNext();) {
+					AnalyzeOrderDetails analyzeOrderDetails2 = (AnalyzeOrderDetails) iterator2.next();
+					analyzeOrderDetails2.setState(AnalyzeState.TERMINATED);
+					analyzeOrderDetailsRepository.save(analyzeOrderDetails2);
+					log.info("killLongTimeProcess-processKilled. pid:"+ linuxProcessDetailsVM.getPid());
+				}
+		}
+	
+		log.info("killLongTimeProcess"+ " ended");
+	}
+	
+	@Scheduled(fixedRateString = "${application.longProcessFixedRate}000")
+	public void killLongTimeProcess() {
+		log.info("killLongTimeProcess"+ " started");
+		
+		List<LinuxProcessDetailsVM> runningProcessList = callRunningProcess(applicationProperties.getAiScriptName());
+		log.info("runningProcessSize "+ runningProcessList.size() );
+		for (Iterator iterator = runningProcessList.iterator(); iterator.hasNext();) {
+			LinuxProcessDetailsVM linuxProcessDetailsVM = (LinuxProcessDetailsVM) iterator.next();
+			if(linuxProcessDetailsVM.getDuration()>applicationProperties.getLongProcessKillTreshold()*60)
 				killProcess(linuxProcessDetailsVM.getPid().toString());
 			    List<AnalyzeOrderDetails> analyzeOrderDetails = analyzeOrderDetailsRepository.findBySessionId(linuxProcessDetailsVM.getSessionId());
 				for (Iterator iterator2 = analyzeOrderDetails.iterator(); iterator2.hasNext();) {

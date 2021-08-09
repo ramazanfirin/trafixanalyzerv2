@@ -17,6 +17,6 @@ import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 @Repository
 public interface AnalyzeOrderRepository extends JpaRepository<AnalyzeOrder, Long> {
 
-	@Query("select v from AnalyzeOrder v where v.state = ?1")
+	@Query("select v from AnalyzeOrder v where v.orderDetails.state = ?1")
 	List<AnalyzeOrder> findByState(AnalyzeState analyzeState);
 }

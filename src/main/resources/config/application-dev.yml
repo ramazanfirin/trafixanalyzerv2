@@ -170,4 +170,5 @@ application:
     aiScriptPath: /home/ramazan/Desktop/aitest
     aiScriptName: pipeline.py
     getScriptOutput: false
-    longProcessKillTreshold: 43200
+    longProcessKillTreshold: 60 #minute
+    longProcessFixedRate: 3600 #seconds

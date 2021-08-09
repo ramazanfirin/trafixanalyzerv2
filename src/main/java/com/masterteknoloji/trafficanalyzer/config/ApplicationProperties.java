@@ -20,6 +20,8 @@ public class ApplicationProperties {
 	Boolean getScriptOutput;
 	
 	Long longProcessKillTreshold;
+	
+	Long longProcessFixedRate;
 
 	public String getFtpDirectory() {
 		return ftpDirectory;
@@ -59,6 +61,14 @@ public class ApplicationProperties {
 
 	public void setLongProcessKillTreshold(Long longProcessKillTreshold) {
 		this.longProcessKillTreshold = longProcessKillTreshold;
+	}
+
+	public Long getLongProcessFixedRate() {
+		return longProcessFixedRate;
+	}
+
+	public void setLongProcessFixedRate(Long longProcessFixedRate) {
+		this.longProcessFixedRate = longProcessFixedRate;
 	}
 	
 	
