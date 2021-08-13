@@ -34,6 +34,7 @@ import org.springframework.util.Base64Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masterteknoloji.trafficanalyzer.Trafficanalzyzerv2App;
+import com.masterteknoloji.trafficanalyzer.config.ApplicationProperties;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderDetailsRepository;
@@ -42,6 +43,7 @@ import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
 import com.masterteknoloji.trafficanalyzer.repository.RawRecordRepository;
 import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
+import com.masterteknoloji.trafficanalyzer.service.LinuxCommandService;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.AnalyzeOrderDetailVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.ConnectionVM;
@@ -104,13 +106,20 @@ public class AnalyzeOrderResourceIntTest {
     @Autowired
     VideoRecordRepository videoRecordRepository;
     
+    @Autowired
+	ApplicationProperties applicationProperties;
+
+    @Autowired
+	LinuxCommandService linuxCommandService;
+    
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
 //        final AnalyzeOrderResource analyzeOrderResource = new AnalyzeOrderResource(analyzeOrderRepository,objectMapper,lineRepository,polygonRepository,
 //        		analyzeOrderDetailsRepository,analyzeOrderDetailsRepository,rawRepository, videoRecordRepository);
 //       
-        AnalyzeOrderResource analyzeOrderResource = new AnalyzeOrderResource(analyzeOrderRepository, objectMapper, lineRepository, polygonRepository, analyzeOrderDetailsRepository, rawRepository, videoRecordRepository);
+        AnalyzeOrderResource analyzeOrderResource = new AnalyzeOrderResource(analyzeOrderRepository, objectMapper, lineRepository, polygonRepository, 
+        		analyzeOrderDetailsRepository, rawRepository, videoRecordRepository,applicationProperties, linuxCommandService);
         
         this.restAnalyzeOrderMockMvc = MockMvcBuilders.standaloneSetup(analyzeOrderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
