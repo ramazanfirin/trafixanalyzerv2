@@ -6,7 +6,9 @@
             "STARTED": "DEVAM EDIYOR",
             "ANALYZE_COMPLETED": "AKTARIM YAPILIYOR",
             "PROCESS_COMPLETED": "TAMAMLANDI",
-            "ERROR": "HATA"
+            "ERROR": "HATA",
+            "TERMINATED": "SONLANDIRILDI",
+            "TRANSFER_STARTED": "TRANSFER EDİLİYOR"
         }
     }
 }

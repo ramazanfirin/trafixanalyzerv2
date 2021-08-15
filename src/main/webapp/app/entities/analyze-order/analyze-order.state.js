@@ -29,7 +29,7 @@
                     squash: true
                 },
                 sort: {
-                    value: 'id,asc',
+                    value: 'id,desc',
                     squash: true
                 },
                 search: null
@@ -48,6 +48,7 @@
                     $translatePartialLoader.addPart('analyzeOrder');
                     $translatePartialLoader.addPart('analyzeState');
                     $translatePartialLoader.addPart('global');
+                    $translatePartialLoader.addPart('analyzeOrderDetails');
                     return $translate.refresh();
                 }]
             }

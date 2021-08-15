@@ -110,7 +110,7 @@ public class VideoResource {
     @Timed
     public ResponseEntity<List<Video>> getAllVideos(Pageable pageable) {
         log.debug("REST request to get a page of Videos");
-        Page<Video> page = videoRepository.findAll(pageable);
+        Page<Video> page = videoRepository.getActiveItem(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/videos");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -139,7 +139,10 @@ public class VideoResource {
     @Timed
     public ResponseEntity<Void> deleteVideo(@PathVariable Long id) {
         log.debug("REST request to delete Video : {}", id);
-        videoRepository.delete(id);
+        Video video = videoRepository.findOne(id);
+        video.setActive(false);
+        videoRepository.save(video);
+        //videoRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
     

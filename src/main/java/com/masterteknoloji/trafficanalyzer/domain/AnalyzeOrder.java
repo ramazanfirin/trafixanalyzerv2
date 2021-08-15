@@ -34,6 +34,9 @@ public class AnalyzeOrder implements Serializable {
 
     @Column(name = "screen_shoot_content_type")
     private String screenShootContentType;
+    
+    @Column(name = "active")
+    private Boolean active = true;
 
     @ManyToOne
     private Video video;
@@ -161,4 +164,12 @@ public class AnalyzeOrder implements Serializable {
             ", screenShootContentType='" + getScreenShootContentType() + "'" +
             "}";
     }
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 }

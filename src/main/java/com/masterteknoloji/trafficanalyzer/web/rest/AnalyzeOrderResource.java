@@ -42,6 +42,7 @@ import com.masterteknoloji.trafficanalyzer.domain.Direction;
 import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
 import com.masterteknoloji.trafficanalyzer.domain.RawRecord;
+import com.masterteknoloji.trafficanalyzer.domain.Scenario;
 import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.PolygonType;
@@ -180,7 +181,7 @@ public class AnalyzeOrderResource {
 	@Timed
 	public ResponseEntity<List<AnalyzeOrder>> getAllAnalyzeOrders(Pageable pageable) {
 		log.debug("REST request to get a page of AnalyzeOrders");
-		Page<AnalyzeOrder> page = analyzeOrderRepository.findAll(pageable);
+		Page<AnalyzeOrder> page = analyzeOrderRepository.getActiveItem(pageable);
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/analyze-orders");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}
@@ -210,7 +211,10 @@ public class AnalyzeOrderResource {
 	@Timed
 	public ResponseEntity<Void> deleteAnalyzeOrder(@PathVariable Long id) {
 		log.debug("REST request to delete AnalyzeOrder : {}", id);
-		analyzeOrderRepository.delete(id);
+		AnalyzeOrder analyzeOrder = analyzeOrderRepository.findOne(id);
+		analyzeOrder.setActive(false);
+        analyzeOrderRepository.save(analyzeOrder);
+		//analyzeOrderRepository.delete(id);
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
 	}
 

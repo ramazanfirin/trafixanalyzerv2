@@ -31,6 +31,9 @@ public class Scenario implements Serializable {
 
     @Column(name = "screen_shot_content_type")
     private String screenShotContentType;
+    
+    @Column(name = "active")
+    private Boolean active = true;
 
     @ManyToOne
     private Video video;
@@ -126,4 +129,12 @@ public class Scenario implements Serializable {
             ", screenShotContentType='" + getScreenShotContentType() + "'" +
             "}";
     }
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 }

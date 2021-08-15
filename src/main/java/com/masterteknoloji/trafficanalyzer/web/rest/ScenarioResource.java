@@ -2,7 +2,7 @@ package com.masterteknoloji.trafficanalyzer.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.masterteknoloji.trafficanalyzer.domain.Scenario;
-
+import com.masterteknoloji.trafficanalyzer.domain.Video;
 import com.masterteknoloji.trafficanalyzer.repository.ScenarioRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
@@ -127,7 +127,7 @@ public class ScenarioResource {
     @Timed
     public ResponseEntity<List<Scenario>> getAllScenarios(Pageable pageable) {
         log.debug("REST request to get a page of Scenarios");
-        Page<Scenario> page = scenarioRepository.findAll(pageable);
+        Page<Scenario> page = scenarioRepository.getActiveItem(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/scenarios");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -156,7 +156,10 @@ public class ScenarioResource {
     @Timed
     public ResponseEntity<Void> deleteScenario(@PathVariable Long id) {
         log.debug("REST request to delete Scenario : {}", id);
-        scenarioRepository.delete(id);
+        Scenario scenario = scenarioRepository.findOne(id);
+        scenario.setActive(false);
+        scenarioRepository.save(scenario);
+        //scenarioRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
     

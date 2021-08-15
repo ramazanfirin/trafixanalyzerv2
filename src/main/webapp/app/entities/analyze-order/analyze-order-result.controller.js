@@ -125,7 +125,7 @@ vm.myJson2 = {
         	else{
         	//
         		Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:vm.polygonType},getPolygonListForFirstTime,onSaveError);
-        		Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:'SPEED'},getSpeedPolygonsSuccess,onSaveError);
+        		//Polygon.getPolygonListByScenarioId({id:vm.scenario.id,type:'SPEED'},getSpeedPolygonsSuccess,onSaveError);
         	}	
         		
         		

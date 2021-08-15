@@ -6,7 +6,9 @@
             "STARTED": "STARTED",
             "ANALYZE_COMPLETED": "ANALYZE_COMPLETED",
             "PROCESS_COMPLETED": "PROCESS_COMPLETED",
-            "ERROR": "ERROR"
+            "ERROR": "ERROR",
+            "TERMINATED": "TERMINATED",
+            "TRANSFER_STARTED": "TRANSFER_STARTED"
         }
     }
 }

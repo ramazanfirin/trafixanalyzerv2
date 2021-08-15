@@ -46,6 +46,9 @@ public class Video implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private VideoState state;
+    
+    @Column(name = "active")
+    private Boolean active = true;
 
     @ManyToOne
     private Location location;
@@ -183,4 +186,12 @@ public class Video implements Serializable {
             ", state='" + getState() + "'" +
             "}";
     }
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 }
