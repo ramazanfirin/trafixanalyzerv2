@@ -35,6 +35,6 @@ localhost:8080/api/analyze-orders/checkUnprocessedOrders
 bower install zingchart-angularjs
 bower install angular-filemanager
 
-ters sırala
-silme
+--ters sırala
+--silme
 --video zaman ayarı/önyüz

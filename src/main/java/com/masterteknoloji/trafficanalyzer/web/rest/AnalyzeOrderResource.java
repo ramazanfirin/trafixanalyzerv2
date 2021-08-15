@@ -4,6 +4,7 @@ import java.net.URI;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -273,7 +274,7 @@ public class AnalyzeOrderResource {
 
 		log.info("checkUnprocessedOrders" + " started");
 		List<AnalyzeOrder> list = analyzeOrderRepository.findByState(AnalyzeState.ANALYZE_COMPLETED);
-
+		analyzeOrderRepository.findAll();
 		Pageable pageRequest = new PageRequest(0, 5000);
 		Map<String, Line> lines = prepareLineList();
 		Map<String, Direction> directions = prepareDirectionList();
@@ -341,6 +342,10 @@ public class AnalyzeOrderResource {
 
 	private void updateAnalyzeOrderDetails(AnalyzeOrderDetails analyzeOrderDetails, AnalyzeState analyzeState) {
 		analyzeOrderDetails.setState(analyzeState);
+		if(analyzeOrderDetails.getStartDate()!=null && analyzeOrderDetails.getEndDate()!=null) {
+			Duration res = Duration.between(analyzeOrderDetails.getStartDate(), analyzeOrderDetails.getEndDate());
+			analyzeOrderDetails.setProcessDuration(res.getSeconds() / 60);
+		}
 		analyzeOrderDetailsRepository.save(analyzeOrderDetails);
 	}
 
