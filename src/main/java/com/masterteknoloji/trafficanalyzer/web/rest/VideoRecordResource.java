@@ -10,16 +10,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -41,12 +45,15 @@ import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
 import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
+import com.masterteknoloji.trafficanalyzer.service.UserService;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.ExcelExporter;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
+import com.masterteknoloji.trafficanalyzer.web.rest.util.Util;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.ClassificationResultDetailsVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.ClassificationResultVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.DirectionReportSummary;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.LineCrossedVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.VideoRecordSummaryVM;
 
@@ -68,11 +75,17 @@ public class VideoRecordResource {
     private final AnalyzeOrderRepository analyzeOrderRepository;
     
     private final LineRepository lineRepository;
+    
+    private final MessageSource messageSource;
+    
+    private final UserService userService;
 
-    public VideoRecordResource(VideoRecordRepository videoRecordRepository,AnalyzeOrderRepository analyzeOrderRepository,LineRepository lineRepository) {
+    public VideoRecordResource(VideoRecordRepository videoRecordRepository,AnalyzeOrderRepository analyzeOrderRepository,LineRepository lineRepository,MessageSource messageSource,UserService userService) {
         this.videoRecordRepository = videoRecordRepository;
         this.analyzeOrderRepository = analyzeOrderRepository;
         this.lineRepository = lineRepository;
+        this.messageSource = messageSource;
+        this.userService = userService;
     }
 
     /**
@@ -177,6 +190,33 @@ public class VideoRecordResource {
 		}
     	return result;
     }
+    
+    @GetMapping("/video-records/getResultOfDirectionReport/{id}")
+    @Timed
+    public List<DirectionReportSummary> getResultOfDirectionReport(@PathVariable Long id) {
+    	
+    	List<DirectionReportSummary> result = new ArrayList<DirectionReportSummary>();
+    	
+    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getDirectionReportData(id);
+    	for (Map<String, Object> map : videoRecords) {
+    		DirectionReportSummary item = new DirectionReportSummary();
+    		Long count = ((BigInteger)map.get("count")).longValue();
+    		item.setCount(count);
+    		item.setDirectionName((String)map.get("directionname"));
+    		item.setStartLineName((String)map.get("startlinename"));
+    		item.setEndLineName((String)map.get("endlinename"));
+    		
+    		Long startLineCount = ((BigInteger)map.get("startlinecount")).longValue();
+    		Long endLineCount = ((BigInteger)map.get("endlinecount")).longValue();
+    		item.setStartLineCount(startLineCount);
+    		item.setEndLineCount(endLineCount);
+    		
+    		item.setStartLineRate(Util.calculatePertencile(startLineCount, count));
+    		item.setEndLineRate(Util.calculatePertencile(endLineCount, count));
+    		result.add(item);
+		}
+    	return result;
+    }
 
     @GetMapping("/video-records/getResultOfAnalyzeOrderAndLineId/{id}/{lineId}")
     @Timed
@@ -196,9 +236,9 @@ public class VideoRecordResource {
     	return result;
     }
     
-    @GetMapping("/video-records/generateExcelFile/{id}")
+    @GetMapping("/video-records/generateExcelFile/{id}/{language}")
     @Timed
-    public void generateExcelFile(@PathVariable Long id,HttpServletResponse response) throws IOException {
+    public void generateExcelFile(@PathVariable Long id,@PathVariable String language,HttpServletResponse response,HttpServletRequest request) throws IOException {
     	
     	
     	response.setContentType("application/octet-stream");
@@ -208,18 +248,22 @@ public class VideoRecordResource {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=analyze_" + currentDateTime + ".xlsx";
         response.setHeader(headerKey, headerValue);
-         
+        
+        if(StringUtils.isEmpty(language))
+        	language = "tr";
+        
+        Locale locale = Locale.forLanguageTag(language);
         XSSFWorkbook workbook = new XSSFWorkbook();
-        ExcelExporter excelExporter = new ExcelExporter();
+        ExcelExporter excelExporter = new ExcelExporter(messageSource,language);
         
         AnalyzeOrder analyzeOrder = analyzeOrderRepository.findOne(id);
         
-        XSSFSheet scenario = excelExporter.createSheet(workbook, "Scenario");
+        XSSFSheet scenario = excelExporter.createSheet(workbook, messageSource.getMessage("excel.scenario", null,locale));
         excelExporter.writeImage(workbook, scenario, analyzeOrder.getScreenShoot());
         
         
     	List<VideoRecordSummaryVM> result = getResultOfAnalyzeOrder(id);
-        XSSFSheet allSheet = excelExporter.createSheet(workbook, "All");
+        XSSFSheet allSheet = excelExporter.createSheet(workbook, messageSource.getMessage("excel.all", null,locale));
         excelExporter.writeData(workbook, allSheet, result);
         
         List<Line> lines = lineRepository.getLineListByScenarioId(analyzeOrder.getScenario().getId());
@@ -229,6 +273,10 @@ public class VideoRecordResource {
 			XSSFSheet sheetTemp = excelExporter.createSheet(workbook, line.getName());
 			excelExporter.writeData(workbook, sheetTemp, tempList);
 		}
+        
+        XSSFSheet yon = excelExporter.createSheetDirectionReport(workbook, messageSource.getMessage("excel.direction", null,locale));
+        List<DirectionReportSummary> directionReportSummaries = getResultOfDirectionReport(id);
+        excelExporter.writeDataForDirectionReport(workbook, yon, directionReportSummaries);
         
         excelExporter.export(workbook,response);   
     	

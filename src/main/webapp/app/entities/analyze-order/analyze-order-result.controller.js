@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('AnalyzeOrderResultController', AnalyzeOrderResultController);
 
-    AnalyzeOrderResultController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line','VideoRecord'];
+    AnalyzeOrderResultController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line','VideoRecord','$translate'];
 
-    function AnalyzeOrderResultController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line, VideoRecord) {
+    function AnalyzeOrderResultController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line, VideoRecord,$translate) {
         var vm = this;
 
 		vm.analyzeOrder = entity;
@@ -45,21 +45,26 @@
 		vm.showCounting=showCounting;
 		vm.showSpeed=showSpeed;
 		vm.showExcel=showExcel;
+		vm.showDirectionResult = showDirectionResult;
 		
 		vm.showClassificationTab=true;
 		vm.showCountingTab=false;
 		vm.showSpeedTab=false;
 		vm.showExcelTab=false;
+		vm.showDirectionResultTab=false;
 
 		vm.showClassificationTabActive="active";
 		vm.showCountingTabActive="";
 		vm.showSpeedTabActive="";
 		vm.showExcelTabActive="";
+		vm.showDirecitonResultTabActive="";
 
 		vm.classificationData=[];
 		vm.classificationChartList=[];
 
 		vm.speedChartList=[];
+		vm.directionReportResult=[];
+		vm.language="tr";
 		
 		loadAll();
 
@@ -102,6 +107,15 @@ vm.myJson2 = {
         
         function loadAll () {
         //$("#exampleModal").modal("show");
+        	console.log($translate.use());
+        	vm.language=$translate.use();
+        	if(vm.language=="tr"){
+        		vm.downloadExcel = "Excel Indir"
+        	}else{
+         		vm.downloadExcel = "Download Excel File"
+         	       
+        	}
+        	
         	
         	VideoRecord.getResultOfAnalyzeOrder({id:entity.id},getResultOfAnalyzeOrderSucccess,onSaveError)
         	
@@ -132,7 +146,8 @@ vm.myJson2 = {
         
         function getClassificationData(){
         	VideoRecord.getClassificationData({id:vm.analyzeOrder.id},getClassificationDataSuccess,onSaveError);
-        	VideoRecord.getAverageSpeedData({id:vm.analyzeOrder.id},getAverageSpeedDataSuccess,onSaveError)
+        	VideoRecord.getAverageSpeedData({id:vm.analyzeOrder.id},getAverageSpeedDataSuccess,onSaveError);
+        	VideoRecord.getResultOfDirectionReport({id:vm.analyzeOrder.id},getResultOfDirectionReportSuccess,onSaveError);
         }
         
         function getClassificationDataSuccess(result){
@@ -151,6 +166,11 @@ vm.myJson2 = {
         		var chart = createSpeedChart(item);
         		vm.speedChartList.push(chart);
         	}
+        }
+        
+        function getResultOfDirectionReportSuccess(result){
+        	vm.directionReportResult = result;
+        	
         }
         
         function getSpeedPolygonsSuccess(result){
@@ -304,11 +324,13 @@ vm.myJson2 = {
 			vm.showCountingTab=false;
 			vm.showSpeedTab=false;
 			vm.showExcelTab=false;
+			vm.showDirectionResultTab=false;
 			
 			vm.showClassificationTabActive = "";
 			vm.showCountingTabActive="";
 			vm.showSpeedTabActive="";
 			vm.showExcelTabActive="";
+			vm.showDirectionResultTabActive="";
 		}
 
 		function showClassification(){
@@ -327,6 +349,12 @@ vm.myJson2 = {
 			resetTabs();
 			vm.showSpeedTab=true;
 			vm.showSpeedTabActive="active";
+		}
+		
+		function showDirectionResult(){
+			resetTabs();
+			vm.showDirectionResultTab=true;
+			vm.showDirectionResultTabActive="active";
 		}
 		
 		function showExcel(){

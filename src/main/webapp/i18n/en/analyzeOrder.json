@@ -24,7 +24,8 @@
             "countingTabLabel": "Counting",
             "speedTabLabel": "Speed",
             "excelTabLabel": "Details",
-            "downloadExcelFile":"Download Excel File"
+            "downloadExcelFile":"Download Excel File",
+            "directionReportTabLabel":"Direction Result"
         }
     }
 }

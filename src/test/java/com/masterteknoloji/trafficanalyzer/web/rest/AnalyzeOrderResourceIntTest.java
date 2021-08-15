@@ -32,17 +32,30 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masterteknoloji.trafficanalyzer.Trafficanalzyzerv2App;
 import com.masterteknoloji.trafficanalyzer.config.ApplicationProperties;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
+import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrderDetails;
+import com.masterteknoloji.trafficanalyzer.domain.Direction;
+import com.masterteknoloji.trafficanalyzer.domain.Line;
+import com.masterteknoloji.trafficanalyzer.domain.Polygon;
+import com.masterteknoloji.trafficanalyzer.domain.RawRecord;
+import com.masterteknoloji.trafficanalyzer.domain.Scenario;
+import com.masterteknoloji.trafficanalyzer.domain.Video;
+import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.PolygonType;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderDetailsRepository;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
+import com.masterteknoloji.trafficanalyzer.repository.DirectionRepository;
 import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
 import com.masterteknoloji.trafficanalyzer.repository.RawRecordRepository;
+import com.masterteknoloji.trafficanalyzer.repository.ScenarioRepository;
 import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
+import com.masterteknoloji.trafficanalyzer.repository.VideoRepository;
 import com.masterteknoloji.trafficanalyzer.service.LinuxCommandService;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.AnalyzeOrderDetailVM;
@@ -112,6 +125,40 @@ public class AnalyzeOrderResourceIntTest {
     @Autowired
 	LinuxCommandService linuxCommandService;
     
+    @Autowired
+    DirectionRepository directionRepository;
+    
+    @Autowired
+    ScenarioRepository scenarioRepository;
+    
+    @Autowired
+    VideoRepository videoRepository;
+    
+    @Autowired
+    RawRecordRepository rawRecordRepository;
+    
+    @Autowired
+    VideoRecordRepository recordRepository; 
+    
+    Scenario scenario;
+    
+    Polygon startPolygon =new Polygon();
+    Polygon endPolygon =new Polygon();
+    Polygon startPolygon2 =new Polygon();
+    Polygon endPolygon2 =new Polygon();
+    Polygon startPolygon3 =new Polygon();
+    Polygon endPolygon3 =new Polygon();
+    
+    Polygon speedPolygon =new Polygon();
+    
+    Line line1;
+    Line line2;
+    Line line3;
+    
+    Direction direction;
+    
+    Video video = new Video();
+    
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -119,7 +166,7 @@ public class AnalyzeOrderResourceIntTest {
 //        		analyzeOrderDetailsRepository,analyzeOrderDetailsRepository,rawRepository, videoRecordRepository);
 //       
         AnalyzeOrderResource analyzeOrderResource = new AnalyzeOrderResource(analyzeOrderRepository, objectMapper, lineRepository, polygonRepository, 
-        		analyzeOrderDetailsRepository, rawRepository, videoRecordRepository,applicationProperties, linuxCommandService);
+        		analyzeOrderDetailsRepository, rawRepository, videoRecordRepository,applicationProperties, linuxCommandService,directionRepository);
         
         this.restAnalyzeOrderMockMvc = MockMvcBuilders.standaloneSetup(analyzeOrderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -146,12 +193,118 @@ public class AnalyzeOrderResourceIntTest {
     public void initTest() {
         analyzeOrder = createEntity(em);
     }
-
+    
+    public void prepareData() {
+    	 prepareScenarioList();
+    	 prepareVideoList();
+         preparePolygonList();
+         prepareLineList();
+         prepareDirectionList();
+         prepareSpeedList();
+    }
+    
+    public void prepareScenarioList() {
+    	scenario = new Scenario();
+        scenarioRepository.save(scenario);
+    }
+    
+    public void prepareVideoList() {
+    	video = new Video();
+    	video.setName("name");
+    	video.setPath("path");
+    	videoRepository.save(video);
+    }
+    
+    public void preparePolygonList() {
+    	startPolygon =new Polygon();
+    	startPolygon.setName("startPolygon");
+    	startPolygon.setPoints("0,0;100,200");
+    	startPolygon.setScenario(scenario);
+    	polygonRepository.save(startPolygon);
+    	
+    	endPolygon.setName("endPolygon");
+    	endPolygon.setPoints("0,0;300,400");
+    	endPolygon.setScenario(scenario);
+    	polygonRepository.save(endPolygon);
+    	
+    	startPolygon2 =new Polygon();
+    	startPolygon2.setName("startstartPolygon2");
+    	startPolygon2.setPoints("0,0;500,600");
+    	startPolygon2.setScenario(scenario);
+    	polygonRepository.save(startPolygon2);
+    	
+    	endPolygon2 =new Polygon();
+    	endPolygon2.setName("endPolygon2");
+    	endPolygon2.setPoints("0,0;700,800");
+    	endPolygon2.setScenario(scenario);
+    	polygonRepository.save(endPolygon2);
+    	
+    	startPolygon3 =new Polygon();
+    	startPolygon3.setName("startstartPolygon3");
+    	startPolygon3.setPoints("0,0;900,1000");
+    	startPolygon3.setScenario(scenario);
+    	polygonRepository.save(startPolygon3);
+    	
+    	endPolygon3 =new Polygon();
+    	endPolygon3.setName("endPolygon3");
+    	endPolygon3.setPoints("0,0;1000,1100");
+    	endPolygon3.setScenario(scenario);
+    	polygonRepository.save(endPolygon3);
+    }
+    
+    public void prepareLineList() {
+    	line1 = new Line();
+    	line1.setStartPolygon(startPolygon);
+    	line1.setEndPolygon(endPolygon);
+    	line1.setName("line1");
+    	line1.setScenario(scenario);
+    	lineRepository.save(line1);
+    	
+    	line2 = new Line();
+    	line2.setStartPolygon(startPolygon2);
+    	line2.setEndPolygon(endPolygon2);
+    	line2.setName("line1");
+    	line2.setScenario(scenario);
+    	lineRepository.save(line2);
+    	
+    	line3 = new Line();
+    	line3.setStartPolygon(startPolygon3);
+    	line3.setEndPolygon(endPolygon3);
+    	line3.setName("line3");
+    	line3.setScenario(scenario);
+    	lineRepository.save(line3);
+    }
+    
+    public void prepareDirectionList() {
+    	direction = new Direction();
+    	direction.setStartLine(line1);
+    	direction.setEndLine(line3);
+    	direction.setName("line-to-line3");
+    	direction.setScenario(scenario);
+    	directionRepository.save(direction);
+    }
+    
+    public void prepareSpeedList() {
+    	speedPolygon = new Polygon();
+    	speedPolygon.setName("speed");
+    	speedPolygon.setPoints("0,0;100,500");
+    	speedPolygon.setWidth(20);
+    	speedPolygon.setScenario(scenario);
+    	speedPolygon.setType(PolygonType.SPEED);
+    	polygonRepository.save(speedPolygon);
+    }
+    
+    
     @Test
     @Transactional
     public void createAnalyzeOrder() throws Exception {
         int databaseSizeBeforeCreate = analyzeOrderRepository.findAll().size();
 
+       
+        prepareData();
+        analyzeOrder.setVideo(video);
+        analyzeOrder.setScenario(scenario);
+        
         // Create the AnalyzeOrder
         restAnalyzeOrderMockMvc.perform(post("/api/analyze-orders")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -165,8 +318,156 @@ public class AnalyzeOrderResourceIntTest {
         assertThat(testAnalyzeOrder.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testAnalyzeOrder.getScreenShoot()).isEqualTo(DEFAULT_SCREEN_SHOOT);
         assertThat(testAnalyzeOrder.getScreenShootContentType()).isEqualTo(DEFAULT_SCREEN_SHOOT_CONTENT_TYPE);
+    
+        AnalyzeOrderDetails analyzeOrderDetails = analyzeOrderList.get(0).getOrderDetails();
+        assertThat(analyzeOrderDetails).isNotNull();
+    
+        DirectionVM directionVM = objectMapper.readValue(analyzeOrderDetails.getDirections(), DirectionVM.class);
+        List<RegionVM> regionVMs =directionVM.getRegions();
+        List<ConnectionVM> connectionVMs =directionVM.getConnections();
+        
+        assertThat(regionVMs.size()).isEqualTo(6);
+        assertThat(connectionVMs.size()).isEqualTo(4);
+        
+        assertThat(regionVMs.get(0).getLabel()).isEqualTo(startPolygon.getId().toString());
+        assertThat(regionVMs.get(1).getLabel()).isEqualTo(endPolygon.getId().toString());
+        assertThat(regionVMs.get(2).getLabel()).isEqualTo(startPolygon2.getId().toString());
+        assertThat(regionVMs.get(3).getLabel()).isEqualTo(endPolygon2.getId().toString());
+        assertThat(regionVMs.get(4).getLabel()).isEqualTo(startPolygon3.getId().toString());
+        assertThat(regionVMs.get(5).getLabel()).isEqualTo(endPolygon3.getId().toString());
+        
+        assertThat(connectionVMs.get(0).getEntry()).isEqualTo(startPolygon.getId().toString());
+        assertThat(connectionVMs.get(0).getExit()).isEqualTo(endPolygon.getId().toString());
+        
+        assertThat(connectionVMs.get(1).getEntry()).isEqualTo(startPolygon2.getId().toString());
+        assertThat(connectionVMs.get(1).getExit()).isEqualTo(endPolygon2.getId().toString());
+        
+        assertThat(connectionVMs.get(2).getEntry()).isEqualTo(startPolygon3.getId().toString());
+        assertThat(connectionVMs.get(2).getExit()).isEqualTo(endPolygon3.getId().toString());
+        
+        //from directions
+        
+        assertThat(connectionVMs.get(3).getEntry()).isEqualTo(direction.getStartLine().getStartPolygon().getId().toString());
+        assertThat(connectionVMs.get(3).getExit()).isEqualTo(direction.getEndLine().getEndPolygon().getId().toString());
+        
+
+        List<SpeedVM> speedVMs = objectMapper.readValue(analyzeOrderDetails.getSpeed(), new TypeReference<List<SpeedVM>>() { });
+        assertThat(speedVMs.size()).isEqualTo(1);
+        assertThat(speedVMs.get(0).getDistance()).isEqualTo(20);
+        
+        System.out.println("bitti");
     }
 
+    
+    @Test
+    @Transactional
+    public void checkUnprocessedDataForLine() throws Exception {
+               
+        prepareData();
+        analyzeOrder.setVideo(video);
+        analyzeOrder.setScenario(scenario);
+        
+     // Create the AnalyzeOrder
+        restAnalyzeOrderMockMvc.perform(post("/api/analyze-orders")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(analyzeOrder)))
+            .andExpect(status().isCreated());
+        
+        analyzeOrder = analyzeOrderRepository.findAll().get(0);
+        analyzeOrder.getOrderDetails().setState(AnalyzeState.ANALYZE_COMPLETED);
+        analyzeOrderRepository.save(analyzeOrder);
+        
+        RawRecord rawRecord = new RawRecord();
+        rawRecord.setEntry(startPolygon.getId().toString());
+        rawRecord.setExit(endPolygon.getId().toString());
+        rawRecord.setMoved(false);
+        rawRecord.setObjectType("car");
+        rawRecord.setSessionID(analyzeOrder.getOrderDetails().getSessionId());
+        rawRecord.setSpeed(100d);
+        rawRecord.setTime("00:00:59.333333");
+        rawRecordRepository.save(rawRecord);
+        
+        Long unProcessedRecordCount = rawRepository.getCountBySessionId(analyzeOrder.getOrderDetails().getSessionId(), false);
+        assertThat(unProcessedRecordCount).isEqualTo(1);
+        
+        restAnalyzeOrderMockMvc.perform(get("/api/analyze-orders/checUnprocessedRawRecords/"+analyzeOrder.getId()))
+        .andExpect(status().isOk());
+
+        unProcessedRecordCount = rawRepository.getCountBySessionId(analyzeOrder.getOrderDetails().getSessionId(), false);
+        assertThat(unProcessedRecordCount).isEqualTo(0);
+    
+        analyzeOrder = analyzeOrderRepository.findOne(analyzeOrder.getId());
+        assertThat(analyzeOrder.getOrderDetails().getState()).isEqualTo(AnalyzeState.PROCESS_COMPLETED);
+        
+        List<VideoRecord> videoRecords = recordRepository.findAll(); 
+        assertThat(videoRecords.size()).isEqualTo(1);
+        
+        VideoRecord videoRecord = videoRecords.get(0);
+        assertThat(videoRecord.getSpeed()).isEqualTo(100d);
+        assertThat(videoRecord.getVehicleType()).isEqualTo("car");
+        assertThat(videoRecord.getAnalyze().getId()).isEqualTo(analyzeOrder.getId());
+        assertThat(videoRecord.getDuration()).isEqualTo(59333);
+        assertThat(videoRecord.getProcessType()).isNull();
+        assertThat(videoRecord.getLine().getId()).isEqualTo(line1.getId());
+        assertThat(videoRecord.getDirection()).isNull();
+    }
+    
+
+    @Test
+    @Transactional
+    public void checkUnprocessedDataForDirection() throws Exception {
+               
+        prepareData();
+        analyzeOrder.setVideo(video);
+        analyzeOrder.setScenario(scenario);
+        
+     // Create the AnalyzeOrder
+        restAnalyzeOrderMockMvc.perform(post("/api/analyze-orders")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(analyzeOrder)))
+            .andExpect(status().isCreated());
+        
+        analyzeOrder = analyzeOrderRepository.findAll().get(0);
+        analyzeOrder.getOrderDetails().setState(AnalyzeState.ANALYZE_COMPLETED);
+        analyzeOrderRepository.save(analyzeOrder);
+        
+        RawRecord rawRecord = new RawRecord();
+        rawRecord.setEntry(startPolygon.getId().toString());
+        rawRecord.setExit(endPolygon3.getId().toString());
+        rawRecord.setMoved(false);
+        rawRecord.setObjectType("car");
+        rawRecord.setSessionID(analyzeOrder.getOrderDetails().getSessionId());
+        rawRecord.setSpeed(100d);
+        rawRecord.setTime("00:00:59.333333");
+        rawRecordRepository.save(rawRecord);
+        
+        
+        Long unProcessedRecordCount = rawRepository.getCountBySessionId(analyzeOrder.getOrderDetails().getSessionId(), false);
+        assertThat(unProcessedRecordCount).isEqualTo(1);
+        
+        restAnalyzeOrderMockMvc.perform(get("/api/analyze-orders/checUnprocessedRawRecords/"+analyzeOrder.getId()))
+        .andExpect(status().isOk());
+
+        unProcessedRecordCount = rawRepository.getCountBySessionId(analyzeOrder.getOrderDetails().getSessionId(), false);
+        assertThat(unProcessedRecordCount).isEqualTo(0);
+    
+        analyzeOrder = analyzeOrderRepository.findOne(analyzeOrder.getId());
+        assertThat(analyzeOrder.getOrderDetails().getState()).isEqualTo(AnalyzeState.PROCESS_COMPLETED);
+        
+        List<VideoRecord> videoRecords = recordRepository.findAll(); 
+        assertThat(videoRecords.size()).isEqualTo(1);
+        
+        VideoRecord videoRecord = videoRecords.get(0);
+        assertThat(videoRecord.getSpeed()).isEqualTo(100d);
+        assertThat(videoRecord.getVehicleType()).isEqualTo("car");
+        assertThat(videoRecord.getAnalyze().getId()).isEqualTo(analyzeOrder.getId());
+        assertThat(videoRecord.getDuration()).isEqualTo(59333);
+        assertThat(videoRecord.getProcessType()).isNull();
+        assertThat(videoRecord.getDirection().getId()).isEqualTo(direction.getId());
+        assertThat(videoRecord.getLine()).isNull();
+    }
+
+    
     @Test
     @Transactional
     public void createAnalyzeOrderWithExistingId() throws Exception {

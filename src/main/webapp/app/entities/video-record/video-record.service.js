@@ -15,6 +15,7 @@
             'getResultOfAnalyzeOrderByLineId': { method: 'GET', isArray: true,url:'/api/video-records/getResultOfAnalyzeOrderAndLineId/:id/:lineId'},
             'getClassificationData': { method: 'GET', isArray: true, url: '/api/video-records/getClassificationData/:id'},
             'getAverageSpeedData': { method: 'GET', isArray: true, url: '/api/video-records/getAverageSpeedData/:id'},
+            'getResultOfDirectionReport': { method: 'GET', isArray: true, url: '/api/video-records/getResultOfDirectionReport/:id'},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

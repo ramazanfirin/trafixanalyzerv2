@@ -62,4 +62,21 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 		  		+ "where i.analyze_id= :analyzeOrderId\n"
 		  		+ "order by id",nativeQuery=true)
 	 public  Iterable<Map<String,Object>> getVisulationData(@Param("analyzeOrderId") Long analyzeOrderId);
+
+	 @Query(value="Select \n" + 
+	 		"	  		count(direction.id) as count,\n" + 
+	 		"            startLine.name as startLineName,\n" + 
+	 		"            endLine.name as endLineName,\n" + 
+	 		"            direction.name as directionName "+
+	 		"            ,(select count(*) from video_record where line_id =startLine.id) as startLineCount\n" + 
+	 		"            ,(select count(*) from video_record where line_id =endLine.id) as endLineCount\n" + 
+	 		"            FROM video_record i\n" + 
+	 		"	  		INNER JOIN Direction as direction ON i.direction_id=direction.id\n" + 
+	 		"            INNER JOIN Line as startLine ON direction.start_line_id=startLine.id\n" + 
+	 		"            INNER JOIN Line as endLine ON direction.end_line_id=endLine.id\n" + 
+	 		"	  		where i.analyze_id= :analyzeOrderId\n" + 
+	 		"			order by direction.name",nativeQuery=true)
+	 public  Iterable<Map<String,Object>> getDirectionReportData(@Param("analyzeOrderId") Long analyzeOrderId);
+
+
 }

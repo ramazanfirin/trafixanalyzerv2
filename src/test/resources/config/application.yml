@@ -115,4 +115,5 @@ jhipster:
 application:
      getScriptOutput: true
      aiScriptName: pipelinetest.py
-     longProcessKillTreshold: 5
+     longProcessKillTreshold: 60 #minute
+     longProcessFixedRate: 360000 #seconds

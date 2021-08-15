@@ -24,7 +24,8 @@
             "countingTabLabel": "Sayım",
             "speedTabLabel": "Hız",
             "excelTabLabel": "Detay",
-            "downloadExcelFile":"Excel İndir"
+            "downloadExcelFile":"Excel İndir",
+            "directionReportTabLabel":"Yön Analizi"
         }
     }
 }

@@ -4,7 +4,6 @@ import java.net.URI;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -39,6 +38,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masterteknoloji.trafficanalyzer.config.ApplicationProperties;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrderDetails;
+import com.masterteknoloji.trafficanalyzer.domain.Direction;
 import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
 import com.masterteknoloji.trafficanalyzer.domain.RawRecord;
@@ -47,6 +47,7 @@ import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.PolygonType;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderDetailsRepository;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
+import com.masterteknoloji.trafficanalyzer.repository.DirectionRepository;
 import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
 import com.masterteknoloji.trafficanalyzer.repository.RawRecordRepository;
@@ -88,6 +89,8 @@ public class AnalyzeOrderResource {
 	private final ApplicationProperties applicationProperties;
 
 	private final LinuxCommandService linuxCommandService;
+	
+	private final DirectionRepository directionRepository;
 
 	DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
@@ -98,7 +101,7 @@ public class AnalyzeOrderResource {
 			LineRepository lineRepository, PolygonRepository polygonRepository,
 			AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository, RawRecordRepository rawRepository,
 			VideoRecordRepository videoRecordRepository, ApplicationProperties applicationProperties,
-			LinuxCommandService linuxCommandService) {
+			LinuxCommandService linuxCommandService,DirectionRepository directionRepository) {
 		this.analyzeOrderRepository = analyzeOrderRepository;
 		this.objectMapper = objectMapper;
 		this.lineRepository = lineRepository;
@@ -108,6 +111,7 @@ public class AnalyzeOrderResource {
 		this.videoRecordRepository = videoRecordRepository;
 		this.applicationProperties = applicationProperties;
 		this.linuxCommandService = linuxCommandService;
+		this.directionRepository = directionRepository;
 	}
 
 	/**
@@ -130,10 +134,9 @@ public class AnalyzeOrderResource {
 		AnalyzeOrder result = analyzeOrderRepository.save(analyzeOrder);
 
 		List<Line> lines = lineRepository.getLineListByScenarioId(result.getScenario().getId());
-		List<Polygon> speedPolygons = polygonRepository.getPolygonListByScenarioId(result.getScenario().getId(),
-				PolygonType.SPEED);
-		AnalyzeOrderDetails analyzeOrderDetails = Util.prepareAnalyzeOrderDetails(objectMapper,
-				result.getId().toString(), analyzeOrder.getVideo().getPath(), lines, speedPolygons);
+		List<Direction> directions = directionRepository.getDirectionListByScenarioId(result.getScenario().getId());
+		List<Polygon> speedPolygons = polygonRepository.getPolygonListByScenarioId(result.getScenario().getId(),PolygonType.SPEED);
+		AnalyzeOrderDetails analyzeOrderDetails = Util.prepareAnalyzeOrderDetails(objectMapper,result.getId().toString(), analyzeOrder.getVideo().getPath(), lines,directions, speedPolygons);
 		analyzeOrderDetailsRepository.save(analyzeOrderDetails);
 
 		result.setOrderDetails(analyzeOrderDetails);
@@ -218,9 +221,9 @@ public class AnalyzeOrderResource {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/analyze-orders/getResultOfAnalyzeOrder/{id}")
+	@GetMapping("/analyze-orders/checUnprocessedRawRecords/{id}")
 	@Timed
-	public ResponseEntity<Void> getResultOfAnalyzeOrder(@PathVariable Long id) throws ParseException {
+	public ResponseEntity<Void> checUnprocessedRawRecords(@PathVariable Long id) throws ParseException {
 		checkUnprocessedOrders();
 		return ResponseEntity.ok().build();
 	}
@@ -269,6 +272,7 @@ public class AnalyzeOrderResource {
 
 		Pageable pageRequest = new PageRequest(0, 5000);
 		Map<String, Line> lines = prepareLineList();
+		Map<String, Direction> directions = prepareDirectionList();
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			AnalyzeOrder analyzeOrder = (AnalyzeOrder) iterator.next();
 			AnalyzeOrderDetails analyzeOrderDetails = analyzeOrder.getOrderDetails();
@@ -286,7 +290,7 @@ public class AnalyzeOrderResource {
 			
 			// FOR 
 			Page<RawRecord> rawRecords = rawRepository.findBySessionId(pageRequest,sessionId,false);
-			transferData(rawRecords, analyzeOrder, lines);
+			transferData(rawRecords, analyzeOrder, lines,directions);
 			unProcessedRecordCount = rawRepository.getCountBySessionId(sessionId, false);
 			if(unProcessedRecordCount ==0)
 				updateAnalyzeOrderDetails(analyzeOrderDetails, AnalyzeState.PROCESS_COMPLETED);
@@ -297,7 +301,7 @@ public class AnalyzeOrderResource {
 
 	}
 
-	private void transferData(Page<RawRecord> rawRecords, AnalyzeOrder analyzeOrder, Map<String, Line> lines)
+	private void transferData(Page<RawRecord> rawRecords, AnalyzeOrder analyzeOrder, Map<String, Line> lines,Map<String, Direction> directions)
 			throws ParseException {
 
 		List<VideoRecord> videoRecords = new ArrayList<VideoRecord>();
@@ -308,7 +312,8 @@ public class AnalyzeOrderResource {
 
 			try {
 				Line line = lines.get(rawRecord.getEntry() + "-" + rawRecord.getExit());
-				VideoRecord videoRecord = insertVideoRecord(rawRecord, analyzeOrder, line);
+				Direction direction = directions.get(rawRecord.getEntry() + "-" + rawRecord.getExit());
+				VideoRecord videoRecord = insertVideoRecord(rawRecord, analyzeOrder, line,direction);
 				videoRecords.add(videoRecord);
 
 				rawRecord.setMoved(true);
@@ -345,8 +350,19 @@ public class AnalyzeOrderResource {
 
 		return result;
 	}
+	
+	private Map<String, Direction> prepareDirectionList() {
+		Map<String, Direction> result = new HashMap<String, Direction>();
+		List<Direction> directions = directionRepository.findAll();
+		for (Iterator iterator = directions.iterator(); iterator.hasNext();) {
+			Direction direction = (Direction) iterator.next();
+			result.put(direction.getStartLine().getStartPolygon().getId() + "-" + direction.getEndLine().getEndPolygon().getId(), direction);
+		}
 
-	private VideoRecord insertVideoRecord(RawRecord rawRecord, AnalyzeOrder analyzeOrder, Line line)
+		return result;
+	}
+
+	private VideoRecord insertVideoRecord(RawRecord rawRecord, AnalyzeOrder analyzeOrder, Line line, Direction direction)
 			throws ParseException {
 		VideoRecord videoRecord = new VideoRecord();
 		videoRecord.setAnalyze(analyzeOrder);
@@ -354,6 +370,7 @@ public class AnalyzeOrderResource {
 		videoRecord.setSpeed(rawRecord.getSpeed());
 		videoRecord.setVehicleType(rawRecord.getObjectType());
 		videoRecord.setLine(line);
+		videoRecord.setDirection(direction);
 		videoRecord.setDuration(prepareDuration(rawRecord.getTime()));
 		return videoRecord;
 

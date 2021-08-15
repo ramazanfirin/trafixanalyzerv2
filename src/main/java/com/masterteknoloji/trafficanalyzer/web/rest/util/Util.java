@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -18,10 +17,9 @@ import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.springframework.util.StringUtils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrderDetails;
+import com.masterteknoloji.trafficanalyzer.domain.Direction;
 import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
@@ -159,13 +157,13 @@ public class Util {
 		return  baos;
 	}
 	
-	public static AnalyzeOrderDetails prepareAnalyzeOrderDetails(ObjectMapper objectMapper,String sessionId,String videoPath,List<Line> lineList,List<Polygon> speedPolygonList) throws Exception {
+	public static AnalyzeOrderDetails prepareAnalyzeOrderDetails(ObjectMapper objectMapper,String sessionId,String videoPath,List<Line> lineList,List<Direction> directionList,List<Polygon> speedPolygonList) throws Exception {
 		AnalyzeOrderDetails result = new AnalyzeOrderDetails();
 		
 		VehicleTypeVM vehicleTypeVM = new VehicleTypeVM();
 		result.setClasses(objectMapper.writeValueAsString(vehicleTypeVM));
 		
-		DirectionVM directionVM = prepareDirections(objectMapper, lineList);
+		DirectionVM directionVM = prepareDirections(objectMapper, lineList,directionList);
 		result.setDirections(objectMapper.writeValueAsString(directionVM));
 		
 		List<SpeedVM> speedVMs = prepareSpeeds(objectMapper, speedPolygonList);
@@ -195,7 +193,7 @@ public class Util {
 		return analyzeOrderDetailVM;
 	}
 	
-	public static DirectionVM prepareDirections(ObjectMapper objectMapper,List<Line> lineList) throws Exception {
+	public static DirectionVM prepareDirections(ObjectMapper objectMapper,List<Line> lineList,List<Direction> directionList) throws Exception {
 		DirectionVM directionVM = new DirectionVM();
 		
 		
@@ -211,6 +209,12 @@ public class Util {
 			directionVM.getConnections().add(prepareConnections(line));
 			
 		}
+		
+		for (Iterator iterator = directionList.iterator(); iterator.hasNext();) {
+			Direction direction = (Direction) iterator.next();
+			directionVM.getConnections().add(prepareConnections(direction));
+		}
+		
 		
 		return directionVM;
 	}
@@ -258,6 +262,14 @@ public class Util {
 		return connectionVM;
 	}
 	
+	public static ConnectionVM prepareConnections(Direction direction) {
+		ConnectionVM connectionVM = new ConnectionVM();
+		connectionVM.setEntry(direction.getStartLine().getStartPolygon().getId().toString());
+		connectionVM.setExit(direction.getEndLine().getEndPolygon().getId().toString());
+    	
+		return connectionVM;
+	}
+	
 	 public static PointsVM preparePoints(Long x,Long y) {
 	    	PointsVM pointsVM2 = new PointsVM();
 	    	pointsVM2.setX(convertCoordinate(x));
@@ -270,5 +282,10 @@ public class Util {
 		Double result = (value/multiplierOnScreen) * multiplierOnAnalyze;
 		
 		return result.longValue();
+	}
+	
+	public static Long calculatePertencile(Long total,Long part) {
+		Long result = (100 * part)/total;
+		return result ;
 	}
 }
