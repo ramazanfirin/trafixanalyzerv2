@@ -1,6 +1,10 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,7 +47,6 @@ import com.masterteknoloji.trafficanalyzer.domain.Direction;
 import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
 import com.masterteknoloji.trafficanalyzer.domain.RawRecord;
-import com.masterteknoloji.trafficanalyzer.domain.Scenario;
 import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.PolygonType;
@@ -60,6 +63,7 @@ import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.Util;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.AnalyzeOrderSummaryVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.ParameterVM;
 
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -269,6 +273,48 @@ public class AnalyzeOrderResource {
 		return result;
 	}
 
+	@GetMapping("/analyze-orders/getLogs/{id}")
+	@Timed
+	public ParameterVM getLogs(@PathVariable Long id) {
+
+		String value ="";
+		AnalyzeOrder analyzeOrder = analyzeOrderRepository.findOne(id);
+		if(analyzeOrder == null) {
+			value = "order bulunamadi";
+		}else {
+			value = getFileContent(analyzeOrder.getOrderDetails().getSessionId());
+			
+		}
+		
+		ParameterVM result = new ParameterVM();
+		result.setValue(value);
+		return result;
+	}
+	
+	
+	public String getFileContent(String sessionId){
+		String path = applicationProperties.getLogDirectory()+"/"+"sessionId_"+sessionId+".log";
+		File logFile = new File(path);
+		boolean exists = logFile.exists();
+		if(!exists) {
+			return "Log Dosyası bulunamadı";
+		}
+		
+		String result= "";
+		try
+        {
+			result = new String ( Files.readAllBytes( Paths.get(path) ) );
+        } 
+        catch (IOException e) 
+        {
+            e.printStackTrace();
+            result = e.getMessage();
+        }
+
+		return result;
+	}
+	
+	
 	@Scheduled(fixedRate = 60000)
 	public void checkUnprocessedOrders() throws ParseException {
 
@@ -283,7 +329,16 @@ public class AnalyzeOrderResource {
 			AnalyzeOrderDetails analyzeOrderDetails = analyzeOrder.getOrderDetails();
 			String sessionId = analyzeOrder.getOrderDetails().getSessionId().toString();
 			updateAnalyzeOrderDetails(analyzeOrderDetails, AnalyzeState.TRANSFER_STARTED);
+			
+			if(analyzeOrderDetails.getStartDate()==null) {
+				System.out.println("startdate = null");
+			}
 
+			if(analyzeOrderDetails.getEndDate()==null) {
+				System.out.println("enddate = null");
+			}
+
+			
 			Long unProcessedRecordCount = rawRepository.getCountBySessionId(sessionId, false);
 //			while (unProcessedRecordCount>0) {
 //				Page<RawRecord> rawRecords = rawRepository.findBySessionId(pageRequest,sessionId,false);

@@ -40,11 +40,12 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://89.19.30.126:3306/u0221508_trafix?useUnicode=true&characterEncoding=utf8&useSSL=false
-        username: u0221508_ramazan
-        #url: jdbc:mysql://localhost:3307/trafficanalyzer7?useUnicode=true&characterEncoding=utf8&useSSL=false
-        #username: root
-        password: ra5699mo
+        #url: jdbc:mysql://89.19.30.126:3306/u0221508_trafix?useUnicode=true&characterEncoding=utf8&useSSL=false
+        #username: u0221508_ramazan
+        url: jdbc:mysql://localhost:3306/trafix?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: root
+        #password: ra5699mo
+        password: trafix
         hikari:
             data-source-properties:
                 cachePrepStmts: true
@@ -61,7 +62,7 @@ spring:
         show-sql: true
         properties:
             hibernate.id.new_generator_mappings: true
-            hibernate.cache.use_second_level_cache: true
+            hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
             hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
@@ -166,9 +167,11 @@ jhipster:
 # ===================================================================
 
 application:
-    ftpDirectory: /home/ramazan/Desktop
-    aiScriptPath: /home/ramazan/Desktop/aitest
+    ftpDirectory: /home/ramazan/Desktop/videos
+    aiScriptPath: /home/ramazan/AI/AI_Backend
     aiScriptName: pipeline.py
-    getScriptOutput: false
+    getScriptOutput: true
     longProcessKillTreshold: 60 #minute
     longProcessFixedRate: 3600 #seconds
+    logDirectory: /home/ramazan/AI/AI_Backend/log
+

@@ -191,6 +191,31 @@
                 });
             }]
         })
+	.state('analyze-order.log', {
+            parent: 'analyze-order',
+            url: '/{id}/log',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/analyze-order/anaylze-order-log.html',
+                    controller: 'AnalyzeOrderLogController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['AnalyzeOrder', function(AnalyzeOrder) {
+                            return AnalyzeOrder.get({id : $stateParams.id}).$promise;
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('analyze-order', null, { reload: 'analyze-order' });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
+        })
         .state('analyze-order.delete', {
             parent: 'analyze-order',
             url: '/{id}/delete',

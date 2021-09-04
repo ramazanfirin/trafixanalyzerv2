@@ -22,6 +22,16 @@ public class ApplicationProperties {
 	Long longProcessKillTreshold;
 	
 	Long longProcessFixedRate;
+	
+	String logDirectory;
+
+	public String getLogDirectory() {
+		return logDirectory;
+	}
+
+	public void setLogDirectory(String logDirectory) {
+		this.logDirectory = logDirectory;
+	}
 
 	public String getFtpDirectory() {
 		return ftpDirectory;
