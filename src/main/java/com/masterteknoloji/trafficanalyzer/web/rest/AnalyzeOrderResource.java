@@ -147,7 +147,8 @@ public class AnalyzeOrderResource {
 
 		result.setOrderDetails(analyzeOrderDetails);
 		result = analyzeOrderRepository.save(analyzeOrder);
-		linuxCommandService.startAIScript(analyzeOrder.getId().toString(), false);
+		//linuxCommandService.startAIScript(analyzeOrder.getId().toString(), false);
+		linuxCommandService.startScriptByHttp(analyzeOrderDetails.getSessionId());
 
 		return ResponseEntity.created(new URI("/api/analyze-orders/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
@@ -320,7 +321,6 @@ public class AnalyzeOrderResource {
 
 		log.info("checkUnprocessedOrders" + " started");
 		List<AnalyzeOrder> list = analyzeOrderRepository.findByState(AnalyzeState.ANALYZE_COMPLETED);
-		analyzeOrderRepository.findAll();
 		Pageable pageRequest = new PageRequest(0, 5000);
 		Map<String, Line> lines = prepareLineList();
 		Map<String, Direction> directions = prepareDirectionList();

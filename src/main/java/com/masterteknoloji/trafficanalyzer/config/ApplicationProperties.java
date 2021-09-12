@@ -24,6 +24,16 @@ public class ApplicationProperties {
 	Long longProcessFixedRate;
 	
 	String logDirectory;
+	
+	String aiScriptEndpoint;
+
+	public String getAiScriptEndpoint() {
+		return aiScriptEndpoint;
+	}
+
+	public void setAiScriptEndpoint(String aiScriptEndpoint) {
+		this.aiScriptEndpoint = aiScriptEndpoint;
+	}
 
 	public String getLogDirectory() {
 		return logDirectory;

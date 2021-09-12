@@ -171,7 +171,8 @@ application:
     aiScriptPath: /home/ramazan/AI/AI_Backend
     aiScriptName: pipeline.py
     getScriptOutput: true
-    longProcessKillTreshold: 60 #minute
+    longProcessKillTreshold: 120 #minute
     longProcessFixedRate: 3600 #seconds
     logDirectory: /home/ramazan/AI/AI_Backend/log
+    aiScriptEndpoint: http://localhost:8088
 

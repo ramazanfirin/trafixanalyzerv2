@@ -7,6 +7,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,7 +24,6 @@ import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrderDetails;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderDetailsRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.LinuxProcessDetailsVM;
-import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 
 /**
  * Service for sending emails.
@@ -67,6 +73,42 @@ public class LinuxCommandService {
 		}
 		
 		return result;
+		
+	}
+	
+	public void startScriptByHttp(String sessionId) throws ClientProtocolException, IOException {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+
+        try {
+        	
+        	String endpoint = applicationProperties.getAiScriptEndpoint()+"/sessionId="+sessionId;
+            HttpGet request = new HttpGet(applicationProperties.getAiScriptEndpoint()+"/sessionId="+sessionId);
+            CloseableHttpResponse response = httpClient.execute(request);
+            log.info(endpoint+ " script called");
+            try {
+
+            	int statusCode = response.getStatusLine().getStatusCode();
+                if(statusCode != 200) {
+                	log.error("error for sessionId=\"+sessionId+\" .statusCode=\"+statusCode");
+                    throw new RuntimeException("error for sessionId="+sessionId+" .statusCode="+statusCode);
+                }
+            	
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    String result = EntityUtils.toString(entity);
+                    System.out.println(result);
+                }
+            }catch (Exception e) {
+            	log.error("error for sessionId="+sessionId,e);
+                
+			} 
+            finally {
+                response.close();
+            }
+        } finally {
+            httpClient.close();
+        }
+
 		
 	}
 	
