@@ -324,6 +324,7 @@ public class AnalyzeOrderResource {
 		Pageable pageRequest = new PageRequest(0, 5000);
 		Map<String, Line> lines = prepareLineList();
 		Map<String, Direction> directions = prepareDirectionList();
+		
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			AnalyzeOrder analyzeOrder = (AnalyzeOrder) iterator.next();
 			AnalyzeOrderDetails analyzeOrderDetails = analyzeOrder.getOrderDetails();
@@ -360,6 +361,15 @@ public class AnalyzeOrderResource {
 		log.info("checkUnprocessedOrders" + " ended");
 
 	}
+	
+	private String getRegionIdFromRowRecord(String value) {
+		if(value.contains("-")) {
+			String[] items = value.split("-");
+			return items[0];		
+		}else {
+			return value;
+		}
+	}
 
 	private void transferData(Page<RawRecord> rawRecords, AnalyzeOrder analyzeOrder, Map<String, Line> lines,Map<String, Direction> directions)
 			throws ParseException {
@@ -369,10 +379,13 @@ public class AnalyzeOrderResource {
 
 		for (Iterator iterator2 = rawRecords.iterator(); iterator2.hasNext();) {
 			RawRecord rawRecord = (RawRecord) iterator2.next();
-
+			String entry = getRegionIdFromRowRecord(rawRecord.getEntry());
+			String exit = getRegionIdFromRowRecord(rawRecord.getExit());
+			
+			
 			try {
-				Line line = lines.get(rawRecord.getEntry() + "-" + rawRecord.getExit());
-				Direction direction = directions.get(rawRecord.getEntry() + "-" + rawRecord.getExit());
+				Line line = lines.get(entry + "-" + exit);
+				Direction direction = directions.get(entry + "-" + exit);
 				VideoRecord videoRecord = insertVideoRecord(rawRecord, analyzeOrder, line,direction);
 				videoRecords.add(videoRecord);
 

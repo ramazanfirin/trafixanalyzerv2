@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -23,6 +24,7 @@ import com.masterteknoloji.trafficanalyzer.domain.Direction;
 import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
+import com.masterteknoloji.trafficanalyzer.service.util.RandomUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.AnalyzeOrderDetailVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.ConnectionVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.DirectionVM;
@@ -200,19 +202,33 @@ public class Util {
 		for (Iterator iterator = lineList.iterator(); iterator.hasNext();) {
 			Line line = (Line) iterator.next();
 			
-			RegionVM startRegionVM = prepareRegions(line.getStartPolygon());
+			RegionVM startRegionVM = prepareRegions(line.getStartPolygon(),null);
 			directionVM.getRegions().add(startRegionVM);
 			
-			RegionVM endRegionVM = prepareRegions(line.getEndPolygon());
+			RegionVM endRegionVM = prepareRegions(line.getEndPolygon(),null);
 			directionVM.getRegions().add(endRegionVM);
 			
 			directionVM.getConnections().add(prepareConnections(line));
 			
 		}
 		
+		
 		for (Iterator iterator = directionList.iterator(); iterator.hasNext();) {
 			Direction direction = (Direction) iterator.next();
-			directionVM.getConnections().add(prepareConnections(direction));
+			
+			ConnectionVM connectionVM = new ConnectionVM();
+			
+			String startRegionRandomId = RandomUtil.generateResetKey();
+			RegionVM startRegionVM = prepareRegions(direction.getStartLine().getStartPolygon(),startRegionRandomId);
+			directionVM.getRegions().add(startRegionVM);
+			connectionVM.setEntry(direction.getStartLine().getStartPolygon().getId().toString()+"-"+startRegionRandomId);
+			
+			String endRegionRandomId = RandomUtil.generateResetKey();
+			RegionVM endRegionVM = prepareRegions(direction.getEndLine().getEndPolygon(),endRegionRandomId);
+			directionVM.getRegions().add(endRegionVM);
+			connectionVM.setExit(direction.getEndLine().getEndPolygon().getId().toString()+"-"+endRegionRandomId);
+			
+			directionVM.getConnections().add(connectionVM);
 		}
 		
 		
@@ -241,10 +257,14 @@ public class Util {
 		return result;
 	}
 	
-	public static RegionVM prepareRegions(Polygon polygon) {
+	public static RegionVM prepareRegions(Polygon polygon,String randomId) {
 		RegionVM regionVM = new RegionVM();
-    	regionVM.setLabel(polygon.getId().toString());
-    	
+    	if(randomId == null)
+    		regionVM.setLabel(polygon.getId().toString());
+    	else
+    		regionVM.setLabel(polygon.getId().toString()+"-"+randomId);
+        
+    		
     	List<Point> pointList = convertToPointList(polygon.getPoints());
     	for (Iterator iterator = pointList.iterator(); iterator.hasNext();) {
 			Point point = (Point) iterator.next();
