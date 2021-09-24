@@ -224,7 +224,7 @@ public class LinuxCommandService {
 		log.info("killLongTimeProcess"+ " ended");
 	}
 	
-	@Scheduled(fixedRateString = "${application.longProcessFixedRate}000")
+	//@Scheduled(fixedRateString = "${application.longProcessFixedRate}000")
 	public void killLongTimeProcess() {
 		log.info("killLongTimeProcess"+ " started");
 		

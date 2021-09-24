@@ -270,6 +270,8 @@ public class LineResource {
 			item.setId(line.getId());
 			item.setName(line.getName());
 			item.setPoints(line.getCalculatedPolygon().getPoints());
+			item.setEntryPolygonPoints(line.getStartPolygon().getPoints());
+			item.setExitPolygonPoints(line.getEndPolygon().getPoints());
 			result.add(item);
 		}
         

@@ -5,6 +5,9 @@ public class LineSummaryVM {
 	Long id;
 	String name;
 	String points;
+	String entryPolygonPoints;
+	String exitPolygonPoints;
+
 	public Long getId() {
 		return id;
 	}
@@ -22,5 +25,17 @@ public class LineSummaryVM {
 	}
 	public void setPoints(String points) {
 		this.points = points;
+	}
+	public String getExitPolygonPoints() {
+		return exitPolygonPoints;
+	}
+	public void setExitPolygonPoints(String exitPolygonPoints) {
+		this.exitPolygonPoints = exitPolygonPoints;
+	}
+	public String getEntryPolygonPoints() {
+		return entryPolygonPoints;
+	}
+	public void setEntryPolygonPoints(String entryPolygonPoints) {
+		this.entryPolygonPoints = entryPolygonPoints;
 	}
 }
