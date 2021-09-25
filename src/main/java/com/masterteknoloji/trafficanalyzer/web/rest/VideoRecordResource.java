@@ -144,7 +144,7 @@ public class VideoRecordResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/video-records");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
+    
     /**
      * GET  /video-records/:id : get the "id" videoRecord.
      *

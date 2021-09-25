@@ -13,7 +13,8 @@
         vm.scenario = entity;
         vm.clear = clear;
         vm.save = save;
-        vm.videos = Video.query();
+        //vm.videos = Video.query();
+		vm.videos = Video.getAll();
 		vm.insertScreenshot = insertScreenshot;
 		vm.addPolygon = addPolygon;
 		vm.addToPolygonList = addToPolygonList;

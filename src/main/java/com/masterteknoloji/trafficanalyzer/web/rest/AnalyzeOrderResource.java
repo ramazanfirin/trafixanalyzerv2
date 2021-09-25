@@ -261,7 +261,7 @@ public class AnalyzeOrderResource {
 			AnalyzeOrderSummaryVM item = new AnalyzeOrderSummaryVM();
 			item.setId(analyzeOrder.getId());
 			item.setScenarioPath(analyzeOrder.getScenario().getName());
-			item.setState(analyzeOrder.getState().toString());
+			item.setState(analyzeOrder.getOrderDetails().getState().toString());
 			item.setVideoName(analyzeOrder.getVideo().getName());
 			item.setVideoPath(analyzeOrder.getVideo().getPath());
 			item.setScenarioId(analyzeOrder.getScenario().getId());

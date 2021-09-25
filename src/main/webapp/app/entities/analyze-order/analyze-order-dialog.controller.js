@@ -15,9 +15,12 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
-        vm.videos = Video.query();
-        vm.scenarios = Scenario.query();
-        vm.analyzeorderdetails = AnalyzeOrderDetails.query();
+        //vm.videos = Video.query();
+ 		vm.videos = Video.getAll()
+        //vm.scenarios = Scenario.query();
+        vm.scenarios = Scenario.getAll()
+        
+		vm.analyzeorderdetails = AnalyzeOrderDetails.query();
         vm.videoFileChanged = videoFileChanged;
         vm.scenarioChanged = scenarioChanged;
         vm.lines = [];

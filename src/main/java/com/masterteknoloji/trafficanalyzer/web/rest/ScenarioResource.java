@@ -132,6 +132,14 @@ public class ScenarioResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/scenarios/getAll")
+    @Timed
+    public ResponseEntity<List<Scenario>> getAll(Pageable pageable) {
+        log.debug("REST request to get a page of Scenarios");
+        Page<Scenario> page = scenarioRepository.getActiveItem(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/scenarios");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * GET  /scenarios/:id : get the "id" scenario.
      *

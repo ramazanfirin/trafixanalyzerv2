@@ -114,6 +114,15 @@ public class VideoResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/videos");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    
+    @GetMapping("/videos/getAll")
+    @Timed
+    public ResponseEntity<List<Video>> getAll(Pageable pageable) {
+        log.debug("REST request to get a page of Videos");
+        Page<Video> page = videoRepository.getActiveItem(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/videos");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     /**
      * GET  /videos/:id : get the "id" video.
