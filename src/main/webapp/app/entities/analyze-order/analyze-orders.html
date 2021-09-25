@@ -41,10 +41,10 @@
                         <a ui-sref="scenario.preview({id:analyzeOrder.scenario.id})">{{analyzeOrder.scenario.name}}</a>
                     </td>
                     <td>
-                        {{analyzeOrder.orderDetails.startDate}}
+                        {{analyzeOrder.orderDetails.startDate | date:'dd/MM/yyyy HH:mm:ss'}}
                     </td>
                     <td>
-                       {{analyzeOrder.orderDetails.endDate}}
+                       {{analyzeOrder.orderDetails.endDate | date:'dd/MM/yyyy HH:mm:ss'}}
                     </td>
                     <td>
                        {{analyzeOrder.orderDetails.processDuration}}
@@ -58,13 +58,18 @@
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
+                            
                             <button type="submit"
                                     ui-sref="analyze-order.result({id:analyzeOrder.id})"
                                     class="btn btn-success btn-sm">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.viewReport"></span>
                             </button>
-                           
+                           <button type="submit" ng-click="vm.play(analyzeOrder)"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.play"></span>
+                            </button>
 <!--                             <button type="submit" -->
 <!--                                     ui-sref="analyze-order.edit({id:analyzeOrder.id})" -->
 <!--                                     class="btn btn-primary btn-sm"> -->

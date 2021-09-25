@@ -18,7 +18,8 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
-
+ 		
+		vm.play = play;
         loadAll();
 
         function loadAll () {
@@ -58,5 +59,19 @@
                 search: vm.currentSearch
             });
         }
+
+		function play(analyzeorder) {
+           //alert(analyzeorder.id);
+		   AnalyzeOrder.play({id:analyzeorder.id},playSuccess,onSaveError);
+        }
+
+		function playSuccess(result){
+			//resetAll();
+			
+		}
+		
+		function onSaveError(error) {
+                AlertService.error(error.data.message);
+            }
     }
 })();

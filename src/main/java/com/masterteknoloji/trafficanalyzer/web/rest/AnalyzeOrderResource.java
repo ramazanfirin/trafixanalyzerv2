@@ -1,7 +1,9 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -292,6 +294,50 @@ public class AnalyzeOrderResource {
 		return result;
 	}
 	
+
+	@GetMapping("/analyze-orders/play/{id}")
+	@Timed
+	public void play(@PathVariable Long id) {
+
+		System.out.println(id);
+		String[] cmd = { "java -jar", 
+    			"/home/ramazan/Desktop/trafix/trafixviewer-0.0.1-SNAPSHOT.jar "+ id, 
+				};
+		try {
+			Process p = Runtime.getRuntime().exec("java -jar /home/ramazan/Desktop/trafix/trafixviewer-0.0.1-SNAPSHOT.jar "+ id);
+			//getOutput(p);
+			log.info("java"+ " script called");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error("java"+ " script called but there is errror",e);
+		}
+	}
+	
+	private List<String> getOutput(Process p) throws IOException {
+		
+		 List<String> result = new ArrayList<String>();
+		
+		BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+		BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+
+		String s = null;
+		// read the output from the command
+		System.out.println("Here is the standard output of the command:\n");
+		while ((s = stdInput.readLine()) != null) {
+			log.info(s);
+			result.add(s);
+		}
+
+		// read any errors from the attempted command
+		System.out.println("Here is the standard error of the command (if any):\n");
+		while ((s = stdError.readLine()) != null) {
+			System.out.println(s);
+		}
+		
+		return result;
+	}
 	
 	public String getFileContent(String sessionId){
 		String path = applicationProperties.getLogDirectory()+"/"+"sessionId_"+sessionId+".log";

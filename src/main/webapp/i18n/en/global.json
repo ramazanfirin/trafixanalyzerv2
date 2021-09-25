@@ -110,7 +110,8 @@
             "polygon": "Polygon Settings",
             "line": "Line Settings",
             "viewReport": "View report",
-            "close": "Close"
+            "close": "Close",
+            "play": "Play"
         },
         "detail": {
             "field": "Field",

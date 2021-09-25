@@ -111,7 +111,8 @@
             "polygon": "Polygon Ayarları",
             "line": ": Çizgi Ayarları",
             "viewReport": "Raporu Görüntüle",
-            "close": "Kapat"
+            "close": "Kapat",
+            "play": "Oynat"
         },
         "detail": {
             "field": "Alan",
