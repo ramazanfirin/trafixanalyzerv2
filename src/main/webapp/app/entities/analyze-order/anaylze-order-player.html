@@ -1,0 +1,126 @@
+<style>
+
+
+</style>
+<form name="editForm" id="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myScenarioLabel" data-translate="trafficanalzyzerv2App.analyzeOrder.home.createOrEditLabel">Create or edit a Scenario</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+    <button id="play">Play</button><button id="pause">Pause</button>
+   	<div class="form-group">
+			<div id="containerKonva"></div>
+			
+        </div>
+    </div>    
+     
+
+		<div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.close">Kapat</span>
+        </button>
+        
+    </div>		
+			
+		</form>
+
+<script>
+//Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+var cancelBtn = document.getElementById("cancelBtn");
+var createBtn = document.getElementById("createBtn");
+var selectedPolygons = [];
+var points = [];
+//var polygons = [];
+var poly = null;
+var polygonListOnScreen=[];
+var lineListOnScreen=[];
+var textListOnScreen=[];
+
+var width = window.innerWidth;
+var height = window.innerHeight;
+
+var stage = new Konva.Stage({
+	container : 'containerKonva',
+	width : 1280, // 64x13
+	height : 760, // 36x13
+});
+
+var layerImage = new Konva.Layer();
+var layer = new Konva.Layer();
+
+var darthVaderImg = new Konva.Image({
+	width : 832, // 64x13
+	height : 468, // 36x13
+	z : -1
+});
+
+var scope = angular.element(document.getElementById("editForm")).scope();
+
+// var imageObj1 = new Image();
+// if(scope.vm.analyzeOrder.scenario!=null && scope.vm.analyzeOrder.scenario.id != null)
+// 	imageObj1.src = "http://localhost:8080/api/scenarios/getScreenShoot/"+scope.vm.analyzeOrder.scenario.id;
+
+
+// imageObj1.onload = function() {
+// 	darthVaderImg.image(imageObj1);
+// 	layerImage.draw();
+// };
+
+var text = new Konva.Text({
+        text: 'Loading video...',
+        width: stage.width(),
+        height: stage.height(),
+        align: 'center',
+        verticalAlign: 'middle',
+      });
+      layer.add(text);
+
+
+var video = document.createElement('video');
+video.src =  'http://localhost:8000/day_1_min_chunk.m4v';
+var image = new Konva.Image({
+  image: video,
+  draggable: true,
+  x: 50,
+  y: 20,
+});
+layer.add(image);
+
+//layerImage.add(darthVaderImg);
+
+
+var anim = new Konva.Animation(function () {
+    // do nothing, animation just need to update the layer
+  }, layer);
+  
+video.addEventListener('loadedmetadata', function (e) {
+    text.text('Press PLAY...');
+    image.width(video.videoWidth);
+    image.height(video.videoHeight);
+  });  
+
+document.getElementById('play').addEventListener('click', function () {
+    text.destroy();
+    video.play();
+    anim.start();
+  });
+  document.getElementById('pause').addEventListener('click', function () {
+    video.pause();
+    anim.stop();
+  });
+
+//stage.add(layerImage);
+stage.add(layer);
+
+video.play();
+
+</script>
+
