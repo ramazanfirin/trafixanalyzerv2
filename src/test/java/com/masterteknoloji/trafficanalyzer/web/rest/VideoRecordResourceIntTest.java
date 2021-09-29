@@ -6,6 +6,7 @@ import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
 import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
+import com.masterteknoloji.trafficanalyzer.service.UserService;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -14,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.MessageSource;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -82,11 +84,17 @@ public class VideoRecordResourceIntTest {
     
     @Autowired
     LineRepository lineRepository;
-
+    
+    @Autowired
+    MessageSource messageSource;
+    
+    @Autowired
+    UserService userService;
+    
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final VideoRecordResource videoRecordResource = new VideoRecordResource(videoRecordRepository, analyzeOrderRepository, lineRepository);
+        final VideoRecordResource videoRecordResource = new VideoRecordResource(videoRecordRepository, analyzeOrderRepository, lineRepository, messageSource, userService);
         this.restVideoRecordMockMvc = MockMvcBuilders.standaloneSetup(videoRecordResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

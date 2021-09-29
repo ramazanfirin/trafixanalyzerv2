@@ -1,10 +1,21 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
-import com.masterteknoloji.trafficanalyzer.Trafficanalzyzerv2App;
+import static com.masterteknoloji.trafficanalyzer.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.masterteknoloji.trafficanalyzer.domain.RawRecord;
-import com.masterteknoloji.trafficanalyzer.repository.RawRecordRepository;
-import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,16 +31,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static com.masterteknoloji.trafficanalyzer.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.masterteknoloji.trafficanalyzer.Trafficanalzyzerv2App;
+import com.masterteknoloji.trafficanalyzer.domain.RawRecord;
+import com.masterteknoloji.trafficanalyzer.repository.RawRecordRepository;
+import com.masterteknoloji.trafficanalyzer.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the RawRecordResource REST controller.
@@ -100,7 +105,7 @@ public class RawRecordResourceIntTest {
     public static RawRecord createEntity(EntityManager em) {
         RawRecord rawRecord = new RawRecord()
             .sessionID(DEFAULT_SESSION_ID)
-            .time(DEFAULT_TIME)
+            //.time(DEFAULT_TIME)
             .objectType(DEFAULT_OBJECT_TYPE)
             .speed(DEFAULT_SPEED)
             .entry(DEFAULT_ENTRY)
@@ -218,7 +223,7 @@ public class RawRecordResourceIntTest {
         em.detach(updatedRawRecord);
         updatedRawRecord
             .sessionID(UPDATED_SESSION_ID)
-            .time(UPDATED_TIME)
+            //.time(UPDATED_TIME)
             .objectType(UPDATED_OBJECT_TYPE)
             .speed(UPDATED_SPEED)
             .entry(UPDATED_ENTRY)
