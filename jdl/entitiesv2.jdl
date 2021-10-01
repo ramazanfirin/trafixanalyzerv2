@@ -24,6 +24,7 @@ entity Video{
 	startDate Instant
 	endDate Instant
 	state VideoState
+	type VideoType required
 }
 
 enum VideoState {
@@ -36,6 +37,13 @@ enum VideoState {
 entity Scenario{
 	name String
 	screenShot ImageBlob
+}
+
+enum VideoType {
+  STRAIGHT_ROAD,
+  INTERSERCTION,
+  RAUNDAROUND,
+
 }
 
 entity Line{
@@ -117,6 +125,7 @@ entity AnalyzeOrderDetails{
 	videoDuration Long
 	
 	state AnalyzeState
+	showVisulationWindow Boolean
 }
 
 enum AnalyzeState {
