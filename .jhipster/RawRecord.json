@@ -7,6 +7,10 @@
             "fieldType": "String"
         },
         {
+            "fieldName": "time",
+            "fieldType": "Instant"
+        },
+        {
             "fieldName": "objectType",
             "fieldType": "String"
         },
@@ -25,10 +29,6 @@
         {
             "fieldName": "moved",
             "fieldType": "Boolean"
-        },
-        {
-            "fieldName": "time",
-            "fieldType": "String"
         }
     ],
     "changelogDate": "20210716122527",

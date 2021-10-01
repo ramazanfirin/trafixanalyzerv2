@@ -69,6 +69,9 @@ public class AnalyzeOrderDetails implements Serializable {
     @Column(name = "state")
     private AnalyzeState state;
 
+    @Column(name = "show_visulation_window")
+    private Boolean showVisulationWindow;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -246,6 +249,19 @@ public class AnalyzeOrderDetails implements Serializable {
     public void setState(AnalyzeState state) {
         this.state = state;
     }
+
+    public Boolean isShowVisulationWindow() {
+        return showVisulationWindow;
+    }
+
+    public AnalyzeOrderDetails showVisulationWindow(Boolean showVisulationWindow) {
+        this.showVisulationWindow = showVisulationWindow;
+        return this;
+    }
+
+    public void setShowVisulationWindow(Boolean showVisulationWindow) {
+        this.showVisulationWindow = showVisulationWindow;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -285,6 +301,7 @@ public class AnalyzeOrderDetails implements Serializable {
             ", processDuration=" + getProcessDuration() +
             ", videoDuration=" + getVideoDuration() +
             ", state='" + getState() + "'" +
+            ", showVisulationWindow='" + isShowVisulationWindow() + "'" +
             "}";
     }
 }

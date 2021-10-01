@@ -23,6 +23,7 @@
             "state": "State",
             "location": "Location",
             "fileSelection": "Double click for file selection..."
+            "type": "Type"
         }
     }
 }

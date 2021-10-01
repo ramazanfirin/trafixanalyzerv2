@@ -58,6 +58,10 @@
             "fieldName": "state",
             "fieldType": "AnalyzeState",
             "fieldValues": "NOT_STARTED,STARTED,ANALYZE_COMPLETED,PROCESS_COMPLETED,ERROR"
+        },
+        {
+            "fieldName": "showVisulationWindow",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20210716122530",

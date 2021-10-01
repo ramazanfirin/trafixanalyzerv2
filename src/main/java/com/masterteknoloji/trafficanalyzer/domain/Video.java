@@ -12,6 +12,8 @@ import java.util.Objects;
 
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.VideoState;
 
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.VideoType;
+
 /**
  * A Video.
  */
@@ -49,6 +51,11 @@ public class Video implements Serializable {
     
     @Column(name = "active")
     private Boolean active = true;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "jhi_type", nullable = false)
+    private VideoType type;
 
     @ManyToOne
     private Location location;
@@ -140,6 +147,19 @@ public class Video implements Serializable {
         this.state = state;
     }
 
+    public VideoType getType() {
+        return type;
+    }
+
+    public Video type(VideoType type) {
+        this.type = type;
+        return this;
+    }
+
+    public void setType(VideoType type) {
+        this.type = type;
+    }
+
     public Location getLocation() {
         return location;
     }
@@ -184,6 +204,7 @@ public class Video implements Serializable {
             ", startDate='" + getStartDate() + "'" +
             ", endDate='" + getEndDate() + "'" +
             ", state='" + getState() + "'" +
+            ", type='" + getType() + "'" +
             "}";
     }
 

@@ -23,6 +23,7 @@
                 "analyzeOrderDetails": "Analyze Order Details",
                 "fileUploadTest": "File Upload Test",
                 "analyzeOrder": "Analyze Order",
+                "video": "Video",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

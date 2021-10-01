@@ -139,6 +139,7 @@
                                 processDuration: null,
                                 videoDuration: null,
                                 state: null,
+                                showVisulationWindow: null,
                                 id: null
                             };
                         }

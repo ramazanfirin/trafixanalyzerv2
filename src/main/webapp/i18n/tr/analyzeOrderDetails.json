@@ -27,7 +27,8 @@
             "endDate": "End Date",
             "processDuration": "Process Duration",
             "videoDuration": "Video Duration",
-            "state": "State"
+            "state": "State",
+            "showVisulationWindow": "Show Visulation Window"
         }
     }
 }

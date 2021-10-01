@@ -1,0 +1,10 @@
+{
+    "trafficanalzyzerv2App": {
+        "VideoType" : {
+            "null": "",
+            "STRAIGHT_ROAD": "STRAIGHT_ROAD",
+            "INTERSERCTION": "INTERSERCTION",
+            "RAUNDAROUND": "RAUNDAROUND"
+        }
+    }
+}

@@ -21,6 +21,7 @@
                     <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="path"><span data-translate="trafficanalzyzerv2App.video.path">Path</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="name"><span data-translate="trafficanalzyzerv2App.video.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="type"><span data-translate="trafficanalzyzerv2App.video.type">Type</span> <span class="glyphicon glyphicon-sort"></span></th>
 <!--                     <th jh-sort-by="processDate"><span data-translate="trafficanalzyzerv2App.video.processDate">Process Date</span> <span class="glyphicon glyphicon-sort"></span></th> -->
                     <th jh-sort-by="startDate"><span data-translate="trafficanalzyzerv2App.video.startDate">Start Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="endDate"><span data-translate="trafficanalzyzerv2App.video.endDate">End Date</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -35,6 +36,7 @@
                     <td>{{video.path}}</td>
                     <td>{{video.name}}</td>
 <!--                     <td>{{video.processDate | date:'medium'}}</td> -->
+ 					<td data-translate="{{'trafficanalzyzerv2App.VideoType.' + video.type}}">{{video.type}}</td>
                     <td>{{video.startDate | date:'medium'}}</td>
                     <td>{{video.endDate | date:'medium'}}</td>
 <!--                     <td data-translate="{{'trafficanalzyzerv2App.VideoState.' + video.state}}">{{video.state}}</td> -->

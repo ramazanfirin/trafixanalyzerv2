@@ -84,6 +84,21 @@
 <!--             </select> -->
 <!--         </div> -->
 
+		<div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.video.type" for="field_type">Type</label>
+            <select class="form-control" name="type" ng-model="vm.video.type" id="field_type" required>
+                <option value="STRAIGHT_ROAD" data-translate="trafficanalzyzerv2App.VideoType.STRAIGHT_ROAD">STRAIGHT_ROAD</option>
+                <option value="INTERSERCTION" data-translate="trafficanalzyzerv2App.VideoType.INTERSERCTION">INTERSERCTION</option>
+                <option value="RAUNDAROUND" data-translate="trafficanalzyzerv2App.VideoType.RAUNDAROUND">RAUNDAROUND</option>
+            </select>
+            <div ng-show="editForm.type.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.type.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
         <div class="form-group">
             <label data-translate="trafficanalzyzerv2App.video.location" for="field_location">Location</label>
             <select class="form-control" id="field_location" name="location" ng-model="vm.video.location" ng-options="location as location.id for location in vm.locations track by location.id">

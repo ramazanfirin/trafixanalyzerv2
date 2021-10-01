@@ -39,6 +39,14 @@
             "fieldName": "state",
             "fieldType": "VideoState",
             "fieldValues": "NOT_PROCESSED,STARTED,PROCESSED,ERROR"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "VideoType",
+            "fieldValues": "STRAIGHT_ROAD,INTERSERCTION,RAUNDAROUND",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20210707180524",

@@ -42,7 +42,7 @@ entity Scenario{
 enum VideoType {
   STRAIGHT_ROAD,
   INTERSERCTION,
-  RAUNDAROUND,
+  RAUNDAROUND
 
 }
 
