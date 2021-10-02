@@ -48,6 +48,7 @@
                     $translatePartialLoader.addPart('video');
                     $translatePartialLoader.addPart('videoState');
                     $translatePartialLoader.addPart('global');
+					$translatePartialLoader.addPart('videoType');
                     return $translate.refresh();
                 }]
             }

@@ -54,7 +54,7 @@ public class Video implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "jhi_type", nullable = false)
+    @Column(name = "jhi_type")
     private VideoType type;
 
     @ManyToOne

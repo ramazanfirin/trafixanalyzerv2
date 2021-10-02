@@ -28,7 +28,7 @@
             "processDuration": "Process Duration",
             "videoDuration": "Video Duration",
             "state": "State",
-            "showVisulationWindow": "Show Visulation Window"
+            "showVisulationWindow": "Analiz Penceresini Göster(Bu seçim, analiz hızını yavaşlatır)"
         }
     }
 }

@@ -83,7 +83,7 @@
 		<div class="form-group">
             <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrderDetails.showVisulationWindow" for="field_showVisulationWindow">Show Visulation Window</label>
                 <input type="checkbox" name="showVisulationWindow" id="field_showVisulationWindow"
-                          ng-model="vm.analyzeOrderDetails.showVisulationWindow"/>
+                          ng-model="vm.analyzeOrder.showVisulationWindow"/>
         </div>
     </div>
     <div class="modal-footer">
@@ -323,9 +323,9 @@ function addPoint(pointx, pointy) {
 	poly.attrs.points.push(pointx);
 	poly.attrs.points.push(pointy);
 
-	if (points.length == 2) {
-		createText(pointx,pointy,poly.attrs.id);
-	}
+// 	if (points.length == 2) {
+// 		createText(pointx,pointy,poly.attrs.id);
+// 	}
 
 	layer.draw();
 

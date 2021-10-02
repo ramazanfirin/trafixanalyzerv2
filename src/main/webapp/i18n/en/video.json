@@ -22,7 +22,7 @@
             "endDate": "End Date",
             "state": "State",
             "location": "Location",
-            "fileSelection": "Double click for file selection..."
+            "fileSelection": "Double click for file selection...",
             "type": "Type"
         }
     }

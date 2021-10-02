@@ -38,6 +38,9 @@ public class AnalyzeOrder implements Serializable {
     @Column(name = "active")
     private Boolean active = true;
 
+    @Column(name = "show_visulation_window")
+    private Boolean showVisulationWindow  = false;
+    
     @ManyToOne
     private Video video;
 
@@ -171,5 +174,13 @@ public class AnalyzeOrder implements Serializable {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public Boolean getShowVisulationWindow() {
+		return showVisulationWindow;
+	}
+
+	public void setShowVisulationWindow(Boolean showVisulationWindow) {
+		this.showVisulationWindow = showVisulationWindow;
 	}
 }

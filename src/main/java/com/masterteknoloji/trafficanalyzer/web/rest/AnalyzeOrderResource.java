@@ -144,7 +144,7 @@ public class AnalyzeOrderResource {
 		List<Line> lines = lineRepository.getLineListByScenarioId(result.getScenario().getId());
 		List<Direction> directions = directionRepository.getDirectionListByScenarioId(result.getScenario().getId());
 		List<Polygon> speedPolygons = polygonRepository.getPolygonListByScenarioId(result.getScenario().getId(),PolygonType.SPEED);
-		AnalyzeOrderDetails analyzeOrderDetails = Util.prepareAnalyzeOrderDetails(objectMapper,result.getId().toString(), analyzeOrder.getVideo().getPath(), lines,directions, speedPolygons);
+		AnalyzeOrderDetails analyzeOrderDetails = Util.prepareAnalyzeOrderDetails(objectMapper,result.getId().toString(), analyzeOrder.getVideo().getPath(), lines,directions, speedPolygons,result.getShowVisulationWindow(),result.getVideo().getType().toString());
 		analyzeOrderDetailsRepository.save(analyzeOrderDetails);
 
 		result.setOrderDetails(analyzeOrderDetails);
@@ -362,7 +362,7 @@ public class AnalyzeOrderResource {
 	}
 	
 	
-	@Scheduled(fixedRate = 60000)
+	//@Scheduled(fixedRate = 60000)
 	public void checkUnprocessedOrders() throws ParseException {
 
 		log.info("checkUnprocessedOrders" + " started");

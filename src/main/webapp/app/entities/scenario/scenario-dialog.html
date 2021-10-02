@@ -52,7 +52,7 @@
 	        	<tbody></tbody>
                 <tr ng-repeat="polygon in vm.polygons">
                 	<td>{{polygon.id}}</td>
-                	<td>{{polygon.name}}</td>
+                	<td>{{polygon.id}}</td>
                 	<td>
 <!--                 	<button type="submit" ng-click="vm.deletePolygon(polygon.id)"                                    -->
 <!--                                     class="btn btn-danger btn-sm"> -->
@@ -164,7 +164,7 @@ stage.add(layer);
 	
 		for(var i=0;i<scope.vm.polygons.length;i++){
 			var polyFromDB = scope.vm.polygons[i];
-			poly = createPolygon(polyFromDB.name);
+			poly = createPolygon(polyFromDB.id);
 			tempId = tempId + 1;
 			
 			var allCoords = polyFromDB.points.split(";");
@@ -176,11 +176,22 @@ stage.add(layer);
 				
 				console.log(pointx +" "+pointy);	
 			}
+			writeLabelToCenter(poly);
 			points=[];
 			;
 		}
 		poly = null;
 	});
+	
+	function writeLabelToCenter(poly){
+		var box = poly.getClientRect();
+		console.log("box "+box.width+","+box.heigth);
+		var x = box.x + box.width / 2;
+		console.log("x "+x);
+		console.log("y "+y);
+		var y = box.y + box.height / 2;
+		createText(x,y,poly.attrs.id);
+	}
 	
 	console.log(scope);
 	function addPoint(pointx, pointy) {
@@ -190,9 +201,9 @@ stage.add(layer);
 		poly.attrs.points.push(pointx);
 		poly.attrs.points.push(pointy);
 
-		if (points.length == 2) {
-			createText(pointx,pointy,poly.attrs.id);
-		}
+// 		if (points.length == 2) {
+// 			createText(pointx,pointy,poly.attrs.id);
+// 		}
 
 		layer.draw();
 

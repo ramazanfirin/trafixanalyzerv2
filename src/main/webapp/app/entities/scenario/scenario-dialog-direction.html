@@ -293,6 +293,7 @@ stage.add(layer);
 			console.log(totalx+ " " +totaly+ " "+line.name);
 			console.log(centerx+ " " +centery+ " "+line.name);
 			
+			//drawDirectionArrow(line);
 			points=[];
 			
 		}
@@ -302,6 +303,37 @@ stage.add(layer);
 		
 		poly = null;
 	});
+	
+	function drawDirectionArrow(line){
+		var poly1 = getPolygonById(line.startPolygon.id);
+		var poly2 = getPolygonById(line.endPolygon.id);
+		
+		var box1 = poly1.getClientRect();
+		var box2 = poly2.getClientRect();
+		
+		var arrow = new Konva.Arrow({
+	        points: [box1.x + box1.width / 2, box1.y + box1.height / 2, box2.x + box2.width / 2, box2.y + box2.height / 2],
+	        //pointerLength: 20,
+	        //pointerWidth: 20,
+	        fill: 'black',
+	        stroke: 'black',
+	        strokeWidth: 2,
+	      });
+		//arrowListOnScreen.push(arrow);
+		layer.add(arrow);
+	}
+	
+	function getPolygonById(polygonId){
+		var result ;
+		for(var i=0;i<polygonListOnScreen.length;i++){
+			console.log("disabledPolygon:polygonListOnScreen "+polygonListOnScreen[i].attrs.id)
+			if(polygonListOnScreen[i].attrs.id==polygonId){
+					result = polygonListOnScreen[i];
+			}
+		}	
+		return result;
+	}
+
 	
 	function disabledPolygon(polygonId){
 		console.log("disabledPolygon:polygonId "+polygonId)

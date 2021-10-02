@@ -11,6 +11,8 @@ public class RegionVM {
 	String label;
 	
 	List<PointsVM> points = new ArrayList<PointsVM>();
+	
+	String type;
 
 	public String getLabel() {
 		return label;
@@ -26,6 +28,14 @@ public class RegionVM {
 
 	public void setPoints(List<PointsVM> points) {
 		this.points = points;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	

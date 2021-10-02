@@ -16,6 +16,10 @@ public class AnalyzeOrderDetailVM {
 	DirectionVM directions = new DirectionVM();
 	
 	List<SpeedVM> speed = new ArrayList<SpeedVM>();
+	
+	Boolean showVisulationWindow;
+	
+	String videoType;
 
 	public String getSessionId() {
 		return sessionId;
@@ -63,6 +67,22 @@ public class AnalyzeOrderDetailVM {
 
 	public void setClasses(VehicleTypeVM classes) {
 		this.classes = classes;
+	}
+
+	public Boolean getShowVisulationWindow() {
+		return showVisulationWindow;
+	}
+
+	public void setShowVisulationWindow(Boolean showVisulationWindow) {
+		this.showVisulationWindow = showVisulationWindow;
+	}
+
+	public String getVideoType() {
+		return videoType;
+	}
+
+	public void setVideoType(String videoType) {
+		this.videoType = videoType;
 	}
 
 		

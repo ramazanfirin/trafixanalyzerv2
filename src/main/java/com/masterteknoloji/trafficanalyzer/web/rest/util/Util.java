@@ -24,6 +24,7 @@ import com.masterteknoloji.trafficanalyzer.domain.Direction;
 import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.PolygonDirectionType;
 import com.masterteknoloji.trafficanalyzer.service.util.RandomUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.AnalyzeOrderDetailVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.ConnectionVM;
@@ -159,7 +160,8 @@ public class Util {
 		return  baos;
 	}
 	
-	public static AnalyzeOrderDetails prepareAnalyzeOrderDetails(ObjectMapper objectMapper,String sessionId,String videoPath,List<Line> lineList,List<Direction> directionList,List<Polygon> speedPolygonList) throws Exception {
+	public static AnalyzeOrderDetails prepareAnalyzeOrderDetails(ObjectMapper objectMapper,String sessionId,String videoPath,List<Line> lineList,List<Direction> directionList,
+			List<Polygon> speedPolygonList,Boolean showVisulationWindow,String videoType) throws Exception {
 		AnalyzeOrderDetails result = new AnalyzeOrderDetails();
 		
 		VehicleTypeVM vehicleTypeVM = new VehicleTypeVM();
@@ -176,14 +178,15 @@ public class Util {
 		result.setSessionId(sessionId);
 		result.setVideoPath(videoPath);
 		result.setState(AnalyzeState.NOT_STARTED);
+		result.setShowVisulationWindow(showVisulationWindow);
 		
-		AnalyzeOrderDetailVM analyzeOrderDetailVM = prepareAllData(vehicleTypeVM, directionVM, speedVMs, videoPath, sessionId);
+		AnalyzeOrderDetailVM analyzeOrderDetailVM = prepareAllData(vehicleTypeVM, directionVM, speedVMs, videoPath, sessionId,showVisulationWindow,videoType);
 		result.setJsonData(objectMapper.writeValueAsString(analyzeOrderDetailVM));
 		
 		return result;
 	}
 	
-	public static AnalyzeOrderDetailVM prepareAllData(VehicleTypeVM vehicleTypeVM,DirectionVM directionVM,List<SpeedVM> speed,String path,String sessionId) {
+	public static AnalyzeOrderDetailVM prepareAllData(VehicleTypeVM vehicleTypeVM,DirectionVM directionVM,List<SpeedVM> speed,String path,String sessionId,Boolean showVisulationWindow,String videoType) {
 		AnalyzeOrderDetailVM analyzeOrderDetailVM = new AnalyzeOrderDetailVM();
 		analyzeOrderDetailVM.setCount(true);
 		analyzeOrderDetailVM.setDirections(directionVM);
@@ -191,21 +194,46 @@ public class Util {
 		analyzeOrderDetailVM.setSessionId(sessionId);
 		analyzeOrderDetailVM.setSpeed(speed);
 		analyzeOrderDetailVM.setClasses(vehicleTypeVM);
+		analyzeOrderDetailVM.setShowVisulationWindow(showVisulationWindow);
+		analyzeOrderDetailVM.setVideoType(videoType);
 		
 		return analyzeOrderDetailVM;
+	}
+	
+	public static void addToRegionsList(DirectionVM directionVM,RegionVM regionVM) {
+		for (Iterator iterator = directionVM.getRegions().iterator(); iterator.hasNext();) {
+			RegionVM type = (RegionVM) iterator.next();
+			if(type.getLabel().equals(regionVM.getLabel()))
+				return;
+		}
+		
+		directionVM.getRegions().add(regionVM);
 	}
 	
 	public static DirectionVM prepareDirections(ObjectMapper objectMapper,List<Line> lineList,List<Direction> directionList) throws Exception {
 		DirectionVM directionVM = new DirectionVM();
 		
+		for (Iterator iterator = directionList.iterator(); iterator.hasNext();) {
+			Direction direction = (Direction) iterator.next();
+			
+			RegionVM startRegionVM = prepareRegions(direction.getStartLine(). getStartPolygon(),null,PolygonDirectionType.ENTRY.toString());
+			addToRegionsList(directionVM,startRegionVM);
+			
+			RegionVM endRegionVM = prepareRegions(direction.getEndLine(). getEndPolygon(),null,PolygonDirectionType.EXIT.toString());
+			addToRegionsList(directionVM,endRegionVM);
+			
+			directionVM.getConnections().add(prepareConnections(direction));
+		}
 		
 		for (Iterator iterator = lineList.iterator(); iterator.hasNext();) {
 			Line line = (Line) iterator.next();
-			
-			RegionVM startRegionVM = prepareRegions(line.getStartPolygon(),null);
+		    if(isUsedInDirections(directionList,line))
+		    	continue;
+		    
+			RegionVM startRegionVM = prepareRegions(line.getStartPolygon(),null,PolygonDirectionType.ENTRY.toString());
 			directionVM.getRegions().add(startRegionVM);
 			
-			RegionVM endRegionVM = prepareRegions(line.getEndPolygon(),null);
+			RegionVM endRegionVM = prepareRegions(line.getEndPolygon(),null,PolygonDirectionType.EXIT.toString());
 			directionVM.getRegions().add(endRegionVM);
 			
 			directionVM.getConnections().add(prepareConnections(line));
@@ -213,27 +241,20 @@ public class Util {
 		}
 		
 		
-		for (Iterator iterator = directionList.iterator(); iterator.hasNext();) {
-			Direction direction = (Direction) iterator.next();
-			
-//			ConnectionVM connectionVM = new ConnectionVM();
-//			
-//			String startRegionRandomId = RandomUtil.generateResetKey();
-//			RegionVM startRegionVM = prepareRegions(direction.getStartLine().getStartPolygon(),startRegionRandomId);
-//			directionVM.getRegions().add(startRegionVM);
-//			connectionVM.setEntry(direction.getStartLine().getStartPolygon().getId().toString()+"-"+startRegionRandomId);
-//			
-//			String endRegionRandomId = RandomUtil.generateResetKey();
-//			RegionVM endRegionVM = prepareRegions(direction.getEndLine().getEndPolygon(),endRegionRandomId);
-//			directionVM.getRegions().add(endRegionVM);
-//			connectionVM.setExit(direction.getEndLine().getEndPolygon().getId().toString()+"-"+endRegionRandomId);
-//			
-//			directionVM.getConnections().add(connectionVM);
-			directionVM.getConnections().add(prepareConnections(direction));
-		}
+		
 		
 		
 		return directionVM;
+	}
+	
+	public static Boolean isUsedInDirections(List<Direction> directionList,Line line) {
+		for (Iterator iterator = directionList.iterator(); iterator.hasNext();) {
+			Direction direction = (Direction) iterator.next();
+			if(direction.getStartLine().getId().longValue() == line.getId() || direction.getEndLine().getId().longValue() == line.getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public static List<SpeedVM> prepareSpeeds(ObjectMapper objectMapper,List<Polygon> speedPolygonList) throws Exception {
@@ -258,7 +279,7 @@ public class Util {
 		return result;
 	}
 	
-	public static RegionVM prepareRegions(Polygon polygon,String randomId) {
+	public static RegionVM prepareRegions(Polygon polygon,String randomId,String type) {
 		RegionVM regionVM = new RegionVM();
     	if(randomId == null)
     		regionVM.setLabel(polygon.getId().toString());
@@ -272,6 +293,7 @@ public class Util {
 			regionVM.getPoints().add(preparePoints((new Double(point.getX())).longValue(), (new Double(point.getY())).longValue()));
 		}
     	
+    	regionVM.setType(type);
     	return regionVM;
 	}
 	
