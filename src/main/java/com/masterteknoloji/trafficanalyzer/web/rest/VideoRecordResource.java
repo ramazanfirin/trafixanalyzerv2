@@ -40,9 +40,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
+import com.masterteknoloji.trafficanalyzer.domain.Direction;
 import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.VideoType;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
+import com.masterteknoloji.trafficanalyzer.repository.DirectionRepository;
 import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
 import com.masterteknoloji.trafficanalyzer.service.UserService;
@@ -74,18 +77,22 @@ public class VideoRecordResource {
     
     private final AnalyzeOrderRepository analyzeOrderRepository;
     
+    private final DirectionRepository directionRepository;
+    
     private final LineRepository lineRepository;
     
     private final MessageSource messageSource;
     
     private final UserService userService;
 
-    public VideoRecordResource(VideoRecordRepository videoRecordRepository,AnalyzeOrderRepository analyzeOrderRepository,LineRepository lineRepository,MessageSource messageSource,UserService userService) {
+    public VideoRecordResource(VideoRecordRepository videoRecordRepository,AnalyzeOrderRepository analyzeOrderRepository,LineRepository lineRepository,
+    		MessageSource messageSource,UserService userService, DirectionRepository directionRepository) {
         this.videoRecordRepository = videoRecordRepository;
         this.analyzeOrderRepository = analyzeOrderRepository;
         this.lineRepository = lineRepository;
         this.messageSource = messageSource;
         this.userService = userService;
+        this.directionRepository = directionRepository;
     }
 
     /**
@@ -178,8 +185,16 @@ public class VideoRecordResource {
     public List<VideoRecordSummaryVM> getResultOfAnalyzeOrder(@PathVariable Long id) {
     	
     	List<VideoRecordSummaryVM> result = new ArrayList<VideoRecordSummaryVM>();
+    	AnalyzeOrder analyzeOrder = analyzeOrderRepository.findOne(id);
+    	Iterable<Map<String,Object>> videoRecords = null;
     	
-    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getResultOfOrderReport(id);
+    	if(analyzeOrder.getVideo().getType()==VideoType.STRAIGHT_ROAD) {
+    		videoRecords = videoRecordRepository.getResultOfOrderReport(id);
+    	}
+    	else {
+    		videoRecords = videoRecordRepository.getResultOfOrderReportForDirection(id);
+     	}
+    	
     	for (Map<String, Object> map : videoRecords) {
     		VideoRecordSummaryVM videoRecordSummaryVM = new VideoRecordSummaryVM();
     		videoRecordSummaryVM.setCount((BigInteger)map.get("counts"));
@@ -195,6 +210,18 @@ public class VideoRecordResource {
     @Timed
     public List<DirectionReportSummary> getResultOfDirectionReport(@PathVariable Long id) {
     	
+    	AnalyzeOrder analyzeOrder = analyzeOrderRepository.findOne(id);
+    	if(analyzeOrder.getVideo().getType()==VideoType.STRAIGHT_ROAD) {
+    		return getResultOfDirectionReportForStraigthRoad(id);
+    	}
+    	else {
+     		return getResultOfDirectionReportForIntersection(id);
+     	   
+    	}
+    	
+    }
+
+    public List<DirectionReportSummary> getResultOfDirectionReportForStraigthRoad(@PathVariable Long id){
     	List<DirectionReportSummary> result = new ArrayList<DirectionReportSummary>();
     	
     	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getDirectionReportData(id);
@@ -217,7 +244,45 @@ public class VideoRecordResource {
 		}
     	return result;
     }
-
+    
+    public List<DirectionReportSummary> getResultOfDirectionReportForIntersection(@PathVariable Long id){
+    	List<DirectionReportSummary> result = new ArrayList<DirectionReportSummary>();
+    	
+    	Iterable<Map<String,Object>> startLinesCrossCount = videoRecordRepository.getStartLineCrossCountForDirection(id);
+    	Iterable<Map<String,Object>> endLinesCrossCount= videoRecordRepository.getEndLineCrossCountForDirection(id);
+    	Iterable<Map<String,Object>> directionCrossCount=videoRecordRepository.getDirectionCrossCountForDirection(id);
+    	
+    	for (Map<String, Object> map : directionCrossCount) {
+    		DirectionReportSummary item = new DirectionReportSummary();
+    		Long count = ((BigInteger)map.get("count")).longValue();
+    		item.setCount(count);
+    		item.setDirectionName((String)map.get("name"));
+    		item.setStartLineName((String)map.get("startlinename"));
+    		item.setEndLineName((String)map.get("endlinename"));
+    		
+    		Long startLineCount = getCrossingCountValue(startLinesCrossCount,map.get("startlinename").toString()).longValue();
+    		Long endLineCount = getCrossingCountValue(endLinesCrossCount,map.get("endlinename").toString()).longValue();
+    		item.setStartLineCount(startLineCount);
+    		item.setEndLineCount(endLineCount);
+    		
+    		item.setStartLineRate(Util.calculatePertencile(startLineCount, count));
+    		item.setEndLineRate(Util.calculatePertencile(endLineCount, count));
+    		
+    		result.add(item);
+		}
+    	
+    	return result;
+    }
+    
+    public BigInteger getCrossingCountValue(Iterable<Map<String,Object>> crossCountMap,String lineName) {
+    	for (Map<String, Object> map : crossCountMap) {
+    		if(map.get("linename").toString().equals(lineName)) {
+    			return (BigInteger) map.get("count");
+    		}
+    	}
+    	return new BigInteger("0");
+    }
+    
     @GetMapping("/video-records/getResultOfAnalyzeOrderAndLineId/{id}/{lineId}")
     @Timed
     public List<VideoRecordSummaryVM> getResultOfAnalyzeOrder(@PathVariable Long id,@PathVariable Long lineId) {
@@ -225,6 +290,22 @@ public class VideoRecordResource {
     	List<VideoRecordSummaryVM> result = new ArrayList<VideoRecordSummaryVM>();
     	
     	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getResultOfOrderReport(id,lineId);
+    	for (Map<String, Object> map : videoRecords) {
+    		VideoRecordSummaryVM videoRecordSummaryVM = new VideoRecordSummaryVM();
+    		videoRecordSummaryVM.setCount((BigInteger)map.get("counts"));
+    		videoRecordSummaryVM.setDate(map.get("grouptime"));
+    		videoRecordSummaryVM.setDirectionName((String)map.get("line"));
+    		videoRecordSummaryVM.setType((String)map.get("type"));
+    		result.add(videoRecordSummaryVM);
+		}
+    	return result;
+    }
+    
+    public List<VideoRecordSummaryVM> getResultOfAnalyzeOrderForDirection(@PathVariable Long id,@PathVariable Long direcitonId) {
+    	
+    	List<VideoRecordSummaryVM> result = new ArrayList<VideoRecordSummaryVM>();
+    	
+    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getResultOfOrderReportForDirection(id,direcitonId);
     	for (Map<String, Object> map : videoRecords) {
     		VideoRecordSummaryVM videoRecordSummaryVM = new VideoRecordSummaryVM();
     		videoRecordSummaryVM.setCount((BigInteger)map.get("counts"));
@@ -266,13 +347,25 @@ public class VideoRecordResource {
         XSSFSheet allSheet = excelExporter.createSheet(workbook, messageSource.getMessage("excel.all", null,locale));
         excelExporter.writeData(workbook, allSheet, result);
         
-        List<Line> lines = lineRepository.getLineListByScenarioId(analyzeOrder.getScenario().getId());
-        for (Iterator iterator = lines.iterator(); iterator.hasNext();) {
-			Line line = (Line) iterator.next();
-			List<VideoRecordSummaryVM> tempList = getResultOfAnalyzeOrder(id, line.getId());
-			XSSFSheet sheetTemp = excelExporter.createSheet(workbook, line.getName());
-			excelExporter.writeData(workbook, sheetTemp, tempList);
-		}
+        if(analyzeOrder.getVideo().getType()==VideoType.STRAIGHT_ROAD) {
+    		List<Line> lines = lineRepository.getLineListByScenarioId(analyzeOrder.getScenario().getId());
+            for (Iterator iterator = lines.iterator(); iterator.hasNext();) {
+    			Line line = (Line) iterator.next();
+    			List<VideoRecordSummaryVM> tempList = getResultOfAnalyzeOrder(id, line.getId());
+    			XSSFSheet sheetTemp = excelExporter.createSheet(workbook, line.getName());
+    			excelExporter.writeData(workbook, sheetTemp, tempList);
+    		}
+    	}
+    	else {
+    		List<Direction> directions = directionRepository.getDirectionListByScenarioId(analyzeOrder.getScenario().getId());
+            for (Iterator iterator = directions.iterator(); iterator.hasNext();) {
+            	Direction direction = (Direction) iterator.next();
+    			List<VideoRecordSummaryVM> tempList = getResultOfAnalyzeOrderForDirection(id, direction.getId());
+    			XSSFSheet sheetTemp = excelExporter.createSheet(workbook, direction.getName());
+    			excelExporter.writeData(workbook, sheetTemp, tempList);
+    		}
+     	   
+    	}
         
         XSSFSheet yon = excelExporter.createSheetDirectionReport(workbook, messageSource.getMessage("excel.direction", null,locale));
         List<DirectionReportSummary> directionReportSummaries = getResultOfDirectionReport(id);
@@ -288,10 +381,19 @@ public class VideoRecordResource {
     	
     	List<ClassificationResultVM> result = new ArrayList<ClassificationResultVM>();
     	
-    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getVehicleTypeGroups(id);
+    	AnalyzeOrder analyzeOrder = analyzeOrderRepository.findOne(id);
+    	Iterable<Map<String,Object>> videoRecords = null;
+    	
+    	if(analyzeOrder.getVideo().getType()==VideoType.STRAIGHT_ROAD) {
+    		videoRecords = videoRecordRepository.getVehicleTypeGroups(id);
+    	}
+    	else {
+    		videoRecords = videoRecordRepository.getVehicleTypeGroupsForDirection(id);
+    	}
+    	
     	for (Map<String, Object> map : videoRecords) {
     		
-    		ClassificationResultVM classificationResultVM = getclassificationResultByName(result, (String)map.get("linename"));
+    		ClassificationResultVM classificationResultVM = getclassificationResultByName(result, (String)map.get("name"));
     		
     		ClassificationResultDetailsVM itemVM = new ClassificationResultDetailsVM();
     		itemVM.setType((String)map.get("vehicle_type"));

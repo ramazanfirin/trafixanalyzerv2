@@ -362,7 +362,7 @@ public class AnalyzeOrderResource {
 	}
 	
 	
-	//@Scheduled(fixedRate = 60000)
+	@Scheduled(fixedRate = 60000)
 	public void checkUnprocessedOrders() throws ParseException {
 
 		log.info("checkUnprocessedOrders" + " started");
