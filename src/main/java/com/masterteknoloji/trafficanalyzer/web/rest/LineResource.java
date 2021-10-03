@@ -34,6 +34,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
 import com.masterteknoloji.trafficanalyzer.domain.Scenario;
+import com.masterteknoloji.trafficanalyzer.domain.enumeration.VideoType;
+import com.masterteknoloji.trafficanalyzer.repository.DirectionRepository;
 import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
 import com.masterteknoloji.trafficanalyzer.repository.ScenarioRepository;
@@ -63,10 +65,13 @@ public class LineResource {
     
     private final PolygonRepository polygonRepository;
     
-    public LineResource(LineRepository lineRepository, ScenarioRepository scenarioRepository, PolygonRepository polygonRepository ) {
+    private final DirectionRepository directionRepository;
+    
+    public LineResource(LineRepository lineRepository, ScenarioRepository scenarioRepository, PolygonRepository polygonRepository,  DirectionRepository directionRepository ) {
         this.lineRepository = lineRepository;
         this.scenarioRepository = scenarioRepository;
         this.polygonRepository = polygonRepository;
+        this.directionRepository = directionRepository;
     }
 
     /**
@@ -174,7 +179,9 @@ public class LineResource {
         line.setEndPolygon(endPolygon);
         line.setName(name);
         
-        List<Point> calculatedPoints = calculateNeigberhood(startPolygon, endPolygon);
+        //List<Point> calculatedPoints = calculateNeigberhood(startPolygon, endPolygon);
+        List<Point> calculatedPoints = calculateNeigberhoodv2(startPolygon, endPolygon);
+        
         if(calculatedPoints.size()==0)
         	throw new RuntimeException("komşu polygonlar bulunamadı");
                 
@@ -258,12 +265,49 @@ public class LineResource {
 
 	}
     
+	public List<Point> calculateNeigberhoodv2(Polygon p1, Polygon p2) {
+		List<Point> neigburPOints = new ArrayList<Point>();
+
+		String[] p1Points = p1.getPoints().split(";");
+		String[] p2Points = p2.getPoints().split(";");
+
+		for (int i = 0; i < p1Points.length; i++) {
+			String[] p1Point = p1Points[i].split(",");
+
+			int x1 = Integer.parseInt(p1Point[0]);
+			int y1 = Integer.parseInt(p1Point[1]);
+			neigburPOints.add(new Point(x1, y1));
+		}
+
+		for (int i = 0; i < p1Points.length; i++) {
+			String[] p2Point = p2Points[i].split(",");
+
+			int x1 = Integer.parseInt(p2Point[0]);
+			int y1 = Integer.parseInt(p2Point[1]);
+			neigburPOints.add(new Point(x1, y1));
+		}	
+			
+		return neigburPOints;
+
+	}
+	
 	@GetMapping("/lines/getLineSummaryListByScenarioId/{id}")
     @Timed
     public List<LineSummaryVM> getLineSummaryListByScenarioId(@PathVariable Long id) {
         log.debug("REST request to get Polygon : {}", id);
         List<LineSummaryVM> result = new ArrayList<LineSummaryVM>(); 
-        List<Line> lines = lineRepository.getLineListByScenarioId(id);
+        
+        Scenario scenario = scenarioRepository.findOne(id);
+        
+        List<Line> lines = null;
+        if(scenario.getVideo().getType()==VideoType.STRAIGHT_ROAD) {
+    		lines = lineRepository.getLineListByScenarioId(id);
+    	}
+    	else {
+    		lines = directionRepository.getDirectionListByScenarioIdForDirection(id);
+     	   
+    	}
+        
         for (Iterator iterator = lines.iterator(); iterator.hasNext();) {
 			Line line = (Line) iterator.next();
 			LineSummaryVM item = new LineSummaryVM();

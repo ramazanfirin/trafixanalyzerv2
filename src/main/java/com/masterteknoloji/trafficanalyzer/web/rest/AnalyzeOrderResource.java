@@ -479,7 +479,7 @@ public class AnalyzeOrderResource {
 		List<Direction> directions = directionRepository.findAll();
 		for (Iterator iterator = directions.iterator(); iterator.hasNext();) {
 			Direction direction = (Direction) iterator.next();
-			result.put(direction.getStartLine().getStartPolygon().getId() + "-" + direction.getEndLine().getEndPolygon().getId(), direction);
+			result.put(direction.getStartLine().getEndPolygon().getId() + "-" + direction.getEndLine().getStartPolygon().getId(), direction);
 		}
 
 		return result;
@@ -489,7 +489,9 @@ public class AnalyzeOrderResource {
 			throws ParseException {
 		VideoRecord videoRecord = new VideoRecord();
 		videoRecord.setAnalyze(analyzeOrder);
-		videoRecord.setInsertDate(Instant.now());
+		
+		videoRecord.setInsertDate(prepareInsertDate(rawRecord.getTime()));
+		
 		videoRecord.setSpeed(rawRecord.getSpeed());
 		videoRecord.setVehicleType(rawRecord.getObjectType());
 		videoRecord.setLine(line);
@@ -500,8 +502,15 @@ public class AnalyzeOrderResource {
 	}
 
 	private Instant prepareInsertDate(String dateValue) throws ParseException {
-		Date date = sdf.parse("2000-01-01 0" + dateValue);
-		return date.toInstant();
+		try {
+			String temp = dateValue.substring(0, 12);
+			Date date = sdf.parse("2000-01-01 " + temp);
+			return date.toInstant();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return Instant.now();
+		}
 	}
 
 	private Long prepareDuration(String dateValue) {

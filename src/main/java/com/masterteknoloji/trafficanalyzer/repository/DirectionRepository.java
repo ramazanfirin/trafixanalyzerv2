@@ -20,4 +20,6 @@ public interface DirectionRepository extends JpaRepository<Direction, Long> {
 	@Query("select v from Direction v where v.scenario.id = ?1")
 	List<Direction> getDirectionListByScenarioId(Long id);
 
+	@Query("select DISTINCT(v.endLine) from Direction v where v.scenario.id = ?1")
+	List<Line> getDirectionListByScenarioIdForDirection(Long id);
 }

@@ -216,10 +216,10 @@ public class Util {
 		for (Iterator iterator = directionList.iterator(); iterator.hasNext();) {
 			Direction direction = (Direction) iterator.next();
 			
-			RegionVM startRegionVM = prepareRegions(direction.getStartLine(). getStartPolygon(),null,PolygonDirectionType.ENTRY.toString());
+			RegionVM startRegionVM = prepareRegions(direction.getStartLine(). getEndPolygon(),null,PolygonDirectionType.ENTRY.toString());
 			addToRegionsList(directionVM,startRegionVM);
 			
-			RegionVM endRegionVM = prepareRegions(direction.getEndLine(). getEndPolygon(),null,PolygonDirectionType.EXIT.toString());
+			RegionVM endRegionVM = prepareRegions(direction.getEndLine(). getStartPolygon(),null,PolygonDirectionType.EXIT.toString());
 			addToRegionsList(directionVM,endRegionVM);
 			
 			directionVM.getConnections().add(prepareConnections(direction));
@@ -307,8 +307,8 @@ public class Util {
 	
 	public static ConnectionVM prepareConnections(Direction direction) {
 		ConnectionVM connectionVM = new ConnectionVM();
-		connectionVM.setEntry(direction.getStartLine().getStartPolygon().getId().toString());
-		connectionVM.setExit(direction.getEndLine().getEndPolygon().getId().toString());
+		connectionVM.setEntry(direction.getStartLine().getEndPolygon().getId().toString());
+		connectionVM.setExit(direction.getEndLine().getStartPolygon().getId().toString());
     	
 		return connectionVM;
 	}

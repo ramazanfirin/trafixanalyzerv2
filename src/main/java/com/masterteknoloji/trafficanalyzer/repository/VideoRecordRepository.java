@@ -28,7 +28,7 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 	  		+ "INNER JOIN line as line ON i.line_id=line.id\n"
 	  		+ "where i.analyze_id= :analyzeOrderId\n"
 	  		+ "GROUP BY GroupTime,vehicle_type,line.name "
-	  		+ "order by line.name",nativeQuery=true)
+	  		+ "order by GroupTime",nativeQuery=true)
 		public  Iterable<Map<String,Object>> getResultOfOrderReport(@Param("analyzeOrderId") Long analyzeOrderId);
 	  
 	  @Query(value="Select \n"
@@ -40,7 +40,7 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 		  		+ "INNER JOIN direction as line ON i.direction_id=line.id\n"
 		  		+ "where i.analyze_id= :analyzeOrderId\n"
 		  		+ "GROUP BY GroupTime,vehicle_type,line.name "
-		  		+ "order by line.name",nativeQuery=true)
+		  		+ "order by GroupTime",nativeQuery=true)
 			public  Iterable<Map<String,Object>> getResultOfOrderReportForDirection(@Param("analyzeOrderId") Long analyzeOrderId);
 	  
 	  @Query(value="Select \n"
@@ -96,10 +96,21 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 		  		+ "where i.analyze_id= :analyzeOrderId\n"
 		  		+ "order by id",nativeQuery=true)
 	 public  Iterable<Map<String,Object>> getVisulationData(@Param("analyzeOrderId") Long analyzeOrderId);
+	  
+	  @Query(value="Select "
+		  		+ "vehicle_type as type, \n"
+		  		+ "duration as duration,\n"
+		  		+ "speed as speed,\n"
+		  		+ "direction.end_line_id as line \n"
+		  		+ "FROM video_record i\n"
+		  		+ "INNER JOIN direction as direction ON i.direction_id=direction.id "
+		  		+ "where i.analyze_id= :analyzeOrderId\n"
+		  		+ "order by i.id",nativeQuery=true)
+	 public  Iterable<Map<String,Object>> getVisulationDataForDirection(@Param("analyzeOrderId") Long analyzeOrderId); 
 
 	 @Query(value="Select DISTINCT \n" + 
 	 		"            startLine.name as startLineName,\n" + 
-	 		"            endLine.name as endLineName,\n" + 
+	 		"            endLine.name as endLineName,\n" +  
 	 		"            direction.name as directionName "+
 	 		"            ,(select count(*) from video_record where line_id =startLine.id) as startLineCount\n" + 
 	 		"            ,(select count(*) from video_record where line_id =endLine.id) as endLineCount\n" + 

@@ -4,6 +4,7 @@ import com.masterteknoloji.trafficanalyzer.Trafficanalzyzerv2App;
 
 import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
+import com.masterteknoloji.trafficanalyzer.repository.DirectionRepository;
 import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
 import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
 import com.masterteknoloji.trafficanalyzer.service.UserService;
@@ -83,6 +84,9 @@ public class VideoRecordResourceIntTest {
     AnalyzeOrderRepository analyzeOrderRepository;
     
     @Autowired
+    DirectionRepository directionRepository;
+    
+    @Autowired
     LineRepository lineRepository;
     
     @Autowired
@@ -94,7 +98,7 @@ public class VideoRecordResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final VideoRecordResource videoRecordResource = new VideoRecordResource(videoRecordRepository, analyzeOrderRepository, lineRepository, messageSource, userService);
+        final VideoRecordResource videoRecordResource = new VideoRecordResource(videoRecordRepository, analyzeOrderRepository, lineRepository, messageSource, userService,directionRepository);
         this.restVideoRecordMockMvc = MockMvcBuilders.standaloneSetup(videoRecordResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

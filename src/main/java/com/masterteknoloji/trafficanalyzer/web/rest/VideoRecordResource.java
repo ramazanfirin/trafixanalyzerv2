@@ -441,7 +441,17 @@ public class VideoRecordResource {
     	
     	List<LineCrossedVM> result = new ArrayList<LineCrossedVM>();
     	
-    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getVisulationData(id);
+    	Iterable<Map<String,Object>> videoRecords = null;
+    	
+    	AnalyzeOrder analyzeOrder = analyzeOrderRepository.findOne(id);
+    	if(analyzeOrder.getVideo().getType()==VideoType.STRAIGHT_ROAD) {
+    		videoRecords = videoRecordRepository.getVisulationData(id);
+    	}
+    	else {
+    		videoRecords = videoRecordRepository.getVisulationDataForDirection(id);
+     	   
+    	}
+    	
     	for (Map<String, Object> map : videoRecords) {
     		LineCrossedVM lineCrossedVM = new LineCrossedVM();
     		lineCrossedVM.setType((String)map.get("type"));
