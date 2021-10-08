@@ -26,6 +26,8 @@ public class ApplicationProperties {
 	String logDirectory;
 	
 	String aiScriptEndpoint;
+	
+	Long reportInterval;
 
 	public String getAiScriptEndpoint() {
 		return aiScriptEndpoint;
@@ -89,6 +91,14 @@ public class ApplicationProperties {
 
 	public void setLongProcessFixedRate(Long longProcessFixedRate) {
 		this.longProcessFixedRate = longProcessFixedRate;
+	}
+
+	public Long getReportInterval() {
+		return reportInterval;
+	}
+
+	public void setReportInterval(Long reportInterval) {
+		this.reportInterval = reportInterval;
 	}
 	
 	

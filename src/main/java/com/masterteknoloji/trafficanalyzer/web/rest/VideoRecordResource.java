@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
+import com.masterteknoloji.trafficanalyzer.config.ApplicationProperties;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
 import com.masterteknoloji.trafficanalyzer.domain.Direction;
 import com.masterteknoloji.trafficanalyzer.domain.Line;
@@ -59,6 +60,7 @@ import com.masterteknoloji.trafficanalyzer.web.rest.vm.ClassificationResultVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.DirectionReportSummary;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.LineCrossedVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.VideoRecordSummaryVM;
+import com.netflix.discovery.shared.Application;
 
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -84,15 +86,18 @@ public class VideoRecordResource {
     private final MessageSource messageSource;
     
     private final UserService userService;
+    
+    private final ApplicationProperties applicationProperties;
 
     public VideoRecordResource(VideoRecordRepository videoRecordRepository,AnalyzeOrderRepository analyzeOrderRepository,LineRepository lineRepository,
-    		MessageSource messageSource,UserService userService, DirectionRepository directionRepository) {
+    		MessageSource messageSource,UserService userService, DirectionRepository directionRepository,ApplicationProperties applicationProperties) {
         this.videoRecordRepository = videoRecordRepository;
         this.analyzeOrderRepository = analyzeOrderRepository;
         this.lineRepository = lineRepository;
         this.messageSource = messageSource;
         this.userService = userService;
         this.directionRepository = directionRepository;
+        this.applicationProperties = applicationProperties;
     }
 
     /**
@@ -189,10 +194,10 @@ public class VideoRecordResource {
     	Iterable<Map<String,Object>> videoRecords = null;
     	
     	if(analyzeOrder.getVideo().getType()==VideoType.STRAIGHT_ROAD) {
-    		videoRecords = videoRecordRepository.getResultOfOrderReport(id);
+    		videoRecords = videoRecordRepository.getResultOfOrderReport(id,applicationProperties.getReportInterval());
     	}
     	else {
-    		videoRecords = videoRecordRepository.getResultOfOrderReportForDirection(id);
+    		videoRecords = videoRecordRepository.getResultOfOrderReportForDirection(id,applicationProperties.getReportInterval());
      	}
     	
     	for (Map<String, Object> map : videoRecords) {
@@ -289,7 +294,7 @@ public class VideoRecordResource {
     	
     	List<VideoRecordSummaryVM> result = new ArrayList<VideoRecordSummaryVM>();
     	
-    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getResultOfOrderReport(id,lineId);
+    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getResultOfOrderReport(id,applicationProperties.getReportInterval(),lineId);
     	for (Map<String, Object> map : videoRecords) {
     		VideoRecordSummaryVM videoRecordSummaryVM = new VideoRecordSummaryVM();
     		videoRecordSummaryVM.setCount((BigInteger)map.get("counts"));
@@ -305,7 +310,7 @@ public class VideoRecordResource {
     	
     	List<VideoRecordSummaryVM> result = new ArrayList<VideoRecordSummaryVM>();
     	
-    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getResultOfOrderReportForDirection(id,direcitonId);
+    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getResultOfOrderReportForDirection(id,applicationProperties.getReportInterval(), direcitonId);
     	for (Map<String, Object> map : videoRecords) {
     		VideoRecordSummaryVM videoRecordSummaryVM = new VideoRecordSummaryVM();
     		videoRecordSummaryVM.setCount((BigInteger)map.get("counts"));

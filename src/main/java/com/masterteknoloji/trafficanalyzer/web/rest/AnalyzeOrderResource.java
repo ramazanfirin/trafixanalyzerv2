@@ -366,7 +366,27 @@ public class AnalyzeOrderResource {
 	public void checkUnprocessedOrders() throws ParseException {
 
 		log.info("checkUnprocessedOrders" + " started");
-		List<AnalyzeOrder> list = analyzeOrderRepository.findByState(AnalyzeState.ANALYZE_COMPLETED);
+		tranfserFromRawToVideoRecordTable(AnalyzeState.ANALYZE_COMPLETED);
+
+		log.info("checkUnprocessedOrders" + " ended");
+
+	}
+	
+	@Scheduled(fixedRate = 60000)
+	public void checkUnprocessedOrdersForLongProcess() throws ParseException {
+
+		log.info("checkUnprocessedOrdersForLongProcess" + " started");
+		tranfserFromRawToVideoRecordTable(AnalyzeState.TRANSFER_STARTED);
+
+		log.info("checkUnprocessedOrdersForLongProcess" + " ended");
+
+	}
+	
+
+	public void tranfserFromRawToVideoRecordTable(AnalyzeState analyzeState) throws ParseException {
+
+		log.info("tranfserFromRawToVideoRecordTable" + " started");
+		List<AnalyzeOrder> list = analyzeOrderRepository.findByState(analyzeState);
 		Pageable pageRequest = new PageRequest(0, 5000);
 		Map<String, Line> lines = prepareLineList();
 		Map<String, Direction> directions = prepareDirectionList();
@@ -405,7 +425,6 @@ public class AnalyzeOrderResource {
 		}
 
 		log.info("checkUnprocessedOrders" + " ended");
-
 	}
 	
 	private String getRegionIdFromRowRecord(String value) {
@@ -503,6 +522,8 @@ public class AnalyzeOrderResource {
 
 	private Instant prepareInsertDate(String dateValue) throws ParseException {
 		try {
+			if(dateValue.length()<15)
+				dateValue = dateValue+".000";
 			String temp = dateValue.substring(0, 12);
 			Date date = sdf.parse("2000-01-01 " + temp);
 			return date.toInstant();

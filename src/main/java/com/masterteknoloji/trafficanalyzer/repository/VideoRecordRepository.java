@@ -21,7 +21,7 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 	 
 	  @Query(value="Select \n"
 	  		+ "vehicle_type as type, \n"
-	  		+ "from_unixtime(FLOOR(UNIX_TIMESTAMP(insert_date)/(1*60))*(1*60)) GroupTime,\n"
+	  		+ "from_unixtime(FLOOR(UNIX_TIMESTAMP(insert_date)/(:interval*60))*(:interval*60)) GroupTime,\n"
 	  		+ "line.name as line,\n"
 	  		+ "COUNT(*) as counts\n"
 	  		+ "FROM video_record i\n"
@@ -29,11 +29,11 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 	  		+ "where i.analyze_id= :analyzeOrderId\n"
 	  		+ "GROUP BY GroupTime,vehicle_type,line.name "
 	  		+ "order by GroupTime",nativeQuery=true)
-		public  Iterable<Map<String,Object>> getResultOfOrderReport(@Param("analyzeOrderId") Long analyzeOrderId);
+		public  Iterable<Map<String,Object>> getResultOfOrderReport(@Param("analyzeOrderId") Long analyzeOrderId,@Param("interval") Long interval);
 	  
 	  @Query(value="Select \n"
 		  		+ "vehicle_type as type, \n"
-		  		+ "from_unixtime(FLOOR(UNIX_TIMESTAMP(insert_date)/(1*60))*(1*60)) GroupTime,\n"
+		  		+ "from_unixtime(FLOOR(UNIX_TIMESTAMP(insert_date)/(:interval*60))*(:interval*60)) GroupTime,\n"
 		  		+ "line.name as line,\n"
 		  		+ "COUNT(*) as counts\n"
 		  		+ "FROM video_record i\n"
@@ -41,31 +41,31 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 		  		+ "where i.analyze_id= :analyzeOrderId\n"
 		  		+ "GROUP BY GroupTime,vehicle_type,line.name "
 		  		+ "order by GroupTime",nativeQuery=true)
-			public  Iterable<Map<String,Object>> getResultOfOrderReportForDirection(@Param("analyzeOrderId") Long analyzeOrderId);
+			public  Iterable<Map<String,Object>> getResultOfOrderReportForDirection(@Param("analyzeOrderId") Long analyzeOrderId,@Param("interval") Long interval);
 	  
 	  @Query(value="Select \n"
 		  		+ "vehicle_type as type, \n"
-		  		+ "from_unixtime(FLOOR(UNIX_TIMESTAMP(insert_date)/(1*60))*(1*60)) GroupTime,\n"
+		  		+ "from_unixtime(FLOOR(UNIX_TIMESTAMP(insert_date)/(:interval*60))*(:interval*60)) GroupTime,\n"
 		  		+ "line.name as line,\n"
 		  		+ "COUNT(*) as counts\n"
 		  		+ "FROM video_record i\n"
 		  		+ "INNER JOIN line as line ON i.line_id=line.id\n"
 		  		+ "where i.analyze_id= :analyzeOrderId and line.id = :lineId \n" 
 		  		+ "GROUP BY GroupTime,vehicle_type,line.name "
-		  		+ "order by line.name",nativeQuery=true)
-	  public  Iterable<Map<String,Object>> getResultOfOrderReport(@Param("analyzeOrderId") Long analyzeOrderId,@Param("lineId") Long lineId);
-	  
+		  		+ "order by GroupTime",nativeQuery=true)
+	  public  Iterable<Map<String,Object>> getResultOfOrderReport(@Param("analyzeOrderId") Long analyzeOrderId,@Param("interval") Long interval,@Param("lineId") Long lineId);
+//	  
 	  @Query(value="Select \n"
 		  		+ "vehicle_type as type, \n"
-		  		+ "from_unixtime(FLOOR(UNIX_TIMESTAMP(insert_date)/(1*60))*(1*60)) GroupTime,\n"
+		  		+ "from_unixtime(FLOOR(UNIX_TIMESTAMP(insert_date)/(:interval*60))*(:interval*60)) GroupTime,\n"
 		  		+ "line.name as line,\n"
 		  		+ "COUNT(*) as counts\n"
 		  		+ "FROM video_record i\n"
 		  		+ "INNER JOIN direction as line ON i.direction_id=line.id\n"
 		  		+ "where i.analyze_id= :analyzeOrderId and line.id = :directionId \n" 
 		  		+ "GROUP BY GroupTime,vehicle_type,line.name "
-		  		+ "order by line.name",nativeQuery=true)
-	  public  Iterable<Map<String,Object>> getResultOfOrderReportForDirection(@Param("analyzeOrderId") Long analyzeOrderId,@Param("directionId") Long directionId);
+		  		+ "order by GroupTime",nativeQuery=true)
+	  public  Iterable<Map<String,Object>> getResultOfOrderReportForDirection(@Param("analyzeOrderId") Long analyzeOrderId,@Param("interval") Long interval,@Param("directionId") Long directionId);
 	  
 	  @Query(value="SELECT line.name as name,vehicle_type,count(*) as count FROM video_record "
 	  		     + "INNER JOIN line as line ON line_id=line.id "

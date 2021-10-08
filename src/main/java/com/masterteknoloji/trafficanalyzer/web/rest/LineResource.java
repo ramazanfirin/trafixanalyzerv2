@@ -279,7 +279,7 @@ public class LineResource {
 			neigburPOints.add(new Point(x1, y1));
 		}
 
-		for (int i = 0; i < p1Points.length; i++) {
+		for (int i = 0; i < p2Points.length; i++) {
 			String[] p2Point = p2Points[i].split(",");
 
 			int x1 = Integer.parseInt(p2Point[0]);
