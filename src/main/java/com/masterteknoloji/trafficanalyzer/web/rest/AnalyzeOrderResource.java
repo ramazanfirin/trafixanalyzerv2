@@ -304,7 +304,7 @@ public class AnalyzeOrderResource {
     			"/home/ramazan/Desktop/trafix/trafixviewer-0.0.1-SNAPSHOT.jar "+ id, 
 				};
 		try {
-			Process p = Runtime.getRuntime().exec("java -jar /home/ramazan/Desktop/trafix/trafixviewer-0.0.1-SNAPSHOT.jar "+ id);
+			Process p = Runtime.getRuntime().exec("java -jar "+ applicationProperties.getTrafixViewerJarLocation()+" "+ id);
 			//getOutput(p);
 			log.info("java"+ " script called");
 		} catch (IOException e) {

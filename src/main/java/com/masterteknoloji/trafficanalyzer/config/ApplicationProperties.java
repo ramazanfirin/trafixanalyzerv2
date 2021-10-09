@@ -28,6 +28,8 @@ public class ApplicationProperties {
 	String aiScriptEndpoint;
 	
 	Long reportInterval;
+	
+	String trafixViewerJarLocation;
 
 	public String getAiScriptEndpoint() {
 		return aiScriptEndpoint;
@@ -99,6 +101,14 @@ public class ApplicationProperties {
 
 	public void setReportInterval(Long reportInterval) {
 		this.reportInterval = reportInterval;
+	}
+
+	public String getTrafixViewerJarLocation() {
+		return trafixViewerJarLocation;
+	}
+
+	public void setTrafixViewerJarLocation(String trafixViewerJarLocation) {
+		this.trafixViewerJarLocation = trafixViewerJarLocation;
 	}
 	
 	
