@@ -23,10 +23,10 @@
             "speed": "Speed",
             "jsonData": "Json Data",
             "errorMessage": "Error Message",
-            "startDate": "Start Date",
-            "endDate": "End Date",
-            "processDuration": "Process Duration",
-            "videoDuration": "Video Duration",
+            "startDate": "Başlangıç Tarihi",
+            "endDate": "Bitiş Tarihi",
+            "processDuration": "İşlem Süresi",
+            "videoDuration": "Video Süresü",
             "state": "State",
             "showVisulationWindow": "Analiz Penceresini Göster(Bu seçim, analiz hızını yavaşlatır)"
         }

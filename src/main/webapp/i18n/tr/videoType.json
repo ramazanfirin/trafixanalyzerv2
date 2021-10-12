@@ -2,9 +2,9 @@
     "trafficanalzyzerv2App": {
         "VideoType" : {
             "null": "",
-            "STRAIGHT_ROAD": "STRAIGHT_ROAD",
-            "INTERSERCTION": "INTERSERCTION",
-            "RAUNDAROUND": "RAUNDAROUND"
+            "STRAIGHT_ROAD": "DÜZ_YOL",
+            "INTERSERCTION": "KAVŞAK",
+            "RAUNDAROUND": "DÖNER_KAVŞAK"
         }
     }
 }

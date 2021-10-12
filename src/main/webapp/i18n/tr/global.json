@@ -22,7 +22,7 @@
                 "analyzeOrder": "Analizler",
                 "analyzeOrderDetails": "Analyze Order Details",
                 "fileUploadTest": "File Upload Test",
-                "analyzeOrder": "Analyze Order",
+                "analyzeOrder": "Analizler",
                 "video": "Video",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
@@ -110,7 +110,7 @@
             "speed": "Hız Ayarları",
             "direction": "Yön Ayarları",
             "polygon": "Polygon Ayarları",
-            "line": ": Çizgi Ayarları",
+            "line": "Çizgi Ayarları",
             "viewReport": "Raporu Görüntüle",
             "close": "Kapat",
             "play": "Oynat"

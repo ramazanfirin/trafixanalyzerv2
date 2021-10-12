@@ -18,12 +18,12 @@
             "path": "Diskteki Adresi",
             "name": "İsim",
             "processDate": "Process Date",
-            "startDate": "Start Date",
-            "endDate": "End Date",
+            "startDate": "Başlangıç Tarihi",
+            "endDate": "Bitiş Tarihi",
             "state": "State",
             "location": "Lokasyon",
             "fileSelection": "Dosya Seçmek için Çift Tıklayınız...",
-            "type": "Type"
+            "type": "Video Tip"
         }
     }
 }
