@@ -331,11 +331,11 @@
 		<version>5.3</version>
 	</dependency>
 	
-<dependency>
-    <groupId>org.bytedeco</groupId>
-    <artifactId>javacv-platform</artifactId>
-    <version>1.5.6</version>
-  </dependency>
+<!-- <dependency> -->
+<!--     <groupId>org.bytedeco</groupId> -->
+<!--     <artifactId>javacv-platform</artifactId> -->
+<!--     <version>1.5.6</version> -->
+<!--   </dependency> -->
 
 <dependency>
     <groupId>org.apache.poi</groupId>
@@ -365,7 +365,34 @@
 </dependency>
 
 
-        <!-- jhipster-needle-maven-add-dependency -->
+<dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>
+		<version>1.18.22</version>
+		
+	</dependency>
+ 
+ <!-- https://mvnrepository.com/artifact/com.github.jnr/jnr-ffi -->
+<dependency>
+    <groupId>com.github.jnr</groupId>
+    <artifactId>jnr-ffi</artifactId>
+    <version>2.1.9</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/com.github.zakgof/tools -->
+<dependency>
+    <groupId>com.github.zakgof</groupId>
+    <artifactId>tools</artifactId>
+    <version>0.7.0</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.github.zakgof/velvet-video-natives -->
+<dependency>
+    <groupId>com.github.zakgof</groupId>
+    <artifactId>velvet-video-natives</artifactId>
+    <version>0.2.8.full</version>
+</dependency>
+
+ 
     </dependencies>
 
     <build>

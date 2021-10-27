@@ -61,7 +61,7 @@ public class ScenarioResource {
      */
     @PostMapping("/scenarios")
     @Timed
-    public ResponseEntity<Scenario> createScenario(@RequestBody Scenario scenario) throws URISyntaxException, IOException {
+    public ResponseEntity<Scenario> createScenario(@RequestBody Scenario scenario) throws URISyntaxException, Exception {
         log.debug("REST request to save Scenario : {}", scenario);
         if (scenario.getId() != null) {
             throw new BadRequestAlertException("A new scenario cannot already have an ID", ENTITY_NAME, "idexists");
@@ -80,7 +80,7 @@ public class ScenarioResource {
     
     @PostMapping("/scenarios/insertScreenshot")
     @Timed
-    public ResponseEntity<Scenario> insertScreenshot(@RequestBody Scenario scenario) throws URISyntaxException, IOException {
+    public ResponseEntity<Scenario> insertScreenshot(@RequestBody Scenario scenario) throws URISyntaxException, Exception {
         log.debug("REST request to save Scenario : {}", scenario);
         
         if(scenario.getVideo()!=null) {
@@ -106,7 +106,7 @@ public class ScenarioResource {
      */
     @PutMapping("/scenarios")
     @Timed
-    public ResponseEntity<Scenario> updateScenario(@RequestBody Scenario scenario) throws URISyntaxException, IOException {
+    public ResponseEntity<Scenario> updateScenario(@RequestBody Scenario scenario) throws URISyntaxException, Exception {
         log.debug("REST request to update Scenario : {}", scenario);
         if (scenario.getId() == null) {
             return createScenario(scenario);
@@ -172,7 +172,7 @@ public class ScenarioResource {
     }
     
     @GetMapping("/scenarios/getScreenShoot/{id}")
-    public @ResponseBody void getScreenShoot(@PathVariable Long id,HttpServletResponse response) throws IOException {
+    public @ResponseBody void getScreenShoot(@PathVariable Long id,HttpServletResponse response) throws Exception {
     	Scenario scenario = scenarioRepository.findOne(id);
     	if(scenario.getScreenShot()==null) {
     		if(scenario.getVideo()!=null) {
