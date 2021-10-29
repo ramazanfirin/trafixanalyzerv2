@@ -9,13 +9,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import org.bytedeco.javacv.FFmpegFrameGrabber;
-import org.bytedeco.javacv.Frame;
-import org.bytedeco.javacv.Java2DFrameConverter;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +21,6 @@ import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.PolygonDirectionType;
-import com.masterteknoloji.trafficanalyzer.service.util.RandomUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.AnalyzeOrderDetailVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.ConnectionVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.DirectionVM;
@@ -33,6 +28,11 @@ import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.Point
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.RegionVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.SpeedVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.VehicleTypeVM;
+import com.zakgof.velvetvideo.IDemuxer;
+import com.zakgof.velvetvideo.IVelvetVideoLib;
+import com.zakgof.velvetvideo.IVideoDecoderStream;
+import com.zakgof.velvetvideo.IVideoFrame;
+import com.zakgof.velvetvideo.impl.VelvetVideoLib;
 
 public class Util {
 	
@@ -124,35 +124,51 @@ public class Util {
 		File file = new File(filePath);
     	if(!file.exists())
     		throw new RuntimeException("file not found :"+ filePath);	
-    	
-    	
-    	FFmpegFrameGrabber g;
-		try {
-			g = new FFmpegFrameGrabber(filePath);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new RuntimeException(e);	
-			
-		}
-		g.start();
-
-		Java2DFrameConverter bimConverter = new Java2DFrameConverter();
-		
 		BufferedImage image=null;
-		for (int i = 0 ; i < 5 ; i++) {
-		    
-		Frame f =	g.grabFrame();
-			image = bimConverter.convert(f);
-			
-		}
+//    	
+//    	FFmpegFrameGrabber g;
+//		try {
+//			g = new FFmpegFrameGrabber(filePath);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			throw new RuntimeException(e);	
+//			
+//		}
+//		g.start();
+//
+//		Java2DFrameConverter bimConverter = new Java2DFrameConverter();
+//		
+//		BufferedImage image=null;
+//		for (int i = 0 ; i < 5 ; i++) {
+//		    
+//		Frame f =	g.grabFrame();
+//			image = bimConverter.convert(f);
+//			
+//		}
 
+//		g.stop();
+//		bimConverter.close();
+
+		if(image==null) {
+			IVelvetVideoLib lib = VelvetVideoLib.getInstance();
+			
+			try (IDemuxer demuxer = lib.demuxer(new File(filePath))) {
+				IVideoDecoderStream videoStream = demuxer.videoStream(0);
+			    IVideoFrame videoFrame;
+			    while ((videoFrame = videoStream.nextFrame()) != null) {
+			   	    image = videoFrame.image();
+				   	break;
+			    }
+			}  
+		}
+		
+		if(image==null) {
+			throw new RuntimeException("video dosyası okunamadı");
+		}
+		
 		System.out.println(image.getWidth());
 		System.out.println(image.getHeight());
-		
-		g.stop();
-		
-		//bimConverter.close();
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		  ImageIO.write(image, "jpg", baos);
