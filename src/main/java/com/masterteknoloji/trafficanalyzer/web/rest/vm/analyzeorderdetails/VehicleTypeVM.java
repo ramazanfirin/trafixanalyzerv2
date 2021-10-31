@@ -9,7 +9,7 @@ public class VehicleTypeVM {
 	Boolean bus = true;
 	Boolean truck = true;
 	Boolean bike = true;
-	Boolean person = true;
+	Boolean person = false;
 	
 	public Boolean getCar() {
 		return car;
