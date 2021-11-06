@@ -127,7 +127,7 @@ console.log(scope);
 
 var imageObj1 = new Image();
 if(scope.vm.analyzeOrder!=null &&  scope.vm.analyzeOrder.video != null &&  scope.vm.analyzeOrder.video.id != null)
-	imageObj1.src = 'http://localhost:8080/api/videos/image/'+scope.vm.analyzeOrder.video.id;
+	imageObj1.src = scope.vm.baseUrl+'/api/videos/image/'+scope.vm.analyzeOrder.video.id;
                     
 
 

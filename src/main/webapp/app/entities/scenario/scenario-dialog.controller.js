@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('ScenarioDialogController', ScenarioDialogController);
 
-    ScenarioDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon'];
+    ScenarioDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','$location'];
 
-    function ScenarioDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon) {
+    function ScenarioDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,$location) {
         var vm = this;
 
         vm.scenario = entity;
@@ -32,6 +32,8 @@
 	    vm.points = $window.points;
 	    //vm.createPolygon = vm.createPolygon();
 		vm.polygonType="COUNTING";
+		
+		vm.baseUrl='http://'+$location.host()+':'+$location.port();
 
 		loadAll();
 
@@ -165,7 +167,7 @@
 	    	vm.selectVideoMessage = "Lütfen Video görüntüsünün gelmesini bekleyiniz";
 	    	console.log("update bailadı");
 			//$window.imageObj1 = new Image();
-			$window.imageObj1.src = 'http://localhost:8080/api/scenarios/getScreenShoot/'+vm.scenario.id;
+			$window.imageObj1.src = 'http://'+$location.host()+':'+$location.port()+'/api/scenarios/getScreenShoot/'+vm.scenario.id;
 			$window.layer.draw();
 			console.log("update bitti");
 	    	//setTimeout(resetMessage, 1);

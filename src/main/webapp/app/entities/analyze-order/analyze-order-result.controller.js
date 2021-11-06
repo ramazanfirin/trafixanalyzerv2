@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('AnalyzeOrderResultController', AnalyzeOrderResultController);
 
-    AnalyzeOrderResultController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line','VideoRecord','$translate'];
+    AnalyzeOrderResultController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line','VideoRecord','$translate','$location'];
 
-    function AnalyzeOrderResultController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line, VideoRecord,$translate) {
+    function AnalyzeOrderResultController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line, VideoRecord,$translate,$location) {
         var vm = this;
 
 		vm.analyzeOrder = entity;
@@ -65,6 +65,7 @@
 		vm.speedChartList=[];
 		vm.directionReportResult=[];
 		vm.language="tr";
+		vm.baseUrl='http://'+$location.host()+':'+$location.port();
 		
 		loadAll();
 

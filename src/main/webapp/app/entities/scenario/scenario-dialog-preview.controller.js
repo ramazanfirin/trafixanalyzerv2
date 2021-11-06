@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('ScenarioDialogPreviewController', ScenarioDialogPreviewController);
 
-    ScenarioDialogPreviewController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line'];
+    ScenarioDialogPreviewController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line','$location'];
 
-    function ScenarioDialogPreviewController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line) {
+    function ScenarioDialogPreviewController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line,$location) {
         var vm = this;
 
         vm.scenario = entity;
@@ -37,6 +37,8 @@
 	    vm.hidePopup = hidePopup;
 	    //vm.createPolygon = vm.createPolygon();
 	    vm.polygonType="COUNTING";
+	    
+	    vm.baseUrl='http://'+$location.host()+':'+$location.port();
 
 		loadAll();
 

@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('AnalyzeOrderDialogController', AnalyzeOrderDialogController);
 
-    AnalyzeOrderDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'AnalyzeOrder', 'Video', 'Scenario', 'AnalyzeOrderDetails','$window','Line','Polygon'];
+    AnalyzeOrderDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'AnalyzeOrder', 'Video', 'Scenario', 'AnalyzeOrderDetails','$window','Line','Polygon','$location'];
 
-    function AnalyzeOrderDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, AnalyzeOrder, Video, Scenario, AnalyzeOrderDetails, $window, Line, Polygon) {
+    function AnalyzeOrderDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, AnalyzeOrder, Video, Scenario, AnalyzeOrderDetails, $window, Line, Polygon,$location) {
         var vm = this;
 
         vm.analyzeOrder = entity;
@@ -26,6 +26,7 @@
         vm.lines = [];
         vm.polygons = [];
         vm.polygonType = "COUNTING";
+        vm.baseUrl='http://'+$location.host()+':'+$location.port();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -39,7 +40,7 @@
         }
 
 		function videoFileChanged(){
-			$window.imageObj1.src = 'http://localhost:8080/api/videos/image/'+vm.analyzeOrder.video.id;
+			$window.imageObj1.src = 'http://'+$location.host()+':'+$location.port()+'/api/videos/image/'+vm.analyzeOrder.video.id;
 			$window.layer.draw();
 		}
 		
