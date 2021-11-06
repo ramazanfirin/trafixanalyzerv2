@@ -369,6 +369,20 @@
   <artifactId>videodemuxer</artifactId>
   <version>0.0.3-SNAPSHOT</version>
 </dependency>
+
+<!-- https://mvnrepository.com/artifact/org.jcodec/jcodec -->
+<dependency>
+    <groupId>org.jcodec</groupId>
+    <artifactId>jcodec</artifactId>
+    <version>0.2.5</version>
+</dependency>
+
+<dependency>
+    <groupId>org.jcodec</groupId>
+    <artifactId>jcodec-javase</artifactId>
+    <version>0.2.5</version>
+</dependency>
+
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
 

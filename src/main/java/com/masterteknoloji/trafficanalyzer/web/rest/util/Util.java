@@ -12,6 +12,10 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import org.jcodec.api.FrameGrab;
+import org.jcodec.api.JCodecException;
+import org.jcodec.common.model.Picture;
+import org.jcodec.scale.AWTUtil;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -125,7 +129,7 @@ public class Util {
     	if(!file.exists())
     		throw new RuntimeException("file not found :"+ filePath);	
 		BufferedImage image=null;
-//    	
+////    	
 //    	FFmpegFrameGrabber g;
 //		try {
 //			g = new FFmpegFrameGrabber(filePath);
@@ -139,7 +143,6 @@ public class Util {
 //
 //		Java2DFrameConverter bimConverter = new Java2DFrameConverter();
 //		
-//		BufferedImage image=null;
 //		for (int i = 0 ; i < 5 ; i++) {
 //		    
 //		Frame f =	g.grabFrame();
@@ -150,18 +153,14 @@ public class Util {
 //		g.stop();
 //		bimConverter.close();
 
-		if(image==null) {
-			IVelvetVideoLib lib = VelvetVideoLib.getInstance();
-			
-			try (IDemuxer demuxer = lib.demuxer(new File(filePath))) {
-				IVideoDecoderStream videoStream = demuxer.videoStream(0);
-			    IVideoFrame videoFrame;
-			    while ((videoFrame = videoStream.nextFrame()) != null) {
-			   	    image = videoFrame.image();
-				   	break;
-			    }
-			}  
-		}
+		if(image==null)
+			image = getImageByVelvetVideoLib(file);
+		
+		
+		
+		if(image==null)
+			image = getImageByJCodec(file);
+		
 		
 		if(image==null) {
 			throw new RuntimeException("video dosyası okunamadı");
@@ -174,6 +173,41 @@ public class Util {
 		  ImageIO.write(image, "jpg", baos);
 		  
 		return  baos;
+	}
+	
+	public static BufferedImage getImageByVelvetVideoLib(File file) {
+		
+		BufferedImage result = null;
+		IVelvetVideoLib lib = VelvetVideoLib.getInstance();
+		try (IDemuxer demuxer = lib.demuxer(file)) {
+			IVideoDecoderStream videoStream = demuxer.videoStream(0);
+		    IVideoFrame videoFrame;
+		    while ((videoFrame = videoStream.nextFrame()) != null) {
+		    	result = videoFrame.image();
+			   	break;
+		    }
+		}catch (Exception e) {
+			result = null;
+		}  return result;
+	}
+	
+	public static BufferedImage getImageByJCodec(File file) {
+		
+		BufferedImage result = null;
+		Picture picture;
+		try {
+			picture = FrameGrab.getFrameFromFile(file, 5);
+			result = AWTUtil.toBufferedImage(picture);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JCodecException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+
 	}
 	
 	public static AnalyzeOrderDetails prepareAnalyzeOrderDetails(ObjectMapper objectMapper,String sessionId,String videoPath,List<Line> lineList,List<Direction> directionList,
