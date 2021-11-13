@@ -126,6 +126,7 @@ entity AnalyzeOrderDetails{
 	
 	state AnalyzeState
 	showVisulationWindow Boolean
+	analyzePerson Boolean
 }
 
 enum AnalyzeState {

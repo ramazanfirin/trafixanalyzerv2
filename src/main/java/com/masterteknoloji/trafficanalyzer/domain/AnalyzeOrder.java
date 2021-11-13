@@ -41,6 +41,9 @@ public class AnalyzeOrder implements Serializable {
     @Column(name = "show_visulation_window")
     private Boolean showVisulationWindow  = false;
     
+    @Column(name = "analyze_person")
+    private Boolean analyzePerson = false;
+    
     @ManyToOne
     private Video video;
 
@@ -182,5 +185,13 @@ public class AnalyzeOrder implements Serializable {
 
 	public void setShowVisulationWindow(Boolean showVisulationWindow) {
 		this.showVisulationWindow = showVisulationWindow;
+	}
+
+	public Boolean getAnalyzePerson() {
+		return analyzePerson;
+	}
+
+	public void setAnalyzePerson(Boolean analyzePerson) {
+		this.analyzePerson = analyzePerson;
 	}
 }

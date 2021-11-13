@@ -140,6 +140,7 @@
                                 videoDuration: null,
                                 state: null,
                                 showVisulationWindow: null,
+                                analyzePerson: null,
                                 id: null
                             };
                         }

@@ -62,6 +62,10 @@
         {
             "fieldName": "showVisulationWindow",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "analyzePerson",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20210716122530",

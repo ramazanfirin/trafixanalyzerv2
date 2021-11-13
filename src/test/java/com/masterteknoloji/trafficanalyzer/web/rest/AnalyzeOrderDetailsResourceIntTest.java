@@ -81,6 +81,12 @@ public class AnalyzeOrderDetailsResourceIntTest {
     private static final AnalyzeState DEFAULT_STATE = AnalyzeState.NOT_STARTED;
     private static final AnalyzeState UPDATED_STATE = AnalyzeState.STARTED;
 
+    private static final Boolean DEFAULT_SHOW_VISULATION_WINDOW = false;
+    private static final Boolean UPDATED_SHOW_VISULATION_WINDOW = true;
+
+    private static final Boolean DEFAULT_ANALYZE_PERSON = false;
+    private static final Boolean UPDATED_ANALYZE_PERSON = true;
+
     @Autowired
     private AnalyzeOrderDetailsRepository analyzeOrderDetailsRepository;
 
@@ -131,7 +137,9 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .endDate(DEFAULT_END_DATE)
             .processDuration(DEFAULT_PROCESS_DURATION)
             .videoDuration(DEFAULT_VIDEO_DURATION)
-            .state(DEFAULT_STATE);
+            .state(DEFAULT_STATE)
+            .showVisulationWindow(DEFAULT_SHOW_VISULATION_WINDOW)
+            .analyzePerson(DEFAULT_ANALYZE_PERSON);
         return analyzeOrderDetails;
     }
 
@@ -168,6 +176,8 @@ public class AnalyzeOrderDetailsResourceIntTest {
         assertThat(testAnalyzeOrderDetails.getProcessDuration()).isEqualTo(DEFAULT_PROCESS_DURATION);
         assertThat(testAnalyzeOrderDetails.getVideoDuration()).isEqualTo(DEFAULT_VIDEO_DURATION);
         assertThat(testAnalyzeOrderDetails.getState()).isEqualTo(DEFAULT_STATE);
+        assertThat(testAnalyzeOrderDetails.isShowVisulationWindow()).isEqualTo(DEFAULT_SHOW_VISULATION_WINDOW);
+        assertThat(testAnalyzeOrderDetails.isAnalyzePerson()).isEqualTo(DEFAULT_ANALYZE_PERSON);
     }
 
     @Test
@@ -212,7 +222,9 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
             .andExpect(jsonPath("$.[*].processDuration").value(hasItem(DEFAULT_PROCESS_DURATION.intValue())))
             .andExpect(jsonPath("$.[*].videoDuration").value(hasItem(DEFAULT_VIDEO_DURATION.intValue())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
+            .andExpect(jsonPath("$.[*].showVisulationWindow").value(hasItem(DEFAULT_SHOW_VISULATION_WINDOW.booleanValue())))
+            .andExpect(jsonPath("$.[*].analyzePerson").value(hasItem(DEFAULT_ANALYZE_PERSON.booleanValue())));
     }
 
     @Test
@@ -238,7 +250,9 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
             .andExpect(jsonPath("$.processDuration").value(DEFAULT_PROCESS_DURATION.intValue()))
             .andExpect(jsonPath("$.videoDuration").value(DEFAULT_VIDEO_DURATION.intValue()))
-            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()));
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
+            .andExpect(jsonPath("$.showVisulationWindow").value(DEFAULT_SHOW_VISULATION_WINDOW.booleanValue()))
+            .andExpect(jsonPath("$.analyzePerson").value(DEFAULT_ANALYZE_PERSON.booleanValue()));
     }
 
     @Test
@@ -273,7 +287,9 @@ public class AnalyzeOrderDetailsResourceIntTest {
             .endDate(UPDATED_END_DATE)
             .processDuration(UPDATED_PROCESS_DURATION)
             .videoDuration(UPDATED_VIDEO_DURATION)
-            .state(UPDATED_STATE);
+            .state(UPDATED_STATE)
+            .showVisulationWindow(UPDATED_SHOW_VISULATION_WINDOW)
+            .analyzePerson(UPDATED_ANALYZE_PERSON);
 
         restAnalyzeOrderDetailsMockMvc.perform(put("/api/analyze-order-details")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -297,6 +313,8 @@ public class AnalyzeOrderDetailsResourceIntTest {
         assertThat(testAnalyzeOrderDetails.getProcessDuration()).isEqualTo(UPDATED_PROCESS_DURATION);
         assertThat(testAnalyzeOrderDetails.getVideoDuration()).isEqualTo(UPDATED_VIDEO_DURATION);
         assertThat(testAnalyzeOrderDetails.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testAnalyzeOrderDetails.isShowVisulationWindow()).isEqualTo(UPDATED_SHOW_VISULATION_WINDOW);
+        assertThat(testAnalyzeOrderDetails.isAnalyzePerson()).isEqualTo(UPDATED_ANALYZE_PERSON);
     }
 
     @Test

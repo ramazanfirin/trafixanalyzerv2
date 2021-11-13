@@ -211,10 +211,12 @@ public class Util {
 	}
 	
 	public static AnalyzeOrderDetails prepareAnalyzeOrderDetails(ObjectMapper objectMapper,String sessionId,String videoPath,List<Line> lineList,List<Direction> directionList,
-			List<Polygon> speedPolygonList,Boolean showVisulationWindow,String videoType) throws Exception {
+			List<Polygon> speedPolygonList,Boolean showVisulationWindow,String videoType,Boolean analyzePerson) throws Exception {
 		AnalyzeOrderDetails result = new AnalyzeOrderDetails();
 		
 		VehicleTypeVM vehicleTypeVM = new VehicleTypeVM();
+		if(analyzePerson)
+			vehicleTypeVM.setPerson(true);
 		result.setClasses(objectMapper.writeValueAsString(vehicleTypeVM));
 		
 		DirectionVM directionVM = prepareDirections(objectMapper, lineList,directionList);
@@ -229,6 +231,7 @@ public class Util {
 		result.setVideoPath(videoPath);
 		result.setState(AnalyzeState.NOT_STARTED);
 		result.setShowVisulationWindow(showVisulationWindow);
+		result.setAnalyzePerson(analyzePerson);
 		
 		AnalyzeOrderDetailVM analyzeOrderDetailVM = prepareAllData(vehicleTypeVM, directionVM, speedVMs, videoPath, sessionId,showVisulationWindow,videoType);
 		result.setJsonData(objectMapper.writeValueAsString(analyzeOrderDetailVM));

@@ -28,7 +28,8 @@
             "processDuration": "Process Duration",
             "videoDuration": "Video Duration",
             "state": "State",
-            "showVisulationWindow": "Show Visulation Window(This will effect processing speed)"
+            "showVisulationWindow": "Show Visulation Window",
+            "analyzePerson": "Analyze Person"
         }
     }
 }

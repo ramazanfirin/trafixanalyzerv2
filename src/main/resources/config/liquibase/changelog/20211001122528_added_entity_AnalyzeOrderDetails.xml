@@ -28,6 +28,17 @@
         
     </changeSet>
     
+    <changeSet id="20211113122528-1" author="jhipster">
+        
+        <addColumn tableName="analyze_order_details" >
+			          <column name="analyze_person" type="bit">
+                <constraints nullable="true" />
+            </column>
+			
+		</addColumn>  
+        
+    </changeSet>
+    
    
     
         <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
