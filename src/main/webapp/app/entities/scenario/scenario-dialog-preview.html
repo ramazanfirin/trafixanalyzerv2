@@ -148,7 +148,7 @@ console.log("from script:"+scope.vm.polygons.length);
 
 var imageObj1 = new Image();
 if(scope.vm.scenario!=null && scope.vm.scenario.id != null)
-	imageObj1.src = scope.vm.baseUrl+"api/scenarios/getScreenShoot/"+scope.vm.scenario.id;
+	imageObj1.src = scope.vm.baseUrl+"/api/scenarios/getScreenShoot/"+scope.vm.scenario.id;
 
 
 imageObj1.onload = function() {
