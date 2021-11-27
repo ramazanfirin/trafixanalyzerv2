@@ -6,6 +6,7 @@ entity District{
 }
 entity Location{
 	name String required
+	description String
 }
 
 entity Camera{

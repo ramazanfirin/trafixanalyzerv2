@@ -16,6 +16,7 @@
                 "title": "Location"
             },
             "name": "Name",
+            "description": "Description",
             "district": "District"
         }
     }

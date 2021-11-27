@@ -34,5 +34,16 @@
         </createTable>
         
     </changeSet>
+    <changeSet id="20211127122528-1" author="jhipster">
+        
+        <addColumn tableName="location" >
+			<column name="description" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+			
+		</addColumn>  
+        
+    </changeSet>
+    
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

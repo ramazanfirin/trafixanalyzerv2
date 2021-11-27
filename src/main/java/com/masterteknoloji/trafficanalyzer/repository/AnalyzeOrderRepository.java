@@ -26,6 +26,6 @@ public interface AnalyzeOrderRepository extends JpaRepository<AnalyzeOrder, Long
 	@Query("select v from AnalyzeOrder v where v.active=true")
 	Page<AnalyzeOrder> getActiveItem(Pageable pageable);
 	
-	@Query("select v from AnalyzeOrder v where v.active=true  and v.video.location.id=?1 and v.video.startDate>?2 and v.video.endDate<?3 ")
+	@Query("select v from AnalyzeOrder v where v.active=true  and v.video.location.id=?1 and v.video.startDate>?2 and v.video.endDate<?3 order by v.id desc ")
 	List<AnalyzeOrder> search(Long locationId, Instant startDate, Instant endDate);
 }

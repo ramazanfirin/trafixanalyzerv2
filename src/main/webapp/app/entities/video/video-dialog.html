@@ -101,7 +101,7 @@
 
         <div class="form-group">
             <label data-translate="trafficanalzyzerv2App.video.location" for="field_location">Location</label>
-            <select class="form-control" id="field_location" name="location" ng-model="vm.video.location" ng-options="location as location.id for location in vm.locations track by location.id">
+            <select class="form-control" id="field_location" name="location" ng-model="vm.video.location" ng-options="location as location.name+'-'+location.description for location in vm.locations track by location.id">
                 <option value=""></option>
             </select>
         </div>
