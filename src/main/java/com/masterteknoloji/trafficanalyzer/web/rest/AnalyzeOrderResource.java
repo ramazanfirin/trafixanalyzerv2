@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
@@ -277,6 +278,16 @@ public class AnalyzeOrderResource {
 		return result;
 	}
 
+	@GetMapping("/analyze-orders/search")
+	@Timed
+	public List<AnalyzeOrder> search(@RequestParam(value = "locationId") Long locationId,@RequestParam(value = "startDate") Instant startDate,
+			@RequestParam(value = "endDate") Instant endDate) {
+		log.debug("REST request to get a page of AnalyzeOrders");
+		List<AnalyzeOrder> page = analyzeOrderRepository.search(locationId,startDate,endDate);
+		
+		return page;
+	}
+	
 	@GetMapping("/analyze-orders/getLogs/{id}")
 	@Timed
 	public ParameterVM getLogs(@PathVariable Long id) {

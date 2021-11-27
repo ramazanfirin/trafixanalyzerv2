@@ -5,12 +5,13 @@
         .module('trafficanalzyzerv2App')
         .controller('AnalyzeOrderController', AnalyzeOrderController);
 
-    AnalyzeOrderController.$inject = ['$state', 'DataUtils', 'AnalyzeOrder', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    AnalyzeOrderController.$inject = ['$state', 'DataUtils', 'AnalyzeOrder', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Location'];
 
-    function AnalyzeOrderController($state, DataUtils, AnalyzeOrder, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function AnalyzeOrderController($state, DataUtils, AnalyzeOrder, ParseLinks, AlertService, paginationConstants, pagingParams, Location) {
 
         var vm = this;
 
+		vm.search = search;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -18,6 +19,18 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
+        
+        vm.locations = Location.query();
+ 		vm.datePickerOpenStatus = {};
+        vm.openCalendar = openCalendar;
+        
+        var currentDate = new Date(); 
+        currentDate.setHours(0);
+        currentDate.setMinutes(0);
+        vm.startDate = currentDate;
+        currentDate.setHours(23);
+        currentDate.setMinutes(59);
+ 		vm.endDate = currentDate ;
  		
 		vm.play = play;
         loadAll();
@@ -41,6 +54,23 @@
                 vm.queryCount = vm.totalItems;
                 vm.analyzeOrders = data;
                 vm.page = pagingParams.page;
+            }
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
+        
+        function search () {
+			if(vm.location == null)
+				alert('Lokasyon Seçimi Yapınız.');
+		
+            AnalyzeOrder.search({
+                locationId: vm.location.id,
+                startDate: vm.startDate,
+                endDate: vm.endDate
+            }, onSuccessSearch, onError);
+            function onSuccessSearch(data, headers) {
+                vm.analyzeOrders = data;
             }
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -73,5 +103,11 @@
 		function onSaveError(error) {
                 AlertService.error(error.data.message);
             }
+       vm.datePickerOpenStatus.startDate = false;
+        vm.datePickerOpenStatus.endDate = false;
+
+        function openCalendar (date) {
+            vm.datePickerOpenStatus[date] = true;
+        }    
     }
 })();

@@ -49,6 +49,7 @@
                     $translatePartialLoader.addPart('analyzeState');
                     $translatePartialLoader.addPart('global');
                     $translatePartialLoader.addPart('analyzeOrderDetails');
+                    $translatePartialLoader.addPart('video');
                     return $translate.refresh();
                 }]
             }

@@ -25,7 +25,9 @@
             "speedTabLabel": "Speed",
             "excelTabLabel": "Details",
             "downloadExcelFile":"Download Excel File",
-            "directionReportTabLabel":"Direction Result"
+            "directionReportTabLabel":"Direction Result",
+            "analyzeReports":"Analyze Reports",
+            "search":"Search"
         }
     }
 }

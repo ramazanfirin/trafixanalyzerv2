@@ -25,7 +25,9 @@
             "speedTabLabel": "Hız",
             "excelTabLabel": "Detay",
             "downloadExcelFile":"Excel İndir",
-            "directionReportTabLabel":"Yön Analizi"
+            "directionReportTabLabel":"Yön Analizi",
+            "analyzeReports":"Analiz Raporları",
+            "search":"Ara"
         }
     }
 }

@@ -1,9 +1,45 @@
 <div>
     <h2 data-translate="trafficanalzyzerv2App.analyzeOrder.home.title">Analyze Orders</h2>
     <jhi-alert></jhi-alert>
+   
+    <br/>
     <div class="container-fluid">
+    	<div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.video.location" for="field_location">Location</label>
+            <select class="form-control" id="field_location" name="location" ng-model="vm.location" ng-options="location as location.id for location in vm.locations track by location.id">
+                <option value=""></option>
+            </select>
+        </div>
+    	<div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.video.startDate" for="field_startDate">Start Date</label>
+                <div class="input-group">
+                    <input id="field_startDate" type="text" class="form-control" name="startDate" datetime-picker="{{dateformat}}" ng-model="vm.startDate" is-open="vm.datePickerOpenStatus.startDate"
+                    />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.video.endDate" for="field_endDate">End Date</label>
+                <div class="input-group">
+                    <input id="field_endDate" type="text" class="form-control" name="endDate" datetime-picker="{{dateformat}}" ng-model="vm.endDate" is-open="vm.datePickerOpenStatus.endDate"
+                    />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+        
+     </div>
+     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
+                
+                <button  class="btn btn-primary" ng-click="vm.search()">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="trafficanalzyzerv2App.analyzeOrder.search"></span>
+                </button>
                 <button class="btn btn-primary" ui-sref="analyze-order.new" >
                     <span class="glyphicon glyphicon-plus"></span>
                     <span  data-translate="trafficanalzyzerv2App.analyzeOrder.home.createLabel">
@@ -13,15 +49,19 @@
             </div>
         </div>
     </div>
-    <br/>
     <div class="table-responsive">
         <table class="jh-table table table-striped">
-            <thead>
+           <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th style="column-width:300px;white-space: normal;" jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="state"><span data-translate="trafficanalzyzerv2App.analyzeOrder.state">State</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.analyzeOrder.video">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="scenario.id"><span data-translate="trafficanalzyzerv2App.analyzeOrder.scenario">Scenario</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    
+                    <th width="70" jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.analyzeOrder.video">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="scenario.id"><span data-translate="trafficanalzyzerv2App.video.location">Scenario</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.video.startDate">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.video.endDate">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    
                     <th jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.startDate">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.endDate">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.analyzeOrderDetails.processDuration">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -35,10 +75,22 @@
                     <td><a ui-sref="analyze-order-detail({id:analyzeOrder.id})">{{analyzeOrder.id}}</a></td>
                     <td data-translate="{{'trafficanalzyzerv2App.AnalyzeState.' + analyzeOrder.orderDetails.state}}">{{analyzeOrder.orderDetails.state}}</td>
                     <td>
-                        <a ui-sref="video-detail({id:analyzeOrder.video.id})">{{analyzeOrder.video.name}}</a>
+                        <a ui-sref="scenario.preview({id:analyzeOrder.scenario.id})">{{analyzeOrder.scenario.name}}</a>
+                    </td>
+                    
+                    <td width="70%">
+                        <a ui-sref="video-detail({id:analyzeOrder.video.id})">
+                        {{analyzeOrder.video.name.replaceAll("\\"," ")}}
+                        </a>
                     </td>
                     <td>
-                        <a ui-sref="scenario.preview({id:analyzeOrder.scenario.id})">{{analyzeOrder.scenario.name}}</a>
+                        {{analyzeOrder.video.location.name}}
+                    </td>
+                    <td>
+                        {{analyzeOrder.video.startDate | date:'dd/MM/yyyy HH:mm:ss'}}
+                    </td>
+                    <td>
+                       {{analyzeOrder.video.endDate | date:'dd/MM/yyyy HH:mm:ss'}}
                     </td>
                     <td>
                         {{analyzeOrder.orderDetails.startDate | date:'dd/MM/yyyy HH:mm:ss'}}
@@ -71,11 +123,11 @@
 <!--                                 <span class="glyphicon glyphicon-eye-open"></span> -->
 <!--                                 <span class="hidden-sm-down" data-translate="entity.action.play"></span> -->
 <!--                             </button> -->
-                           <button type="submit" ng-click="vm.play(analyzeOrder)"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.play"></span>
-                            </button>
+<!--                            <button type="submit" ng-click="vm.play(analyzeOrder)" -->
+<!--                                     class="btn btn-primary btn-sm"> -->
+<!--                                 <span class="glyphicon glyphicon-eye-open"></span> -->
+<!--                                 <span class="hidden-sm-down" data-translate="entity.action.play"></span> -->
+<!--                             </button> -->
 <!--                             <button type="submit" -->
 <!--                                     ui-sref="analyze-order.edit({id:analyzeOrder.id})" -->
 <!--                                     class="btn btn-primary btn-sm"> -->
@@ -92,7 +144,7 @@
                                     ui-sref="analyze-order.log({id:analyzeOrder.id})"
                                     class="btn btn-info btn-sm">
                                 <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down" >Analiz Detay Log</span>
+                                <span class="hidden-sm-down" >Log</span>
                             </button>
                         </div>
                     </td>
@@ -102,6 +154,8 @@
     </div>
     <div class="text-center">
         <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" 
+                                                   ng-model="vm.page" ng-change="vm.transition()">
+         </uib-pagination>
     </div>
 </div>

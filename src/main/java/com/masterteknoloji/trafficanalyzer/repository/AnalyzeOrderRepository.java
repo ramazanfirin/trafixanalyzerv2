@@ -1,5 +1,6 @@
 package com.masterteknoloji.trafficanalyzer.repository;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -9,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
-import com.masterteknoloji.trafficanalyzer.domain.Scenario;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 
 
@@ -25,4 +25,7 @@ public interface AnalyzeOrderRepository extends JpaRepository<AnalyzeOrder, Long
 	
 	@Query("select v from AnalyzeOrder v where v.active=true")
 	Page<AnalyzeOrder> getActiveItem(Pageable pageable);
+	
+	@Query("select v from AnalyzeOrder v where v.active=true  and v.video.location.id=?1 and v.video.startDate>?2 and v.video.endDate<?3 ")
+	List<AnalyzeOrder> search(Long locationId, Instant startDate, Instant endDate);
 }
