@@ -61,6 +61,7 @@ import com.masterteknoloji.trafficanalyzer.repository.PolygonRepository;
 import com.masterteknoloji.trafficanalyzer.repository.RawRecordRepository;
 import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
 import com.masterteknoloji.trafficanalyzer.service.LinuxCommandService;
+import com.masterteknoloji.trafficanalyzer.web.rest.errors.AnalyzeOrderNotStartedException;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
@@ -139,23 +140,32 @@ public class AnalyzeOrderResource {
 		if (analyzeOrder.getId() != null) {
 			throw new BadRequestAlertException("A new analyzeOrder cannot already have an ID", ENTITY_NAME, "idexists");
 		}
-		analyzeOrder.setState(AnalyzeState.NOT_STARTED);
-		AnalyzeOrder result = analyzeOrderRepository.save(analyzeOrder);
+		try {
+			analyzeOrder.setState(AnalyzeState.NOT_STARTED);
+			AnalyzeOrder result = analyzeOrderRepository.save(analyzeOrder);
+	
+			List<Line> lines = lineRepository.getLineListByScenarioId(result.getScenario().getId());
+			List<Direction> directions = directionRepository.getDirectionListByScenarioId(result.getScenario().getId());
+			List<Polygon> speedPolygons = polygonRepository.getPolygonListByScenarioId(result.getScenario().getId(),PolygonType.SPEED);
+			AnalyzeOrderDetails analyzeOrderDetails = Util.prepareAnalyzeOrderDetails(objectMapper,result.getId().toString(), analyzeOrder.getVideo().getPath(), lines,directions, speedPolygons,
+					result.getShowVisulationWindow(),result.getVideo().getType().toString(),analyzeOrder.getAnalyzePerson());
+			analyzeOrderDetailsRepository.save(analyzeOrderDetails);
+	
+			result.setOrderDetails(analyzeOrderDetails);
+			result = analyzeOrderRepository.save(analyzeOrder);
+			//linuxCommandService.startAIScript(analyzeOrder.getId().toString(), false);
+		
+			linuxCommandService.startScriptByHttp(analyzeOrderDetails.getSessionId());
+			
+			return ResponseEntity.created(new URI("/api/analyze-orders/" + result.getId()))
+					.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new AnalyzeOrderNotStartedException(e.getMessage());
+		}
 
-		List<Line> lines = lineRepository.getLineListByScenarioId(result.getScenario().getId());
-		List<Direction> directions = directionRepository.getDirectionListByScenarioId(result.getScenario().getId());
-		List<Polygon> speedPolygons = polygonRepository.getPolygonListByScenarioId(result.getScenario().getId(),PolygonType.SPEED);
-		AnalyzeOrderDetails analyzeOrderDetails = Util.prepareAnalyzeOrderDetails(objectMapper,result.getId().toString(), analyzeOrder.getVideo().getPath(), lines,directions, speedPolygons,
-				result.getShowVisulationWindow(),result.getVideo().getType().toString(),analyzeOrder.getAnalyzePerson());
-		analyzeOrderDetailsRepository.save(analyzeOrderDetails);
-
-		result.setOrderDetails(analyzeOrderDetails);
-		result = analyzeOrderRepository.save(analyzeOrder);
-		//linuxCommandService.startAIScript(analyzeOrder.getId().toString(), false);
-		linuxCommandService.startScriptByHttp(analyzeOrderDetails.getSessionId());
-
-		return ResponseEntity.created(new URI("/api/analyze-orders/" + result.getId()))
-				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
+		
 	}
 
 	/**

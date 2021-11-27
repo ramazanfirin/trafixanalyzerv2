@@ -104,7 +104,8 @@
             vm.isSaving = false;
         }
 
-        function onSaveError () {
+        function onSaveError (data) {
+            alert('hata olustu.'+ data.data.title)
             vm.isSaving = false;
         }
 
