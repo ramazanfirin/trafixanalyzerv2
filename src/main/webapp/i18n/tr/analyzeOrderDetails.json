@@ -29,7 +29,8 @@
             "videoDuration": "Video Süresü",
             "state": "State",
             "showVisulationWindow": "Analiz Penceresini Göster(Bu seçim, analiz hızını yavaşlatır)",
-            "analyzePerson": "Kişileri Say"
+            "analyzePerson": "Kişileri Say",
+            "addToQuene": "İş Kuyruğuna Ekle"
         }
     }
 }

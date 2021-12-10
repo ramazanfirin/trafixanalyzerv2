@@ -23,6 +23,9 @@ public interface AnalyzeOrderRepository extends JpaRepository<AnalyzeOrder, Long
 	@Query("select v from AnalyzeOrder v where v.orderDetails.state = ?1")
 	List<AnalyzeOrder> findByState(AnalyzeState analyzeState);
 	
+	@Query("select v from AnalyzeOrder v where v.orderDetails.state = ?1 order by v.id")
+	List<AnalyzeOrder> findFirstFromQuene(AnalyzeState analyzeState);
+	
 	@Query("select v from AnalyzeOrder v where v.active=true")
 	Page<AnalyzeOrder> getActiveItem(Pageable pageable);
 	

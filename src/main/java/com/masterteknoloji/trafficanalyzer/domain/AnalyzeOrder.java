@@ -44,6 +44,9 @@ public class AnalyzeOrder implements Serializable {
     @Column(name = "analyze_person")
     private Boolean analyzePerson = false;
     
+    @Column(name = "add_to_quene")
+    private Boolean addToQuene = false;
+    
     @ManyToOne
     private Video video;
 
@@ -193,5 +196,13 @@ public class AnalyzeOrder implements Serializable {
 
 	public void setAnalyzePerson(Boolean analyzePerson) {
 		this.analyzePerson = analyzePerson;
+	}
+
+	public Boolean getAddToQuene() {
+		return addToQuene;
+	}
+
+	public void setAddToQuene(Boolean addToQuene) {
+		this.addToQuene = addToQuene;
 	}
 }

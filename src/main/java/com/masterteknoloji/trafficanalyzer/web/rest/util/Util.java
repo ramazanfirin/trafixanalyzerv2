@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -388,5 +389,21 @@ public class Util {
 	public static Long calculatePertencile(Long total,Long part) {
 		Long result = (100 * part)/total;
 		return result ;
+	}
+	
+	public static Boolean checkPortInUse(String host,int port) {
+		Socket s = null;
+		try {
+			s = new Socket(host, port);
+			return true;
+		} catch (Exception e) {
+			return false;
+		} finally {
+			if (s != null)
+				try {
+					s.close();
+				} catch (Exception e) {
+				}
+		}
 	}
 }

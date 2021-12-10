@@ -8,7 +8,10 @@
             "PROCESS_COMPLETED": "TAMAMLANDI",
             "ERROR": "HATA",
             "TERMINATED": "SONLANDIRILDI",
-            "TRANSFER_STARTED": "TRANSFER EDİLİYOR"
+            "TRANSFER_STARTED": "TRANSFER EDİLİYOR",
+        	"ANALYZE_COMPLETED_INTERMEDIATE": "ARA AKTARIM YAPILIYOR",
+            "WAITING_ON_QUEBE": "KUYRUKTA BEKLİYOR"
+       
         }
     }
 }

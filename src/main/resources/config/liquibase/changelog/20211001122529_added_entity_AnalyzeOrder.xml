@@ -37,6 +37,16 @@
 		</addColumn>  
         
     </changeSet>
+    
+    <changeSet id="20211210122529-1" author="jhipster">
+        
+        <addColumn tableName="analyze_order" >
+			 <column name="add_to_quene" type="bit">
+                <constraints nullable="true" />
+            </column>
+		</addColumn>  
+        
+    </changeSet>
    
     
         <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

@@ -29,7 +29,8 @@
             "videoDuration": "Video Duration",
             "state": "State",
             "showVisulationWindow": "Show Visulation Window",
-            "analyzePerson": "Analyze Person"
+            "analyzePerson": "Analyze Person",
+            "addToQuene": "Add To Quene"
         }
     }
 }

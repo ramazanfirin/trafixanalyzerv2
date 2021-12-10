@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -135,33 +136,48 @@ public class AnalyzeOrderResource {
 	 */
 	@PostMapping("/analyze-orders")
 	@Timed
-	public ResponseEntity<AnalyzeOrder> createAnalyzeOrder(@RequestBody AnalyzeOrder analyzeOrder) throws Exception {
-		log.debug("REST request to save AnalyzeOrder : {}", analyzeOrder);
-		if (analyzeOrder.getId() != null) {
+	public ResponseEntity<AnalyzeOrder> createAnalyzeOrder(@RequestBody AnalyzeOrder result) throws Exception {
+		log.debug("REST request to save AnalyzeOrder : {}", result);
+		if (result.getId() != null) {
 			throw new BadRequestAlertException("A new analyzeOrder cannot already have an ID", ENTITY_NAME, "idexists");
 		}
+		result.setState(AnalyzeState.NOT_STARTED);
+		analyzeOrderRepository.save(result);
+		AnalyzeOrderDetails analyzeOrderDetails = null;
 		try {
-			analyzeOrder.setState(AnalyzeState.NOT_STARTED);
-			AnalyzeOrder result = analyzeOrderRepository.save(analyzeOrder);
-	
 			List<Line> lines = lineRepository.getLineListByScenarioId(result.getScenario().getId());
 			List<Direction> directions = directionRepository.getDirectionListByScenarioId(result.getScenario().getId());
 			List<Polygon> speedPolygons = polygonRepository.getPolygonListByScenarioId(result.getScenario().getId(),PolygonType.SPEED);
-			AnalyzeOrderDetails analyzeOrderDetails = Util.prepareAnalyzeOrderDetails(objectMapper,result.getId().toString(), analyzeOrder.getVideo().getPath(), lines,directions, speedPolygons,
-					result.getShowVisulationWindow(),result.getVideo().getType().toString(),analyzeOrder.getAnalyzePerson());
+			
+			analyzeOrderDetails = Util.prepareAnalyzeOrderDetails(objectMapper,result.getId().toString(), result.getVideo().getPath(), lines,directions, speedPolygons,
+					result.getShowVisulationWindow(),result.getVideo().getType().toString(),result.getAnalyzePerson());
+			
+			if(result.getAddToQuene()) {
+				analyzeOrderDetails.setState(AnalyzeState.WAITING_ON_QUEBE);
+				result.setState(AnalyzeState.WAITING_ON_QUEBE);
+			}else {
+				analyzeOrderDetails.setState(AnalyzeState.NOT_STARTED);
+				result.setState(AnalyzeState.NOT_STARTED);
+			}
+			
 			analyzeOrderDetailsRepository.save(analyzeOrderDetails);
-	
 			result.setOrderDetails(analyzeOrderDetails);
-			result = analyzeOrderRepository.save(analyzeOrder);
-			//linuxCommandService.startAIScript(analyzeOrder.getId().toString(), false);
-		
-			linuxCommandService.startScriptByHttp(analyzeOrderDetails.getSessionId());
+			result = analyzeOrderRepository.save(result);
+			
+			if(!result.getAddToQuene())
+				linuxCommandService.startScriptByHttp(analyzeOrderDetails.getSessionId());
+			
 			
 			return ResponseEntity.created(new URI("/api/analyze-orders/" + result.getId()))
 					.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			analyzeOrderDetails.setState(AnalyzeState.ERROR);
+			analyzeOrderDetailsRepository.save(analyzeOrderDetails);
+			
+			result.setState(AnalyzeState.NOT_STARTED);
+			analyzeOrderRepository.save(result);
+			
 			throw new AnalyzeOrderNotStartedException(e.getMessage());
 		}
 
@@ -393,6 +409,39 @@ public class AnalyzeOrderResource {
 		log.info("checkUnprocessedOrders" + " ended");
 
 	}
+	
+	@Scheduled(fixedRate = 180000)
+	public void processFromQuene() throws Exception {
+
+		log.info("processFromQuene" + " started");
+		
+		List<AnalyzeOrder> analyzeOrderFromQueneList = analyzeOrderRepository.findFirstFromQuene(AnalyzeState.WAITING_ON_QUEBE);
+		if(analyzeOrderFromQueneList.size()>0) {
+			AnalyzeOrder analyzeOrderFromQuene = analyzeOrderFromQueneList.get(0);
+			URL url = new URL(applicationProperties.getAiScriptEndpoint());
+			
+			Boolean isServerAvaible = Util.checkPortInUse(url.getHost(), url.getPort());
+			if(isServerAvaible) {
+				linuxCommandService.startScriptByHttp(analyzeOrderFromQuene.getOrderDetails().getSessionId());
+				
+				analyzeOrderFromQuene.setState(AnalyzeState.NOT_STARTED);
+				analyzeOrderRepository.save(analyzeOrderFromQuene);
+				
+				analyzeOrderFromQuene.getOrderDetails().setState(AnalyzeState.NOT_STARTED);
+				analyzeOrderDetailsRepository.save(analyzeOrderFromQuene.getOrderDetails());
+				
+				log.info("processFromQuene kuyruktan iş başlatıldı");
+			}else {
+				log.info("processFromQuene sunucu mevcut degil. analiz devam ediyor olabilir");
+			}
+		}else {
+			log.info("processFromQuene kuyrukta kayit bulunmadi");
+		}
+		
+		log.info("processFromQuene" + " ended");
+
+	}
+	
 	
 	@Scheduled(fixedRate = 60000)
 	public void checkUnprocessedOrdersForLongProcess() throws ParseException {
