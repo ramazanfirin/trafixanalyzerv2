@@ -215,8 +215,13 @@ public class Util {
 		AnalyzeOrderDetails result = new AnalyzeOrderDetails();
 		
 		VehicleTypeVM vehicleTypeVM = new VehicleTypeVM();
-		if(analyzePerson)
+		if(analyzePerson) {
 			vehicleTypeVM.setPerson(true);
+			vehicleTypeVM.setBike(false);
+			vehicleTypeVM.setBus(false);
+			vehicleTypeVM.setCar(false);
+			vehicleTypeVM.setTruck(false);
+		}
 		result.setClasses(objectMapper.writeValueAsString(vehicleTypeVM));
 		
 		DirectionVM directionVM = prepareDirections(objectMapper, lineList,directionList);
