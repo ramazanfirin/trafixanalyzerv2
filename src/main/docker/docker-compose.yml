@@ -6,28 +6,30 @@ services:
             - SPRING_PROFILES_ACTIVE=dev,swagger
             #- EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
             #- SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
-            - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3316/trafficanalzyzerv2?useUnicode=true&characterEncoding=utf8&useSSL=false
+            #- SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/trafficanalzyzerv2?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/trafix1?useUnicode=true&characterEncoding=utf8&useSSL=false
             - SPRING_DATASOURCE_USERNAME=root
-            - SPRING_DATASOURCE_PASSWORD=ra5699mo
+            #- SPRING_DATASOURCE_PASSWORD=ra5699mo
+            - SPRING_DATASOURCE_PASSWORD=trafix
             - APPLICATION_FTPDIRECTORY=/ftpDirectory
             - APPLICATION_AISCRIPTPATH=/aiScriptPath
             - APPLICATION_AISCRIPTNAME=pipeline.py
             - JHIPSTER_SLEEP=5 # gives time for the JHipster Registry to boot before the application
             - aiScriptEndpoint=http://localhost:8088
-            - reportInterval=3
+            - reportInterval=2
         volumes:
             - /ftpDirectory:/ftpDirectory
         ports:
             - 8080:8080
         network_mode: host    
-    mysqldblocal:   
-        image: mysql:5.7.20
-        environment:
-            #- MYSQL_USER=root
-            #- MYSQL_ALLOW_EMPTY_PASSWORD=yes
-            - MYSQL_ROOT_PASSWORD=ra5699mo
-            - MYSQL_DATABASE=trafficanalzyzerv2
+
+    mysql:
+        image: mariadb:10.1.19
+        command: --default-authentication-plugin=mysql_native_password 
         ports:
-            - 3316:3306
-        #network_mode: host    
-        command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8 --explicit_defaults_for_timestamp
+          - 3306:3306
+        volumes:
+          - ./mysql5:/var/lib/mysql
+        environment:
+          MYSQL_ROOT_PASSWORD: trafix
+          MYSQL_DATABASE: trafix1
