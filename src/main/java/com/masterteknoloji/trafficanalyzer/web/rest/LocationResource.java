@@ -2,7 +2,7 @@ package com.masterteknoloji.trafficanalyzer.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.masterteknoloji.trafficanalyzer.domain.Location;
-
+import com.masterteknoloji.trafficanalyzer.domain.Video;
 import com.masterteknoloji.trafficanalyzer.repository.LocationRepository;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
@@ -96,6 +96,14 @@ public class LocationResource {
         Page<Location> page = locationRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/locations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    
+    @GetMapping("/locations/getAll")
+    @Timed
+    public ResponseEntity<List<Location>> getAll() {
+        log.debug("REST request to get a page of Videos");
+        List<Location> page = locationRepository.getActiveItem();
+        return new ResponseEntity<>(page, null, HttpStatus.OK);
     }
 
     /**

@@ -15,7 +15,7 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
-        vm.locations = Location.query();
+        vm.locations = Location.getAll();
         vm.ftpDirectoryPath = ""	;
         
         getFtpDirectoryPath();
