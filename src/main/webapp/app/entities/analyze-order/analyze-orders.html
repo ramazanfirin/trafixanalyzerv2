@@ -57,8 +57,8 @@
                     <th jh-sort-by="state"><span data-translate="trafficanalzyzerv2App.analyzeOrder.state">State</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="scenario.id"><span data-translate="trafficanalzyzerv2App.analyzeOrder.scenario">Scenario</span> <span class="glyphicon glyphicon-sort"></span></th>
                     
-                    <th width="70" jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.analyzeOrder.video">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="scenario.id"><span data-translate="trafficanalzyzerv2App.video.location">Scenario</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th width="50" jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.analyzeOrder.video">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th width="10" jh-sort-by="scenario.id"><span data-translate="trafficanalzyzerv2App.video.location">Scenario</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.video.startDate">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.video.endDate">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
                     
@@ -78,12 +78,12 @@
                         <a ui-sref="scenario.preview({id:analyzeOrder.scenario.id})">{{analyzeOrder.scenario.name}}</a>
                     </td>
                     
-                    <td width="70%">
+                    <td width="50%">
                         <a ui-sref="video-detail({id:analyzeOrder.video.id})">
                         {{analyzeOrder.video.name.replaceAll("\\"," ")}}
                         </a>
                     </td>
-                    <td>
+                    <td width="10%">
                         {{analyzeOrder.video.location.name}}-{{analyzeOrder.video.location.description}}
                     </td>
                     <td>
