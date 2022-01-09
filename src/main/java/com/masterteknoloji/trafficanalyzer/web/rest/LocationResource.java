@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -132,5 +134,13 @@ public class LocationResource {
         log.debug("REST request to delete Location : {}", id);
         locationRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    @GetMapping(value = "/locations/search")
+    public List<Location> search(@RequestParam String name) throws IOException {
+        
+    	List<Location> result = locationRepository.findByNameContaining(name);
+    	
+    	return result;
     }
 }

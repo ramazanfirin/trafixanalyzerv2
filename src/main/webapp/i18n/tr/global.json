@@ -113,7 +113,8 @@
             "line": "Çizgi Ayarları",
             "viewReport": "Rapor",
             "close": "Kapat",
-            "play": "Oynat"
+            "play": "Oynat",
+            "search": "Ara"
         },
         "detail": {
             "field": "Alan",

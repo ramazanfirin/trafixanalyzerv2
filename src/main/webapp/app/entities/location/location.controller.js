@@ -16,6 +16,7 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+         vm.search = search;
 
         loadAll();
 
@@ -38,6 +39,19 @@
                 vm.queryCount = vm.totalItems;
                 vm.locations = data;
                 vm.page = pagingParams.page;
+            }
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
+        
+        function search () {
+            Location.search({
+                name: vm.name
+            }, onSuccess, onError);
+            function onSuccess(data, headers) {
+                vm.locations = data;
+                AlertService.success("Arama Tamamlandı");
             }
             function onError(error) {
                 AlertService.error(error.data.message);

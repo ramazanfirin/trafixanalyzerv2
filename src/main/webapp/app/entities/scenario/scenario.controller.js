@@ -18,6 +18,7 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
+        vm.search = search;
 
         loadAll();
 
@@ -45,6 +46,20 @@
                 AlertService.error(error.data.message);
             }
         }
+
+		function search () {
+            Scenario.search({
+                name: vm.name
+            }, onSuccess, onError);
+            function onSuccess(data, headers) {
+                vm.scenarios = data;
+                AlertService.success("Arama Tamamlandı");
+            }
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
+		
 
         function loadPage(page) {
             vm.page = page;

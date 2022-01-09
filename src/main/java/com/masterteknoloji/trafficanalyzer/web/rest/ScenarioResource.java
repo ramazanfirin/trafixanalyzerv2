@@ -185,4 +185,12 @@ public class ScenarioResource {
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         IOUtils.copy(targetStream, response.getOutputStream());
     }
+    
+    @GetMapping(value = "/scenarios/search")
+    public List<Scenario> search(@RequestParam String name) throws IOException {
+        
+    	List<Scenario> result = scenarioRepository.findByNameContaining(name);
+    	
+    	return result;
+    }
 }

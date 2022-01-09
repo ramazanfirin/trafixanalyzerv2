@@ -16,6 +16,7 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.search = search;
 
         loadAll();
 
@@ -43,6 +44,20 @@
                 AlertService.error(error.data.message);
             }
         }
+
+		function search () {
+            Video.search({
+                name: vm.name
+            }, onSuccess, onError);
+            function onSuccess(data, headers) {
+                vm.videos = data;
+                AlertService.success("Arama Tamamlandı");
+            }
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
+		
 
         function loadPage(page) {
             vm.page = page;

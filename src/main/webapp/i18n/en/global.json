@@ -111,7 +111,8 @@
             "line": "Line Settings",
             "viewReport": "View report",
             "close": "Close",
-            "play": "Play"
+            "play": "Play",
+            "search": "search"
         },
         "detail": {
             "field": "Field",

@@ -12,7 +12,8 @@
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
             'getFtpDirectoryPath': { method: 'GET', isArray: false, url: '/api/videos/getFtpDirectoryPath'},
-			'getAll': { method: 'GET', isArray: true, url: '/api/videos/getAll?page=0&size=1000&sort=id,desc'},
+			'getAll': { method: 'GET', isArray: true, url: '/api/videos/getAll?page=0&size=1000&sort=name,asc'},
+			'search': { method: 'GET', isArray: true, url: '/api/videos/search'},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

@@ -14,6 +14,17 @@
         </div>
     </div>
     <br/>
+    <div class="container-fluid">
+    	<div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.scenario.name" for="field_location">Location</label>
+            <input type="text" class="form-control" name="name" id="field_name" ng-model="vm.name" />
+            <button class="btn btn-primary" ng-click="vm.search()" >
+                    <span  data-translate="entity.action.search">
+                        Create new Video
+                    </span>
+                </button>        
+        </div>
+   </div>
     <div class="table-responsive">
         <table class="jh-table table table-striped">
             <thead>

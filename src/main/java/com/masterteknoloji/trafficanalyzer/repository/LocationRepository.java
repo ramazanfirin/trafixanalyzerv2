@@ -19,6 +19,8 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface LocationRepository extends JpaRepository<Location, Long> {
 
-	@Query("select v from Location v order by v.id desc")
+	@Query("select v from Location v order by v.name")
 	List<Location> getActiveItem();
+	
+	List<Location> findByNameContaining(String name);
 }
