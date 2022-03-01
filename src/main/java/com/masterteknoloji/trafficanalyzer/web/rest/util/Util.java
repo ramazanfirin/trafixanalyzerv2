@@ -33,11 +33,6 @@ import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.Point
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.RegionVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.SpeedVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.analyzeorderdetails.VehicleTypeVM;
-import com.zakgof.velvetvideo.IDemuxer;
-import com.zakgof.velvetvideo.IVelvetVideoLib;
-import com.zakgof.velvetvideo.IVideoDecoderStream;
-import com.zakgof.velvetvideo.IVideoFrame;
-import com.zakgof.velvetvideo.impl.VelvetVideoLib;
 
 public class Util {
 	
@@ -178,18 +173,19 @@ public class Util {
 	
 	public static BufferedImage getImageByVelvetVideoLib(File file) {
 		
-		BufferedImage result = null;
-		IVelvetVideoLib lib = VelvetVideoLib.getInstance();
-		try (IDemuxer demuxer = lib.demuxer(file)) {
-			IVideoDecoderStream videoStream = demuxer.videoStream(0);
-		    IVideoFrame videoFrame;
-		    while ((videoFrame = videoStream.nextFrame()) != null) {
-		    	result = videoFrame.image();
-			   	break;
-		    }
-		}catch (Exception e) {
-			result = null;
-		}  return result;
+//		BufferedImage result = null;
+//		IVelvetVideoLib lib = VelvetVideoLib.getInstance();
+//		try (IDemuxer demuxer = lib.demuxer(file)) {
+//			IVideoDecoderStream videoStream = demuxer.videoStream(0);
+//		    IVideoFrame videoFrame;
+//		    while ((videoFrame = videoStream.nextFrame()) != null) {
+//		    	result = videoFrame.image();
+//			   	break;
+//		    }
+//		}catch (Exception e) {
+//			result = null;
+//		}  return result;
+		return null;
 	}
 	
 	public static BufferedImage getImageByJCodec(File file) {

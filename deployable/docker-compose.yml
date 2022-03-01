@@ -10,6 +10,6 @@ services:
       - 3306:3306
     volumes:
       #- ./mysql3:/var/lib/mysql
-      - ./mysql4:/var/lib/mysql
+      - ${HOME}/mysql4:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: trafix
