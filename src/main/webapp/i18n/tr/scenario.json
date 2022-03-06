@@ -18,7 +18,33 @@
             "name": "İsim",
             "screenShot": "Ekran Görüntüsü",
             "video": "Video",
-            "lines": "Çizgiler"
+            "lines": "Çizgiler",
+            
+            "lineDefinition": "Çizgi Tanımlama",
+            "lineCanAddMessage": "POLIGON Çizmek İçin EKLE butonuna basınız",
+            "lineAddingMessage": "Şimdi POLIGON çizebilirsiniz",
+            "add": "EKLE",
+            "addButtonNotClickedError":"POLIGON Çizmek İçin EKLE butonuna basınız",
+            
+            "lineSelectMessage": "ÇİZGİ eklemek için, SEÇİME BAŞLA butonuna basınız",
+            "lineSelectableAddingMessage": "2 POLIGON seçmelisiniz",
+            "select": "SEÇİME BAŞLA",
+            "selectButtonNotClickedError":"ÇİZGİ eklemek için, SEÇİME BAŞLA butonuna basınız",
+            
+            "speedPolygonAddMessage": "HIZ POLIGON Çizmek İçin EKLE butonuna basınız",
+            "speedPolygonAddingMessage": "Şimdi POLIGON çizebilirsiniz",
+            "speedPolygonAddButtonNotClickedError":"HIZ POLIGON Çizmek İçin EKLE butonuna basınız",
+            "speedPolygonDefinition":"HIZ POLIGON TANIMLAMA",
+            "speedPolygonWitdh": "Poligon Genişliği",
+            "speed": "HIZ",
+            
+        	"directionAddMessage": "YON TANIMA eklemek İçin SEÇİME BAŞLA butonuna basınız",
+            "directionAddingMessage": "2 ÇİZGİ seçmelisiniz",
+            "directionAddButtonNotClickedError":"YON TANIMA eklemek İçin EKLE butonuna basınız",
+            "directionDefinition":"YÖN TANIMLAMA",
+            "directionStartLine": "Başlangıç Çizgisi",
+            "directionEndLine": "Bitiş Çizgisi",
+            "directionShow": "Göster"
         }
     }
 }

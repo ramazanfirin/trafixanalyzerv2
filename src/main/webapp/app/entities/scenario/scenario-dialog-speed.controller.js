@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('ScenarioDialogSpeedController', ScenarioDialogSpeedController);
 
-    ScenarioDialogSpeedController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','$location'];
+    ScenarioDialogSpeedController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','$location','$translate'];
 
-    function ScenarioDialogSpeedController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,$location) {
+    function ScenarioDialogSpeedController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,$location,$translate) {
         var vm = this;
 
         vm.scenario = entity;
@@ -34,10 +34,15 @@
 	    vm.points = $window.points;
 	    //vm.createPolygon = vm.createPolygon();
 	    vm.polygonType = "SPEED";
-	    
+	    vm.getLangKey = getLangKey;
 	    vm.baseUrl='http://'+$location.host()+':'+$location.port();
 
 		loadAll();
+		
+		function getLangKey(key){
+			var value = $translate.instant(key);
+			return value;
+		}
 
         function loadAll () {
         	if(vm.scenario.id == null)
@@ -91,7 +96,7 @@
 		function addToPolygonList () {
 
 			vm.polygon = new Object();
-			vm.polygon.name = "HIZ";
+			vm.polygon.name = getLangKey('trafficanalzyzerv2App.scenario.speed');
             vm.polygon.points="";
             for (var i = 0; i < $window.points.length; i++) {
   				if(vm.polygon.points=="")

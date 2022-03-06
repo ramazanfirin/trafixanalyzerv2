@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('ScenarioDialogLineController', ScenarioDialogLineController);
 
-    ScenarioDialogLineController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line','$location'];
+    ScenarioDialogLineController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line','$location','$translate'];
 
-    function ScenarioDialogLineController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line,$location) {
+    function ScenarioDialogLineController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line,$location,$translate) {
         var vm = this;
 
         vm.scenario = entity;
@@ -20,7 +20,7 @@
 		vm.resetMessage = resetMessage;
 		//vm.deletePolygon = deletePolygon;
 		vm.adding = false;
-		//vm.cancelPolygon = cancelPolygon;
+		vm.cancelPolygon = cancelPolygon;
 		vm.addLine = addLine;
 		vm.deleteLine = deleteLine;
 
@@ -36,10 +36,17 @@
 	    vm.hidePopup = hidePopup;
 	    //vm.createPolygon = vm.createPolygon();
 	    vm.polygonType="COUNTING";
+        vm.getLangKey = getLangKey;
 	    
 	    vm.baseUrl='http://'+$location.host()+':'+$location.port();
 
 		loadAll();
+
+		function getLangKey(key){
+			var value = $translate.instant(key);
+			return value;
+		}
+
 
         function loadAll () {
         //$("#exampleModal").modal("show");
@@ -86,6 +93,10 @@
 			},addLineSuccess,onSaveError);
             
         } 
+
+		function cancelPolygon () {
+	        vm.adding = false;
+         }
         
         function addLineSuccess(){
  			vm.addMessage = vm.addMessageBefore;
@@ -127,7 +138,7 @@
         }
         function showPopup(){
         	if($window.selectedPolygons.length!=2){
-				alert("2 adet seçim yapmalısınız");
+				alert(getLangKey('trafficanalzyzerv2App.scenario.lineSelectableAddingMessage'));
 				return;
 			}
 			

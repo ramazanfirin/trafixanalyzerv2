@@ -18,7 +18,34 @@
             "name": "Name",
             "screenShot": "Screen Shot",
             "video": "Video",
-            "lines": "Lines"
+            "lines": "Lines",
+            "lineDefinition": "Line Definition",
+            "lineCanAddMessage": "To create Polygon, click ADD button",
+            "lineAddingMessage": "Now You can draw polygons",
+            "add": "Add",
+            "addButtonNotClickedError":"Click ADD button to create polygon",
+            
+            "lineSelectMessage": "To create LINE, click SELECT button",
+            "lineSelectableAddingMessage": "You must select 2 polygons",
+            "select": "Select",
+            "selectButtonNotClickedError":"Click SELECT button to create LINE",
+            
+            "speedPolygonAddMessage": "To create SPEED POLYGON, click ADD button",
+            "speedPolygonAddingMessage": "You can draw polygons",
+            "speedPolygonAddButtonNotClickedError":"Click ADD button to create SPEED POLYGON",
+            "speedPolygonDefinition":"Speed Polygon Definition",
+            "speedPolygonWitdh": "Speed Polygon Witdh",
+            "speed": "Speed",
+            
+        	"directionAddMessage": "To create DIRECTION, click ADD button",
+            "directionAddingMessage": "You must select 2 Lines",
+            "directionAddButtonNotClickedError":"Click ADD button to create DIRECTION",
+            "directionDefinition":"Direction Definition",
+            "directionStartLine": "Start Line",
+            "directionEndLine": "End Line",
+            "directionShow": "Show"
+            
+            
         }
     }
 }

@@ -27,7 +27,19 @@
             "downloadExcelFile":"Download Excel File",
             "directionReportTabLabel":"Direction Result",
             "analyzeReports":"Analyze Reports",
-            "search":"Search"
+            "search":"Search",
+            
+            "timeInterval": "Time Interval",
+            "directionName": "Direction Name",
+            "type": "Type",
+            "count": "Count",
+            "startLineName": "Start Line Name",
+            "endLineName": "End Line Name",
+            "startLineTotalCount": "Start Line Count",
+            "endLineTotalCount": "End Line Count",
+            "startLineCrossRate": "Start Line Cross Rate",
+            "endLineCrossRate": "End Line Cross Rate"
+            
         }
     }
 }

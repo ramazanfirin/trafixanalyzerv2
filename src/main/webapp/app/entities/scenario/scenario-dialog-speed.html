@@ -32,11 +32,24 @@
 <!--         	<img ng-src="content/images/kale.JPG" width="640" height="480"> -->
 			<div id="containerKonva"></div>
 			<div id="buttons">
+			     <!-- 
 			      <span>{{vm.addMessage}}</span>
 			      <input type="button" id="add" value="Ekle" ng-click="vm.addPolygon()" ng-show = "!vm.adding"/>
 			      <input type="button" id="save" value="Kaydet" ng-click="vm.showPopup()"  ng-show = "vm.adding"/>
 			      <input type="button" id="İptal" value="İptal" ng-click="vm.cancelPolygon()" ng-show = "vm.adding"/>
-			    </div>
+			     -->
+			    <span ng-show="!vm.adding" data-translate="trafficanalzyzerv2App.scenario.speedPolygonAddMessage">Cancel</span>
+			    <span ng-show="vm.adding" data-translate="trafficanalzyzerv2App.scenario.speedPolygonAddingMessage">Cancel</span> 
+			 	<button type="button" id="add" ng-show = "!vm.adding" ng-click="vm.addPolygon()" class="btn btn-primary">
+            			<span data-translate="trafficanalzyzerv2App.scenario.add">Save</span>
+        			</button>
+			      <button type="button" id="save" ng-show = "vm.adding" ng-click="vm.showPopup()" class="btn btn-primary">
+            			<span data-translate="entity.action.save">Save</span>
+        			</button>
+			   	<button type="button" id="İptal" ng-show = "vm.adding" ng-click="vm.cancelPolygon()" class="btn btn-primary">
+            			<span data-translate="entity.action.cancel">Save</span>
+        			</button>		
+			 </div>
         </div>
         
         <div class="form-group">
@@ -45,8 +58,8 @@
 	        	<thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="name"><span >Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="name"><span >Genişlik</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span data-translate="trafficanalzyzerv2App.scenario.name">Cancel</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span data-translate="trafficanalzyzerv2App.scenario.speedPolygonWitdh">Cancel</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
            		 </thead>
@@ -61,7 +74,9 @@
 <!--                                 <span class="glyphicon glyphicon-remove-circle"></span> -->
 <!--                                 <span class="hidden-sm-down" data-translate="entity.action.delete"></span> -->
 <!--                             </button> -->
-                    <input type="button" id="add" value="Sil" ng-click="vm.deletePolygon(polygon.id,polygon.name)"/>        
+                    <button type="button" ng-click="vm.deletePolygon(polygon.id,polygon.name)" class="cancelbtn">
+                    	<span data-translate="entity.action.delete">Cancel</span>
+                    </button>
                     </td>                     
                 </tr>
                 
@@ -86,16 +101,17 @@
      <div id="myModal" class="modal-new">
     <div class="modal-content-new">
     <span class="close">&times;</span>
-    <h3>Mesafe Tanımlama</h3>
+    <h3><span data-translate="trafficanalzyzerv2App.scenario.speedPolygonDefinition">Cancel</span></h3>
     <div class="form-group">
-            <label class="control-label" for="field_name">Araç Geçiş Yönündeki Poligon genişliği</label>
+            <label data-translate="trafficanalzyzerv2App.scenario.speedPolygonWitdh" for="field_name">Video</label>
+            
             <input type="text" class="form-control" name="name" id="field_name"
                     ng-model="vm.width"
                     />
         </div>
     <div class="clearfix">
-        <button type="button" id="cancelBtn"  ng-click="vm.hidePopup()" class="cancelbtn">Cancel</button>
-        <button type="button" id="submitBtn"  ng-click="vm.addToPolygonList()" class="deletebtn">Kaydet</button>
+        <button type="button" id="cancelBtn"  ng-click="vm.hidePopup()" class="cancelbtn"><span data-translate="entity.action.cancel">Cancel</span></button>
+        <button type="button" id="submitBtn"  ng-click="vm.addToPolygonList()" class="deletebtn"><span data-translate="entity.action.save">Save</span></button>
       </div>
   </div>
 </form>
@@ -171,7 +187,7 @@ stage.add(layer);
 			addPoint(pos.x, pos.y);
 
 		} else {
-			alert("Nokta eklemek icin, Ekle butonuna basiniz");
+			alert(scope.vm.getLangKey('trafficanalzyzerv2App.scenario.speedPolygonAddButtonNotClickedError'));
 		}
 	});
 	

@@ -50,6 +50,7 @@
                     $translatePartialLoader.addPart('global');
                     $translatePartialLoader.addPart('analyzeOrderDetails');
                     $translatePartialLoader.addPart('video');
+					$translatePartialLoader.addPart('videoRecord');
                     return $translate.refresh();
                 }]
             }

@@ -27,7 +27,18 @@
             "downloadExcelFile":"Excel İndir",
             "directionReportTabLabel":"Yön Analizi",
             "analyzeReports":"Analiz Raporları",
-            "search":"Ara"
+            "search":"Ara",
+            
+            "timeInterval": "Zaman Aralığı",
+            "directionName": "Yön İsmi",
+            "type": "Tip",
+            "count": "Toplam Sayı",
+            "startLineName": "Başlangiç Çizgi İsmi",
+            "endLineName": "Bitiş Çizgi İsmi",
+            "startLineTotalCount": "Başlangıç Toplam Geçiş",
+            "endLineTotalCount": "Bitiş Toplam Geçiş",
+            "startLineCrossRate": "Başlangıç Geçiş Oranı",
+            "endLineCrossRate": "Bitiş Geçiş Oranı"
         }
     }
 }

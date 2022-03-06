@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('ScenarioDialogController', ScenarioDialogController);
 
-    ScenarioDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','$location'];
+    ScenarioDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','$location','JhiLanguageService','$translate','AlertService'];
 
-    function ScenarioDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,$location) {
+    function ScenarioDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,$location,JhiLanguageService,$translate,AlertService) {
         var vm = this;
 
         vm.scenario = entity;
@@ -23,8 +23,8 @@
 		vm.adding = false;
 		vm.cancelPolygon = cancelPolygon;
 
-		vm.addMessageBefore = "Çizgi eklemek için, Ekle butonuna basınız"
-	    vm.addMessageAfter = "Çizgi ekleyebilirsiniz"
+		//vm.addMessageBefore = "Çizgi eklemek için, Ekle butonuna basınız"
+	    //vm.addMessageAfter = "Çizgi ekleyebilirsiniz"
 	    vm.addMessage = vm.addMessageBefore;
 	    vm.selectVideoMessage = ""
 	    vm.polygons = []; 
@@ -32,10 +32,17 @@
 	    vm.points = $window.points;
 	    //vm.createPolygon = vm.createPolygon();
 		vm.polygonType="COUNTING";
+		vm.getLangKey = getLangKey
+		
 		
 		vm.baseUrl='http://'+$location.host()+':'+$location.port();
 
 		loadAll();
+		
+		function getLangKey(key){
+			var value = $translate.instant(key);
+			return value;
+		}
 
         function loadAll () {
         	if(vm.scenario.id == null)
@@ -67,7 +74,9 @@
 	    
 	    function deletePolygonSuccess(result,headers){
 	   		 if(headers('X-trafficanalzyzerv2App-error')=="error.1001"){
-	   		 	alert("Bu polygon çizgilerde kullanıldığı için silinemez. Önce çizgiyi siliniz");
+				var entityName = $translate.instant('trafficanalzyzerv2App.scenario.name');
+	   		 	//alert("Bu polygon çizgilerde kullanıldığı için silinemez. Önce çizgiyi siliniz");
+                alert(entityName) ; 
 	   		 	return;
 	   		 }else{
 	   		 	refresh();
@@ -183,7 +192,7 @@
         function clear () {
             $uibModalInstance.dismiss('cancel');
             if(vm.polygons == null || vm.polygons.length==0){
-            	alert('Senaryo içerisine polygon bulunmadığı için, senaryo silinecektir.Onaylıyor musunuz ? ');
+            	//alert('Senaryo içerisine polygon bulunmadığı için, senaryo silinecektir.Onaylıyor musunuz ? ');
             	Scenario.delete({id:vm.scenario.id});
             }
         }

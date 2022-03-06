@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('ScenarioDialogDirectionController', ScenarioDialogDirectionController);
 
-    ScenarioDialogDirectionController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line','Direction','$location'];
+    ScenarioDialogDirectionController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line','Direction','$location','$translate'];
 
-    function ScenarioDialogDirectionController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line,Direction,$location) {
+    function ScenarioDialogDirectionController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line,Direction,$location,$translate) {
         var vm = this;
 
         vm.scenario = entity;
@@ -39,10 +39,15 @@
 	    vm.hidePopup = hidePopup;
 	    //vm.createPolygon = vm.createPolygon();
 	    vm.polygonType="COUNTING";
-	    
+	    vm.getLangKey = getLangKey;
 	    vm.baseUrl='http://'+$location.host()+':'+$location.port();
 
 		loadAll();
+
+		function getLangKey(key){
+			var value = $translate.instant(key);
+			return value;
+		}
 
         function loadAll () {
         //$("#exampleModal").modal("show");
@@ -137,7 +142,7 @@
         }
         function showPopup(){
         	if($window.selectedPolygons.length!=2){
-				alert("2 adet seçim yapmalısınız");
+				alert(getLangKey('trafficanalzyzerv2App.scenario.directionAddingMessage'));
 				return;
 			}
 			
