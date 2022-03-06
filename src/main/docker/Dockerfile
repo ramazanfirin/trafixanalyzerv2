@@ -1,8 +1,7 @@
 FROM openjdk:8-jre-alpine
 #COPY --from=python:3.6 / /
 
-RUN apk add --update ffmpeg
-#RUN apt-get install -y ffmpeg
+#RUN apk add --update ffmpeg
 
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
     JHIPSTER_SLEEP=0 \
@@ -15,4 +14,4 @@ CMD echo "The application will start in ${JHIPSTER_SLEEP}s..." && \
 EXPOSE 8080
 
 ADD *.war /app.war
-ADD velvet-video-natives-0.2.8.full.jar /velvet-video-natives-0.2.8.full.jar
+#ADD velvet-video-natives-0.2.8.full.jar /velvet-video-natives-0.2.8.full.jar

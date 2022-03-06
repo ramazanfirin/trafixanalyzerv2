@@ -1,0 +1,8 @@
+sudo ./mvnw -Pdev -DskipTests verify
+sudo docker build -t ramazanfirin/trafix:0.0.2 .
+sudo cp target/trafficanalzyzerv-2-0.0.1-SNAPSHOT.war src/main/docker/
+sudo docker-compose -f docker-compose-only-app.yml up
+sudo docker push ramazanfirin/trafix:0.0.2
+sudo apt install gnupg2 pass
+
+
