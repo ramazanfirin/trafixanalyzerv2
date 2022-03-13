@@ -193,7 +193,7 @@ public class Util {
 		BufferedImage result = null;
 		Picture picture;
 		try {
-			picture = FrameGrab.getFrameFromFile(file, 5);
+			picture = FrameGrab.getFrameFromFile(file, 1000);
 			result = AWTUtil.toBufferedImage(picture);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
