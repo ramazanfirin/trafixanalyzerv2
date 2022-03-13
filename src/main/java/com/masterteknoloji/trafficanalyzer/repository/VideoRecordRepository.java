@@ -154,4 +154,15 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 	 		+ "where i.analyze_id=:analyzeOrderId\n"
 	 		+ "group by startLineName,endLineName",nativeQuery=true)
 	  Iterable<Map<String,Object>> getDirectionCrossCountForDirection(@Param("analyzeOrderId") Long analyzeOrderId);
+	 
+	 @Query(value="select i.analyze_id,scenario.id, direction.name,video.id ,video.name ,video.start_date ,video.end_date ,count(*) as count\n"
+	 		+ "from video_record i\n"
+	 		+ "INNER JOIN direction as direction ON i.direction_id=direction.id\n"
+	 		+ "INNER JOIN analyze_order as analyze_order ON i.analyze_id=analyze_order.id\n"
+	 		+ "INNER JOIN scenario as scenario ON analyze_order.scenario_id=scenario.id\n"
+	 		+ "INNER JOIN video as video ON analyze_order.video_id=video.id\n"
+	 		+ "where scenario.id=:scenarioId\n"
+	 		+ "group by i.analyze_id,scenario.id,direction.name",nativeQuery=true)
+	 Iterable<Map<String,Object>> getDirectionReportByScnario(@Param("scenarioId") Long scenarioId);
+		 
 }
