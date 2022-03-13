@@ -34,9 +34,15 @@
 
         <div class="form-group">
             <label data-translate="trafficanalzyzerv2App.location.district" for="field_district">District</label>
-            <select class="form-control" id="field_district" name="district" ng-model="vm.location.district" ng-options="district as district.id for district in vm.districts track by district.id">
+            <select required class="form-control" id="field_district" name="district" ng-model="vm.location.district" ng-options="district as district.id for district in vm.districts track by district.id">
                 <option value=""></option>
             </select>
+            <div ng-show="editForm.district.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.district.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
         </div>
     </div>
     <div class="modal-footer">
