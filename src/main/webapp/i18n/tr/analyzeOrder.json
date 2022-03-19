@@ -38,7 +38,8 @@
             "startLineTotalCount": "Başlangıç Toplam Geçiş",
             "endLineTotalCount": "Bitiş Toplam Geçiş",
             "startLineCrossRate": "Başlangıç Geçiş Oranı",
-            "endLineCrossRate": "Bitiş Geçiş Oranı"
+            "endLineCrossRate": "Bitiş Geçiş Oranı",
+            "analyzeResult": "Analiz Sonucu"
         }
     }
 }

@@ -7,12 +7,12 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myScenarioLabel" data-translate="trafficanalzyzerv2App.analyzeOrder.home.createOrEditLabel">Create or edit a Scenario</h4>
+        <h4 class="modal-title" id="myScenarioLabel" data-translate="trafficanalzyzerv2App.analyzeOrder.analyzeResult">Create or edit a Scenario</h4>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-    <button id="play">Play</button><button id="pause">Pause</button>
-   	<div class="form-group">
+<!--     <button id="play">Play</button> -->
+    <div class="">
 			<div id="containerKonva"></div>
 			
         </div>
@@ -31,6 +31,7 @@
 <script>
 //Get the modal
 var modal = document.getElementById("myModal");
+var tempId = 0;
 
 // Get the button that opens the modal
 var btn = document.getElementById("myBtn");
@@ -43,36 +44,37 @@ var poly = null;
 var polygonListOnScreen=[];
 var lineListOnScreen=[];
 var textListOnScreen=[];
+var descriptionRectListOnScreen=[];
+var timeouts=[];
 
 var width = window.innerWidth;
 var height = window.innerHeight;
 
+var colors=[];
+colors.push('yellow');
+colors.push('lime');
+colors.push('aqua');
+colors.push('orange');
+colors.push('cornflowerblue');
+colors.push('lightseagreen');
+colors.push('steelblue');
+colors.push('turquoise');
+colors.push('chartreuse');
+colors.push('blueviolet');
+colors.push('purple');
+
 var stage = new Konva.Stage({
 	container : 'containerKonva',
 	width : 1280, // 64x13
-	height : 760, // 36x13
+	height : 720, // 36x13
 });
 
 var layerImage = new Konva.Layer();
 var layer = new Konva.Layer();
+layer.hide();
 
-var darthVaderImg = new Konva.Image({
-	width : 832, // 64x13
-	height : 468, // 36x13
-	z : -1
-});
 
 var scope = angular.element(document.getElementById("editForm")).scope();
-
-// var imageObj1 = new Image();
-// if(scope.vm.analyzeOrder.scenario!=null && scope.vm.analyzeOrder.scenario.id != null)
-// 	imageObj1.src = "http://localhost:8080/api/scenarios/getScreenShoot/"+scope.vm.analyzeOrder.scenario.id;
-
-
-// imageObj1.onload = function() {
-// 	darthVaderImg.image(imageObj1);
-// 	layerImage.draw();
-// };
 
 var text = new Konva.Text({
         text: 'Loading video...',
@@ -85,12 +87,11 @@ var text = new Konva.Text({
 
 
 var video = document.createElement('video');
-video.src =  'http://localhost:8000/day_1_min_chunk.m4v';
+
+console.log(video.src);
 var image = new Konva.Image({
   image: video,
-  draggable: true,
-  x: 50,
-  y: 20,
+  draggable: false,
 });
 layer.add(image);
 
@@ -102,25 +103,304 @@ var anim = new Konva.Animation(function () {
   }, layer);
   
 video.addEventListener('loadedmetadata', function (e) {
-    text.text('Press PLAY...');
-    image.width(video.videoWidth);
-    image.height(video.videoHeight);
+    text.text('Video Yukle');
+    console.log("video.videoWidth "+ video.videoWidth);
+    console.log("video.videoHeight "+ video.videoHeight);
+    image.width(1248);
+    image.height(702);
   });  
 
-document.getElementById('play').addEventListener('click', function () {
-    text.destroy();
-    video.play();
-    anim.start();
-  });
-  document.getElementById('pause').addEventListener('click', function () {
-    video.pause();
-    anim.stop();
-  });
+//document.getElementById('play').addEventListener('click', function () {
+//	play();
+//});
+  
+  function play(){
+		layer.show();
+		var videoPath =scope.vm.analyzeOrder.video.path.replace('/home/ramazan/Desktop/videos','');
+		video.src = 'http://localhost:8000/'+videoPath;
+		text.destroy();
+	    startVisulation();
+	    video.play();
+	    anim.start();
+  
+  }
+ 
+//document.getElementById('pause').addEventListener('click', function () {
+//    video.pause();
+//    anim.stop();
+//  });
 
 //stage.add(layerImage);
 stage.add(layer);
 
 video.play();
+
+
+scope.$on('ploygonDataReceived', function(params){
+	//alert(scope.vm.polygons.length); 
+
+	for(var i=0;i<scope.vm.polygons.length;i++){
+		var polyFromDB = scope.vm.polygons[i];
+		//poly = createPolygon(polyFromDB.id);
+		tempId = tempId + 1;
+		
+		var allCoords = polyFromDB.points.split(";");
+		for(var y=0;y<allCoords.length;y++){
+			var pointCoords = allCoords[y].split(",");
+			var pointx = pointCoords[0];
+			var pointy = pointCoords[1];
+			addPoint(pointx,pointy);
+			
+			//console.log(pointx +" "+pointy);	
+		}
+		points=[];
+		;
+	}
+	poly = null;
+});
+
+function getColor(index){
+	if(index<10)
+		return colors[index];
+	else
+	    return colors[index % 10];
+}
+
+scope.$on('lineDataReceived', function(params){
+	console.log("lineDataReceived");
+    console.log("lines"+" "+scope.vm.lines);
+	for(var i=0;i<scope.vm.lines.length;i++){
+		var line = scope.vm.lines[i];
+		
+		var color = getColor(i)
+		var linePoly = createLinePolygon(line.id,color);
+		tempId = tempId + 1;
+		
+		var allCoords = line.calculatedPolygon.points.split(";");
+		console.log(allCoords);
+		var totalx = 0;
+		var totaly = 0;
+		for(var y=0;y<allCoords.length;y++){
+			var pointCoords = allCoords[y].split(",");
+			var pointx = pointCoords[0];
+			var pointy = pointCoords[1];
+			
+			pointx = pointx *1.5;
+			pointy = pointy *1.5;
+			
+			totalx= totalx +parseInt(pointx);
+			totaly= totaly +parseInt(pointy);
+			
+			//console.log("pointx "+ pointx);
+			//console.log("pointy "+ pointy);
+			
+			linePoly.attrs.points.push(pointx);
+			linePoly.attrs.points.push(pointy);
+		}
+	
+		disabledPolygon(line.startPolygon.id);
+		disabledPolygon(line.endPolygon.id);
+		
+		var centerx = totalx / allCoords.length;
+		var centery = totaly / allCoords.length;
+		
+		createText(centerx,centery,line.id,"0");
+		createDetailRect(centerx,centery,line.id,color)
+
+		points=[];
+		
+	}
+	
+	
+	
+	
+	poly = null;
+});
+
+function createText(pointx,pointy,lineId,text){
+	//alert(text);
+	var simpleText = new Konva.Text({
+		x : pointx,
+		y : pointy,
+		text : '1',
+		fontSize : 15,
+		fontFamily : 'Calibri',
+		fill : 'red',
+		id: 'line_count_'+lineId
+	});
+	
+	textListOnScreen.push(simpleText);
+	simpleText.text(text);
+	layer.add(simpleText);
+}
+
+function disabledPolygon(polygonId){
+	//console.log("disabledPolygon:polygonId "+polygonId)
+	for(var i=0;i<polygonListOnScreen.length;i++){
+		//console.log("disabledPolygon:polygonListOnScreen "+polygonListOnScreen[i].attrs.id)
+		if(polygonListOnScreen[i].attrs.id==polygonId){
+			polygonListOnScreen[i].attrs.selectable=false;
+			polygonListOnScreen[i].fill(null);
+			polygonListOnScreen[i].stroke(null);
+			//console.log("disabledPolygon:disabled edildi "+polygonListOnScreen[i].attrs.id);
+//				polygonListOnScreen[i].destroy();
+//				layer.draw();
+		}	
+	}
+}
+
+function createLinePolygon(id,color){
+	var polyNew = new Konva.Line({
+		points : [],
+		fill : color,
+		stroke : color,
+		//strokeWidth: 5,
+		draggable : false,
+		closed : true,
+		opacity : 0.5,
+		originalColor: color,
+		count: '0',
+	//tension:5
+	id :id
+	});
+	//console.log("line="+polyNew.attrs.originalColor);
+	lineListOnScreen.push(polyNew);
+	polyNew.id(id);
+	layer.add(polyNew);
+	return polyNew;
+}	
+
+function startVisulation(){
+	//console.log("startVisulation");
+	var visulationDatas = scope.vm.visulationData;
+	//console.log(visulationDatas);
+	for(var i=0;i<visulationDatas.length;i++){
+		addTimerToLine(visulationDatas[i]);	
+	}
+}
+
+function addTimerToLine(visulationData){
+	var line = findLineById(visulationData.lineId);
+	//console.log("lineId = "+ line.attrs.id);
+	setTimerForChangeColor(line,visulationData.duration,"type:"+visulationData.type);
+
+}
+
+function findLineById(id){
+	for(var i=0;i<lineListOnScreen.length;i++){
+		var line = lineListOnScreen[i];
+		if(line.attrs.id==id)
+			return line
+	}
+	return null;
+}
+
+function findTextById(id){
+	for(var i=0;i<textListOnScreen.length;i++){
+		var line = textListOnScreen[i];
+		if(line.attrs.id=='line_count_'+id)
+			return line
+	}
+	return null;
+}
+
+function findRectById(id){
+	for(var i=0;i<descriptionRectListOnScreen.length;i++){
+		var line = descriptionRectListOnScreen[i];
+		if(line.attrs.id=='descriptionGroup_'+id)
+			return line
+	}
+	return null;
+}
+
+function setTimerForChangeColor(line,time,message) {
+	var myVar = setTimeout(changeColor, time,line,message);
+	timeouts.push(myVar);
+}
+
+async function changeColor(line,message) { 
+	console.log(line);
+	var originalColor = line.attrs.originalColor;
+	
+	var text = findTextById(line.attrs.id);
+	var count = parseInt(text.text());
+	text.text(count+1);
+	
+	var descriptionGroup = findRectById(line.attrs.id)
+	var text1 = descriptionGroup.findOne('#countLabel1');
+	var text2 = descriptionGroup.findOne('#countLabel2');
+	var text3 = descriptionGroup.findOne('#countLabel3');
+	
+	
+	text1.text(text2.text());
+	text2.text(text3.text());
+	text3.text(message);
+	
+	line.fill("red");
+	var rect = descriptionGroup.findOne('#rect');
+	rect.fill("red");
+	await delay(100);
+	line.fill(originalColor);
+	rect.fill(originalColor);
+}
+function delay(time) {
+	return new Promise(resolve => setTimeout(resolve, time));
+	}
+	
+function createDetailRect(pointx,pointy,id,color){
+	var group = new Konva.Group({
+        x: pointx,
+        y: pointy,
+        draggable: true,
+		id:'descriptionGroup_'+id
+      });
+	
+	var rect2 = new Konva.Rect({
+        width: 200,
+        height: 60,
+        fill: color,
+        //shadowBlur: 10,
+        cornerRadius: 10,
+		opacity: 0.5,
+		draggable: false,
+		id:'rect'
+      });
+      group.add(rect2);
+
+	  var text1 = new Konva.Text({
+     	x: 10,
+        y: 10,
+		text: '',
+        align: 'center',
+        verticalAlign: 'middle',
+		id:'countLabel1'
+      });
+      group.add(text1);
+
+	var text2 = new Konva.Text({
+     	x: 10,
+        y: 25,
+		text: '',
+        align: 'center',
+        verticalAlign: 'middle',
+		id:'countLabel2'
+      });
+      group.add(text2);
+	  
+	  var text3 = new Konva.Text({
+     	x: 10,
+        y: 40,
+		text: '',
+        align: 'center',
+        verticalAlign: 'middle',
+		id:'countLabel3'
+      });
+      group.add(text3);
+      descriptionRectListOnScreen.push(group);
+  	  layer.add(group);
+	  
+	 
+}	
 
 </script>
 

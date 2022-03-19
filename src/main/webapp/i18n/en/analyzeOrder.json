@@ -38,7 +38,8 @@
             "startLineTotalCount": "Start Line Count",
             "endLineTotalCount": "End Line Count",
             "startLineCrossRate": "Start Line Cross Rate",
-            "endLineCrossRate": "End Line Cross Rate"
+            "endLineCrossRate": "End Line Cross Rate",
+            "analyzeResult": "Analyze Result"
             
         }
     }

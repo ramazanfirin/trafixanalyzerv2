@@ -257,7 +257,7 @@ var darthVaderImg = new Konva.Image({
 
 var scope = angular.element(document.getElementById("editForm")).scope();
 //alert(scope.vm.polygons.length);
-console.log("from script:"+scope.vm.polygons.length);
+//console.log("from script:"+scope.vm.polygons.length);
 
 var imageObj1 = new Image();
 if(scope.vm.scenario!=null && scope.vm.scenario.id != null)
@@ -337,10 +337,10 @@ stage.add(layer);
 	
 	scope.$on('speedPloygonDataReceived', function(params){
 		//alert(scope.vm.polygons.length); 
-	console.log("speedPloygonDataReceived");
+	//console.log("speedPloygonDataReceived");
 		for(var i=0;i<scope.vm.speedPolygons.length;i++){
 			var polyFromDB = scope.vm.speedPolygons[i];
-			console.log(polyFromDB);
+			//console.log(polyFromDB);
 			poly = createPolygon(polyFromDB.id);
 			tempId = tempId + 1;
 			poly.attrs.id="HIZ"
@@ -361,8 +361,8 @@ stage.add(layer);
 	});
 	
 	scope.$on('lineDataReceived', function(params){
-		console.log("lineDataReceived");
-	    console.log("lines"+" "+scope.vm.lines);
+		//console.log("lineDataReceived");
+	    //console.log("lines"+" "+scope.vm.lines);
 		for(var i=0;i<scope.vm.lines.length;i++){
 			var line = scope.vm.lines[i];
 			var linePoly = createLinePolygon(line.id);
@@ -370,7 +370,7 @@ stage.add(layer);
 			tempId = tempId + 1;
 			
 			var allCoords = line.calculatedPolygon.points.split(";");
-			console.log(allCoords);
+			//console.log(allCoords);
 			var totalx = 0;
 			var totaly = 0;
 			for(var y=0;y<allCoords.length;y++){
@@ -380,8 +380,8 @@ stage.add(layer);
 				totalx= totalx +parseInt(pointx);
 				totaly= totaly +parseInt(pointy);
 				
-				console.log("pointx "+ pointx);
-				console.log("pointy "+ pointy);
+				//console.log("pointx "+ pointx);
+				//console.log("pointy "+ pointy);
 				
 				linePoly.attrs.points.push(pointx);
 				linePoly.attrs.points.push(pointy);
@@ -432,7 +432,7 @@ stage.add(layer);
 	function getPolygonById(polygonId){
 		var result ;
 		for(var i=0;i<polygonListOnScreen.length;i++){
-			console.log("disabledPolygon:polygonListOnScreen "+polygonListOnScreen[i].attrs.id)
+			//console.log("disabledPolygon:polygonListOnScreen "+polygonListOnScreen[i].attrs.id)
 			if(polygonListOnScreen[i].attrs.id==polygonId){
 					result = polygonListOnScreen[i];
 			}
@@ -441,24 +441,24 @@ stage.add(layer);
 	}
 	
 	function disabledPolygon(polygonId){
-		console.log("disabledPolygon:polygonId "+polygonId)
+		//console.log("disabledPolygon:polygonId "+polygonId)
 		for(var i=0;i<polygonListOnScreen.length;i++){
-			console.log("disabledPolygon:polygonListOnScreen "+polygonListOnScreen[i].attrs.id)
+			//console.log("disabledPolygon:polygonListOnScreen "+polygonListOnScreen[i].attrs.id)
 			if(polygonListOnScreen[i].attrs.id==polygonId){
 				polygonListOnScreen[i].attrs.selectable=false;
 				polygonListOnScreen[i].fill(null);
 				polygonListOnScreen[i].stroke(null);
-				console.log("disabledPolygon:disabled edildi "+polygonListOnScreen[i].attrs.id);
+				//console.log("disabledPolygon:disabled edildi "+polygonListOnScreen[i].attrs.id);
 // 				polygonListOnScreen[i].destroy();
 // 				layer.draw();
 			}	
 		}
 	}
 	
-	console.log(scope);
+	//console.log(scope);
 	function addPoint(pointx, pointy) {
 		points.push(parseInt(pointx, 10)+","+parseInt(pointy, 10));
-		console.log(points);
+		//console.log(points);
 
 		poly.attrs.points.push(pointx);
 		poly.attrs.points.push(pointy);
@@ -539,7 +539,7 @@ stage.add(layer);
 	        }	
 			
 			
-	        console.log(this.attrs.selected);
+	        //console.log(this.attrs.selected);
 	        
 		});
 		
@@ -548,14 +548,14 @@ stage.add(layer);
 	
 	function removeFromSelectedList(polygon){
 		for(var i=0;i<selectedPolygons.length;i++){
-			console.log(selectedPolygons[i].attrs.id+ "- "+ polygon.attrs.id);
+			//console.log(selectedPolygons[i].attrs.id+ "- "+ polygon.attrs.id);
 			if(selectedPolygons[i].attrs.id== polygon.attrs.id)
 				selectedPolygons.splice(i);
 		}
 	}
 	
 	function cancelSelections(){
-		console.log("cancel selection");
+		//console.log("cancel selection");
 		for(var i=0;i<selectedPolygons.length;i++){
 			selectedPolygons[i].fill("lightgreen");;
 		}
@@ -578,4 +578,6 @@ stage.add(layer);
 		simpleText.text(text);
 		layer.add(simpleText);
 	}
+	
+	
 </script>

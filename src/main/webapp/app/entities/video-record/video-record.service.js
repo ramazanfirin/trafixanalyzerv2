@@ -16,6 +16,7 @@
             'getClassificationData': { method: 'GET', isArray: true, url: '/api/video-records/getClassificationData/:id'},
             'getAverageSpeedData': { method: 'GET', isArray: true, url: '/api/video-records/getAverageSpeedData/:id'},
             'getResultOfDirectionReport': { method: 'GET', isArray: true, url: '/api/video-records/getResultOfDirectionReport/:id'},
+            'getVisulationData': { method: 'GET', isArray: true, url: '/api/video-records/getVisulationData/:id'},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
