@@ -87,6 +87,7 @@ var text = new Konva.Text({
 
 
 var video = document.createElement('video');
+video.muted = true
 
 console.log(video.src);
 var image = new Konva.Image({
@@ -114,10 +115,13 @@ video.addEventListener('loadedmetadata', function (e) {
 //	play();
 //});
   
-  function play(){
+  function play(streamPath){
 		layer.show();
 		var videoPath =scope.vm.analyzeOrder.video.path.replace('/home/ramazan/Desktop/videos','');
-		video.src = 'http://localhost:8000/'+videoPath;
+		//video.src = 'http://localhost:8000/'+videoPath;
+		video.src = streamPath;
+		console.log('streamPath:'+ video.src);
+		//console.log('videoPath:'+ videoPath);
 		text.destroy();
 	    startVisulation();
 	    video.play();
@@ -133,7 +137,7 @@ video.addEventListener('loadedmetadata', function (e) {
 //stage.add(layerImage);
 stage.add(layer);
 
-video.play();
+//video.play();
 
 
 scope.$on('ploygonDataReceived', function(params){

@@ -85,9 +85,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/video-records/getVisulationData/**")
             .antMatchers("/api/analyze-orders/scriptTest/**")
             .antMatchers("/api/analyze-orders/checUnprocessedRawRecords/**")
-            
-            
-            
+            .antMatchers("/api/videos/stream-video-file/**")
             
             
             ;

@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('AnalyzeOrderPlayerController', AnalyzeOrderPlayerController);
 
-    AnalyzeOrderPlayerController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line','VideoRecord','$translate','AnalyzeOrder'];
+    AnalyzeOrderPlayerController .$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Scenario', 'Video','$window','Polygon','Line','VideoRecord','$translate','AnalyzeOrder','$location'];
 
-    function AnalyzeOrderPlayerController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line, VideoRecord,$translate,AnalyzeOrder) {
+    function AnalyzeOrderPlayerController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Scenario, Video,$window,Polygon,Line, VideoRecord,$translate,AnalyzeOrder,$location) {
         var vm = this;
 
 		vm.analyzeOrder = entity;
@@ -46,9 +46,14 @@
 			vm.visulationData = result;
 			//var videoPath =vm.analyzeOrder.video.path.replace('/home/ramazan/Desktop/videos','');
 			//$window.video.src = 'http://localhost:8000/'+videoPath;
-			$window.play();
+			
+			Video.getVideoWebStreamPath({id:vm.analyzeOrder.video.id},getVideoStreamPathSuccess,onSaveError);
 		}
 		
+		function getVideoStreamPathSuccess(result){
+			var url = 'http://'+$location.host()+':'+result.value
+			$window.play(url);
+		}
 		
 
 		function onSaveError () {
@@ -64,7 +69,7 @@
 			for(var i=0;i<$window.timeouts.length;i++){
 				clearTimeout(timeouts[i]);
 			}
-	
+			$window.video.pause();
         }
 
 		function onError(error) {

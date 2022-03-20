@@ -31,6 +31,8 @@ public class ApplicationProperties {
 	
 	String trafixViewerJarLocation;
 
+	String webServerPort;
+	
 	public String getAiScriptEndpoint() {
 		return aiScriptEndpoint;
 	}
@@ -109,6 +111,14 @@ public class ApplicationProperties {
 
 	public void setTrafixViewerJarLocation(String trafixViewerJarLocation) {
 		this.trafixViewerJarLocation = trafixViewerJarLocation;
+	}
+
+	public String getWebServerPort() {
+		return webServerPort;
+	}
+
+	public void setWebServerPort(String webServerPort) {
+		this.webServerPort = webServerPort;
 	}
 	
 	

@@ -186,6 +186,22 @@ public class VideoResource {
     	return result;
     }
     
+    @GetMapping(value = "/videos/getVideoWebStreamPath/{id}")
+    public ParameterVM getVideoWebStreamPath(@PathVariable Long id) throws IOException {
+        
+    	Video video = videoRepository.findOne(id);
+    	if(video == null) 
+    		throw new BadRequestAlertException("A new video cannot find", ENTITY_NAME, "idexists");
+    	
+    	
+    	String path = video.getPath().replace(applicationProperties.getFtpDirectory(), "");
+    	ParameterVM result = new ParameterVM();
+    	result.setName("name");
+    	result.setValue(applicationProperties.getWebServerPort()+path);
+    	
+    	return result;
+    }
+    
     @GetMapping(value = "/videos/search")
     public List<Video> search(@RequestParam String name) throws IOException {
         
@@ -193,4 +209,6 @@ public class VideoResource {
     	
     	return result;
     }
+    
+
 }
