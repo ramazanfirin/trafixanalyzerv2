@@ -221,6 +221,30 @@ scope.$on('lineDataReceived', function(params){
 	poly = null;
 });
 
+
+scope.$on('directionDataReceived', function(params){
+	
+	for(var i=0;i<scope.vm.directions.length;i++){
+		var direction = scope.vm.directions[i];
+        var startLineId = direction.startLine.id;		
+        var line = findLineById(startLineId);	
+        line.hide();
+        
+        var lineText = findTextById(startLineId);	
+        if(lineText)
+        	lineText.hide();
+        
+        var lineDesc = findRectById(startLineId);	
+        if(lineDesc)
+        	lineDesc.hide();
+	}
+	
+	
+	
+	
+});
+
+
 function createText(pointx,pointy,lineId,text){
 	//alert(text);
 	var simpleText = new Konva.Text({
@@ -286,7 +310,12 @@ function startVisulation(){
 function addTimerToLine(visulationData){
 	var line = findLineById(visulationData.lineId);
 	//console.log("lineId = "+ line.attrs.id);
-	setTimerForChangeColor(line,visulationData.duration,"type:"+visulationData.type);
+	var message;
+	if(visulationData.directionName)
+		message = visulationData.directionName;
+	else
+		message = "type:"+visulationData.type;
+	setTimerForChangeColor(line,visulationData.duration, message);
 
 }
 

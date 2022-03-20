@@ -6,6 +6,7 @@ public class LineCrossedVM {
 	Long duration;
 	Long lineId;
 	Double speed;
+	String directionName;
 	
 	public String getType() {
 		return type;
@@ -30,6 +31,12 @@ public class LineCrossedVM {
 	}
 	public void setSpeed(Double speed) {
 		this.speed = speed;
+	}
+	public String getDirectionName() {
+		return directionName;
+	}
+	public void setDirectionName(String directionName) {
+		this.directionName = directionName;
 	}
 	
 	

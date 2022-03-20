@@ -464,7 +464,8 @@ public class VideoRecordResource {
     		lineCrossedVM.setDuration(((BigInteger)map.get("duration")).longValue());
     		lineCrossedVM.setLineId(((BigInteger)map.get("line")).longValue());
     		lineCrossedVM.setSpeed((Double)map.get("speed"));
-    		result.add(lineCrossedVM);
+    		lineCrossedVM.setDirectionName((String)map.get("directionname"));    		
+			result.add(lineCrossedVM);
 		}
     	return result;
     }
