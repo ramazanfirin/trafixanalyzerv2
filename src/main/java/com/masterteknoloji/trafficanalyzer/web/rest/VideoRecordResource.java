@@ -57,10 +57,11 @@ import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.Util;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.ClassificationResultDetailsVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.ClassificationResultVM;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.DirectionReportDetail;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.DirectionReportSummary;
+import com.masterteknoloji.trafficanalyzer.web.rest.vm.DirectionReportVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.LineCrossedVM;
 import com.masterteknoloji.trafficanalyzer.web.rest.vm.VideoRecordSummaryVM;
-import com.netflix.discovery.shared.Application;
 
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -466,5 +467,46 @@ public class VideoRecordResource {
     		result.add(lineCrossedVM);
 		}
     	return result;
+    }
+    
+    @GetMapping("/video-records/getDirectionReportByScnario/{id}")
+    @Timed
+    public List<DirectionReportVM> getDirectionReportByScnario(@PathVariable Long id) {
+    	
+    	List<DirectionReportVM> result = new ArrayList<DirectionReportVM>();
+    	
+    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getDirectionReportByScnario(id);
+    	for (Map<String, Object> map : videoRecords) {
+    		
+    		BigInteger analyzeId = (BigInteger)map.get("analyze_id");
+    		DirectionReportVM directionReportVM = getDirectionReportVMById(result, analyzeId);
+    		
+    		if(directionReportVM==null) {
+	    		directionReportVM = new DirectionReportVM();
+	    		directionReportVM.setAnalyzeId((BigInteger)map.get("analyze_id"));
+	    		directionReportVM.setScenarioName((String)map.get("scenarioname"));
+	    		directionReportVM.setVideoEndDate((Date)map.get("enddate"));
+	    		directionReportVM.setVideoName((String)map.get("videoname"));
+	    		directionReportVM.setVideoStartDate((Date)map.get("startdate"));
+	    		result.add(directionReportVM);
+    		}
+    		
+    		DirectionReportDetail directionReportDetail = new DirectionReportDetail();
+    		directionReportDetail.setCount((BigInteger)map.get("count"));
+    		directionReportDetail.setDirectionName((String)map.get("directionname"));
+    		directionReportVM.getDetails().add(directionReportDetail);
+    		
+    	}
+    	
+    	return result;
+    }
+    
+    public DirectionReportVM getDirectionReportVMById(List<DirectionReportVM> result, BigInteger analyzeId) {
+    	for (Iterator iterator = result.iterator(); iterator.hasNext();) {
+			DirectionReportVM directionReportVM = (DirectionReportVM) iterator.next();
+			if(directionReportVM.getAnalyzeId().longValue() == analyzeId.longValue())
+				return directionReportVM;
+		}
+    	return null;
     }
 }

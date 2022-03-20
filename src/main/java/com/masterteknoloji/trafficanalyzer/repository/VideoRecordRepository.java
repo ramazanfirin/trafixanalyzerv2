@@ -155,13 +155,18 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 	 		+ "group by startLineName,endLineName",nativeQuery=true)
 	  Iterable<Map<String,Object>> getDirectionCrossCountForDirection(@Param("analyzeOrderId") Long analyzeOrderId);
 	 
-	 @Query(value="select i.analyze_id,scenario.id, direction.name,video.id ,video.name ,video.start_date ,video.end_date ,count(*) as count\n"
+	 @Query(value="select i.analyze_id,scenario.name as scenarioName, "
+	 		+ "     direction.name as directionName,"
+	 		+ "     video.id ,video.name as videoName ,"
+	 		+ "     video.start_date as startdate,"
+	 		+ "     video.end_date as enddate,"
+	 		+ "     count(*) as count\n"
 	 		+ "from video_record i\n"
 	 		+ "INNER JOIN direction as direction ON i.direction_id=direction.id\n"
 	 		+ "INNER JOIN analyze_order as analyze_order ON i.analyze_id=analyze_order.id\n"
 	 		+ "INNER JOIN scenario as scenario ON analyze_order.scenario_id=scenario.id\n"
 	 		+ "INNER JOIN video as video ON analyze_order.video_id=video.id\n"
-	 		+ "where scenario.id=:scenarioId\n"
+	 		+ "where scenario.id=:scenarioId\n and video.start_date is not null and video.end_date is not null "
 	 		+ "group by i.analyze_id,scenario.id,direction.name",nativeQuery=true)
 	 Iterable<Map<String,Object>> getDirectionReportByScnario(@Param("scenarioId") Long scenarioId);
 		 

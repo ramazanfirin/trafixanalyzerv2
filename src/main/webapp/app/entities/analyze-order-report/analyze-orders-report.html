@@ -1,0 +1,72 @@
+<div>
+    <h2 data-translate="trafficanalzyzerv2App.analyzeOrder.home.title">Analyze Orders</h2>
+    <jhi-alert></jhi-alert>
+   
+    <br/>
+    <div class="container-fluid">
+    	<div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.video.location" for="field_location">Location</label>
+            <select class="form-control" id="field_location" name="location" ng-model="vm.location" ng-options="location as location.name+'-'+location.description for location in vm.locations track by location.id">
+                <option value=""></option>
+            </select>
+        </div>
+    	
+    	<div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.analyzeOrder.scenario" for="field_scenario">Scenario</label>
+            <select class="form-control" id="field_scenario" name="scenario" ng-model="vm.scenario" ng-change="vm.scenarioChanged()" ng-options="scenario as scenario.name for scenario in vm.scenarios track by scenario.id">
+                <option value=""></option>
+            </select>
+        </div>
+        
+     </div>
+     <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                
+                <button  class="btn btn-primary" ng-click="vm.search()">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="trafficanalzyzerv2App.analyzeOrder.search"></span>
+                </button>
+                
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+           <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th white-space: normal;" jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="scenario.id"><span data-translate="trafficanalzyzerv2App.analyzeOrder.scenario">Scenario</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    
+                    <th width="50" jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.analyzeOrder.video">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.video.startDate">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.video.endDate">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="video.id"><span>Result</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="directionReport in vm.result track by directionReport.analyzeId">
+                    <td>{{directionReport.analyzeId}}</td>
+                    <td>{{directionReport.scenarioName}}</td>
+                    <td>{{directionReport.videoName}}</td>
+                    <td>{{directionReport.videoStartDate}}</td>
+                    <td>{{directionReport.videoEndDate}}</td>
+                    <td>
+                    	<span ng-repeat="detail in directionReport.details">
+                    	<span>{{detail.directionName}}:{{detail.count}}</span> <br>
+                    	</span>
+                    
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" 
+                                                   ng-model="vm.page" ng-change="vm.transition()">
+         </uib-pagination>
+    </div>
+</div>
