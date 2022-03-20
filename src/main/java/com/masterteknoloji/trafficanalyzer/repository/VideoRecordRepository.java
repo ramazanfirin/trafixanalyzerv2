@@ -170,5 +170,23 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 	 		+ "where scenario.id=:scenarioId\n and video.start_date is not null and video.end_date is not null "
 	 		+ "group by i.analyze_id,scenario.id,direction.name",nativeQuery=true)
 	 Iterable<Map<String,Object>> getDirectionReportByScnario(@Param("scenarioId") Long scenarioId);
+	 
+	 @Query(value="select \n"
+	 		+ "i.analyze_id,\n"
+	 		+ "scenario.name as scenarioName, \n"
+	 		+ "line.name as directionName,\n"
+	 		+ "video.id ,video.name as videoName ,\n"
+	 		+ "video.start_date as startdate,\n"
+	 		+ "video.end_date as enddate,\n"
+	 		+ "count(*) as count\n"
+	 		+ "from video_record i\n"
+	 		+ "INNER JOIN line as line ON i.line_id=line.id\n"
+	 		+ "INNER JOIN analyze_order as analyze_order ON i.analyze_id=analyze_order.id\n"
+	 		+ "INNER JOIN scenario as scenario ON analyze_order.scenario_id=scenario.id\n"
+	 		+ "INNER JOIN video as video ON analyze_order.video_id=video.id\n"
+	 		+ "where scenario.id=:scenarioId and video.start_date is not null and video.end_date is not null\n"
+	 		+ "group by i.analyze_id,scenario.id,line.name\n"
+	 		+ "order by i.analyze_id desc",nativeQuery=true)
+		 Iterable<Map<String,Object>> getLineReportByScnario(@Param("scenarioId") Long scenarioId);
 		 
 }

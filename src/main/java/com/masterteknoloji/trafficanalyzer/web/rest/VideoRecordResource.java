@@ -43,11 +43,13 @@ import com.masterteknoloji.trafficanalyzer.config.ApplicationProperties;
 import com.masterteknoloji.trafficanalyzer.domain.AnalyzeOrder;
 import com.masterteknoloji.trafficanalyzer.domain.Direction;
 import com.masterteknoloji.trafficanalyzer.domain.Line;
+import com.masterteknoloji.trafficanalyzer.domain.Scenario;
 import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.VideoType;
 import com.masterteknoloji.trafficanalyzer.repository.AnalyzeOrderRepository;
 import com.masterteknoloji.trafficanalyzer.repository.DirectionRepository;
 import com.masterteknoloji.trafficanalyzer.repository.LineRepository;
+import com.masterteknoloji.trafficanalyzer.repository.ScenarioRepository;
 import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
 import com.masterteknoloji.trafficanalyzer.service.UserService;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
@@ -82,6 +84,8 @@ public class VideoRecordResource {
     
     private final DirectionRepository directionRepository;
     
+    private final ScenarioRepository scenarioRepository;
+    
     private final LineRepository lineRepository;
     
     private final MessageSource messageSource;
@@ -91,7 +95,7 @@ public class VideoRecordResource {
     private final ApplicationProperties applicationProperties;
 
     public VideoRecordResource(VideoRecordRepository videoRecordRepository,AnalyzeOrderRepository analyzeOrderRepository,LineRepository lineRepository,
-    		MessageSource messageSource,UserService userService, DirectionRepository directionRepository,ApplicationProperties applicationProperties) {
+    		MessageSource messageSource,UserService userService, DirectionRepository directionRepository,ApplicationProperties applicationProperties,ScenarioRepository scenarioRepository) {
         this.videoRecordRepository = videoRecordRepository;
         this.analyzeOrderRepository = analyzeOrderRepository;
         this.lineRepository = lineRepository;
@@ -99,6 +103,7 @@ public class VideoRecordResource {
         this.userService = userService;
         this.directionRepository = directionRepository;
         this.applicationProperties = applicationProperties;
+        this.scenarioRepository = scenarioRepository;
     }
 
     /**
@@ -475,8 +480,16 @@ public class VideoRecordResource {
     public List<DirectionReportVM> getDirectionReportByScnario(@PathVariable Long id) {
     	
     	List<DirectionReportVM> result = new ArrayList<DirectionReportVM>();
+    	Scenario scenario = scenarioRepository.findOne(id);
     	
-    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getDirectionReportByScnario(id);
+    	Iterable<Map<String,Object>> videoRecords;
+    	
+    	if(scenario.getVideo().getType()==VideoType.STRAIGHT_ROAD)
+    		videoRecords = getReportOfLineScenario(id);
+    	else
+    		videoRecords = getReportOfDirectionScenario(id);
+    	
+    		
     	for (Map<String, Object> map : videoRecords) {
     		
     		BigInteger analyzeId = (BigInteger)map.get("analyze_id");
@@ -500,6 +513,16 @@ public class VideoRecordResource {
     	}
     	
     	return result;
+    }
+    
+    public Iterable<Map<String,Object>> getReportOfLineScenario(Long id){
+    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getLineReportByScnario(id);
+    	return videoRecords;
+    }
+    
+    public Iterable<Map<String,Object>> getReportOfDirectionScenario(Long id){
+    	Iterable<Map<String,Object>> videoRecords = videoRecordRepository.getDirectionReportByScnario(id);
+    	return videoRecords;
     }
     
     public DirectionReportVM getDirectionReportVMById(List<DirectionReportVM> result, BigInteger analyzeId) {
