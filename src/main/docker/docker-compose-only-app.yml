@@ -21,5 +21,13 @@ services:
             - /ftpDirectory:/ftpDirectory
         ports:
             - 8080:8080
-        network_mode: host    
+        network_mode: host
+
+    apache:
+        image: 'bitnami/apache:latest'
+        ports:
+            - 8000:8080
+            - 443:8443
+        volumes:
+            - /ftpDirectory:/app        
 

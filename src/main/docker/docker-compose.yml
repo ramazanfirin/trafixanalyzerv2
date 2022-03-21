@@ -33,3 +33,11 @@ services:
         environment:
           MYSQL_ROOT_PASSWORD: trafix
           MYSQL_DATABASE: trafix
+
+    apache:
+        image: 'bitnami/apache:latest'
+        ports:
+            - 8000:8080
+            - 443:8443
+        volumes:
+            - /ftpDirectory:/app
