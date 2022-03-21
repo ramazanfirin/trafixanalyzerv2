@@ -1,7 +1,7 @@
 version: '2'
 services:
     trafix:
-        image: ramazanfirin/trafix:test_0.0.19
+        image: ramazanfirin/trafix:0.0.4
         environment:
             - SPRING_PROFILES_ACTIVE=dev,swagger
             #- EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
@@ -29,7 +29,7 @@ services:
         ports:
           - 3306:3306
         volumes:
-          - ./mysql5:/var/lib/mysql
+          - ${HOME}/mysql4:/var/lib/mysql
         environment:
           MYSQL_ROOT_PASSWORD: trafix
           MYSQL_DATABASE: trafix
