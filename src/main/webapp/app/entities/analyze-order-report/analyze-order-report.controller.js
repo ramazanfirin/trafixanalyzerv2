@@ -31,14 +31,16 @@
         currentDate.setHours(23);
         currentDate.setMinutes(59);
  		vm.endDate = currentDate ;
-	    vm.scenarios = Scenario.getAll()
+	    //vm.scenarios = Scenario.getAll()
+        vm.getScenarioByLocationId = getScenarioByLocationId;
  		
-		vm.play = play;
-        
-        
+		
         function search () {
-			if(vm.location == null)
-				alert('Lokasyon Seçimi Yapınız.');
+			if(vm.location == null || vm.scenario == null){
+				alert('Tüm Alanları Doldurunuz');
+				return;
+			}	
+			
 		
 		VideoRecord.getDirectionReportByScnario({id:vm.scenario.id},getDirectionReportByScnarioSuccess,onSaveError);
 		
@@ -65,15 +67,14 @@
             });
         }
 
-		function play(analyzeorder) {
-           //alert(analyzeorder.id);
-		   AnalyzeOrder.play({id:analyzeorder.id},playSuccess,onSaveError);
-        }
-
-		function playSuccess(result){
-			//resetAll();
-			
+		function getScenarioByLocationId(){
+			console.log(vm.location);
+			Scenario.findScenarioListByLocationId({id:vm.location.id},getScenarioByLocationIdSuccess,onSaveError);
 		}
+		
+		function getScenarioByLocationIdSuccess(result){
+			vm.scenarios = result;
+		}	
 		
 		function onSaveError(error) {
                 AlertService.error(error.data.message);

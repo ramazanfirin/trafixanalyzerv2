@@ -3,27 +3,42 @@
     <jhi-alert></jhi-alert>
    
     <br/>
+    <form name="editForm" id="editForm" role="form" novalidate show-validation ng-submit="vm.save()" >
     <div class="container-fluid">
     	<div class="form-group">
             <label data-translate="trafficanalzyzerv2App.video.location" for="field_location">Location</label>
-            <select class="form-control" id="field_location" name="location" ng-model="vm.location" ng-options="location as location.name+'-'+location.description for location in vm.locations track by location.id">
+            <select class="form-control" required id="field_location" name="location" ng-change="vm.getScenarioByLocationId()" ng-model="vm.location" ng-options="location as location.name+'-'+location.description for location in vm.locations track by location.id">
                 <option value=""></option>
             </select>
+            
+            <div ng-show="editForm.location.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.location.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>   
         </div>
     	
     	<div class="form-group">
             <label data-translate="trafficanalzyzerv2App.analyzeOrder.scenario" for="field_scenario">Scenario</label>
-            <select class="form-control" id="field_scenario" name="scenario" ng-model="vm.scenario" ng-change="vm.scenarioChanged()" ng-options="scenario as scenario.name for scenario in vm.scenarios track by scenario.id">
+            <select class="form-control" required id="field_scenario" name="scenario" ng-model="vm.scenario" ng-change="vm.scenarioChanged()" ng-options="scenario as scenario.name for scenario in vm.scenarios track by scenario.id">
                 <option value=""></option>
             </select>
+            
+            <div ng-show="editForm.scenario.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.scenario.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>  
         </div>
         
-     </div>
+    
      <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
                 
-                <button  class="btn btn-primary" ng-click="vm.search()">
+                <button  class="btn btn-primary" ng-click="vm.search()" ng-disabled="editForm.$invalid || vm.isSaving">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-sm-down" data-translate="trafficanalzyzerv2App.analyzeOrder.search"></span>
                 </button>
@@ -31,6 +46,10 @@
             </div>
         </div>
     </div>
+     </div>
+    </form>
+    
+    
     <div class="table-responsive">
         <table class="jh-table table table-striped">
            <thead>

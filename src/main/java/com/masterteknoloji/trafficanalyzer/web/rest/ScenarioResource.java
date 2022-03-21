@@ -193,4 +193,14 @@ public class ScenarioResource {
     	
     	return result;
     }
+    
+    @GetMapping(value = "/scenarios/findScenarioListByLocationId/{id}")
+    public List<Scenario> findScenarioListByLocationId(@PathVariable Long id) throws IOException {
+        
+    	List<Scenario> result = scenarioRepository.findScenarioListByLocationId(id);
+    	
+    	return result;
+    }
+    
+    
 }

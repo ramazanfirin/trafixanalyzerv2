@@ -1,0 +1,20 @@
+version: '2'
+services:
+    mysql:
+        image: mariadb:10.1.19
+        command: --default-authentication-plugin=mysql_native_password 
+        ports:
+          - 3306:3306
+        volumes:
+          - ${HOME}/mysql4:/var/lib/mysql
+        environment:
+          MYSQL_ROOT_PASSWORD: trafix
+          MYSQL_DATABASE: trafix
+
+    apache:
+        image: 'bitnami/apache:latest'
+        ports:
+            - 8000:8080
+            - 443:8443
+        volumes:
+            - /home/ramazan/Desktop/videos:/app

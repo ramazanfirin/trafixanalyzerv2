@@ -14,6 +14,7 @@
             'insertScreenshot': { method: 'POST', isArray: false,url: 'api/scenarios/insertScreenshot'},
 			'getAll': { method: 'GET', isArray: true, url: '/api/scenarios/getAll?page=0&size=1000&sort=id,desc'},
 			'search': { method: 'GET', isArray: true, url: '/api/scenarios/search'},
+			'findScenarioListByLocationId': { method: 'GET', isArray: true, url: '/api/scenarios/findScenarioListByLocationId/:id'},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

@@ -22,4 +22,7 @@ public interface ScenarioRepository extends JpaRepository<Scenario, Long> {
 	Page<Scenario> getActiveItem(Pageable pageable);
 	
 	List<Scenario> findByNameContaining(String name);
+	
+	@Query("select v from Scenario v where v.video.location.id= ?1")
+	List<Scenario> findScenarioListByLocationId(Long locationId);
 }
