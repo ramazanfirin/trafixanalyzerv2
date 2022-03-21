@@ -1,8 +1,11 @@
 package com.masterteknoloji.trafficanalyzer.web.rest;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
@@ -23,6 +26,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -30,6 +36,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,6 +47,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
@@ -51,6 +59,7 @@ import com.masterteknoloji.trafficanalyzer.domain.Direction;
 import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
 import com.masterteknoloji.trafficanalyzer.domain.RawRecord;
+import com.masterteknoloji.trafficanalyzer.domain.Scenario;
 import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.PolygonType;
@@ -636,5 +645,13 @@ public class AnalyzeOrderResource {
 
 		return result;
 	}
+	
+	@GetMapping("/analyze-orders/getScreenShoot/{id}")
+    public @ResponseBody void getScreenShoot(@PathVariable Long id,HttpServletResponse response) throws IOException {
+    	AnalyzeOrder analyzeOrder = analyzeOrderRepository.findOne(id);
+    	InputStream targetStream = new ByteArrayInputStream(analyzeOrder.getScreenShoot());
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        IOUtils.copy(targetStream, response.getOutputStream());
+    }
 
 }

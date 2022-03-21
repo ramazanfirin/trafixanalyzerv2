@@ -5,6 +5,7 @@
     <br/>
     <form name="editForm" id="editForm" role="form" novalidate show-validation ng-submit="vm.save()" >
     <div class="container-fluid">
+    	
     	<div class="form-group">
             <label data-translate="trafficanalzyzerv2App.video.location" for="field_location">Location</label>
             <select class="form-control" required id="field_location" name="location" ng-change="vm.getScenarioByLocationId()" ng-model="vm.location" ng-options="location as location.name+'-'+location.description for location in vm.locations track by location.id">
@@ -42,7 +43,6 @@
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-sm-down" data-translate="trafficanalzyzerv2App.analyzeOrder.search"></span>
                 </button>
-                
             </div>
         </div>
     </div>
@@ -56,7 +56,7 @@
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th white-space: normal;" jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="scenario.id"><span data-translate="trafficanalzyzerv2App.analyzeOrder.scenario">Scenario</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    
+                    <th></th>
                     <th width="50" jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.analyzeOrder.video">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.video.startDate">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="video.id"><span data-translate="trafficanalzyzerv2App.video.endDate">Video</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -69,6 +69,11 @@
                 <tr ng-repeat="directionReport in vm.result track by directionReport.analyzeId">
                     <td>{{directionReport.analyzeId}}</td>
                     <td>{{directionReport.scenarioName}}</td>
+                    <td>
+                    <a ng-click="vm.openFile(directionReport.analyzeId)">
+                            <img src='/api/analyze-orders/getScreenShoot/{{directionReport.analyzeId}}' alt="Girl in a jacket" width="50" height="50">
+                        </a>
+                    </td>
                     <td>{{directionReport.videoName}}</td>
                     <td>{{directionReport.videoStartDate}}</td>
                     <td>{{directionReport.videoEndDate}}</td>

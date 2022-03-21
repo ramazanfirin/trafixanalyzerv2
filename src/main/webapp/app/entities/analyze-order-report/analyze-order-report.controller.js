@@ -5,9 +5,9 @@
         .module('trafficanalzyzerv2App')
         .controller('AnalyzeOrderReportController', AnalyzeOrderReportController);
 
-    AnalyzeOrderReportController.$inject = ['$state', 'DataUtils', 'AnalyzeOrder', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Location','Scenario','VideoRecord'];
+    AnalyzeOrderReportController.$inject = ['$state', 'DataUtils', 'AnalyzeOrder', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Location','Scenario','VideoRecord','$window'];
 
-    function AnalyzeOrderReportController($state, DataUtils, AnalyzeOrder, ParseLinks, AlertService, paginationConstants, pagingParams, Location,Scenario,VideoRecord) {
+    function AnalyzeOrderReportController($state, DataUtils, AnalyzeOrder, ParseLinks, AlertService, paginationConstants, pagingParams, Location,Scenario,VideoRecord,$window) {
 
         var vm = this;
 
@@ -17,7 +17,7 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        vm.openFile = DataUtils.openFile;
+        vm.openFile = openFile;
         vm.byteSize = DataUtils.byteSize;
         
         vm.locations = Location.query();
@@ -75,6 +75,10 @@
 		function getScenarioByLocationIdSuccess(result){
 			vm.scenarios = result;
 		}	
+		
+		function openFile(id){
+			$window.open($window.location.origin+'/api/analyze-orders/getScreenShoot/'+id,'_blank','height=468,width=832');
+		}
 		
 		function onSaveError(error) {
                 AlertService.error(error.data.message);
