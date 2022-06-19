@@ -228,12 +228,14 @@ scope.$on('directionDataReceived', function(params){
 		var direction = scope.vm.directions[i];
         var startLineId = direction.startLine.id;		
         var line = findLineById(startLineId);	
-        line.hide();
+        //line.hide();
         
         var lineText = findTextById(startLineId);	
-        if(lineText)
-        	lineText.hide();
-        
+        if(lineText){
+        	lineText.setText(direction.startLine.name)
+        	console.log("asd:"+JSON.stringify(direction.startLine));
+        	//lineText.hide();
+        }
         var lineDesc = findRectById(startLineId);	
         if(lineDesc)
         	lineDesc.hide();
