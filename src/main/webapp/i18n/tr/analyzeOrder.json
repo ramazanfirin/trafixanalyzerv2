@@ -4,7 +4,9 @@
             "home": {
                 "title": "Analiz",
                 "createLabel": "Yeni Analiz Başlat",
-                "createOrEditLabel": "Analiz Başlat/Güncelle"
+                "createLabelMultiple": "Çoklu Analiz Başlat",
+                "createOrEditLabel": "Analiz Başlat/Güncelle",
+                "createOrEditLabelMultiple": "Çoklu Analiz Başlat"
             },
             "created": "Yeni Analiz Oluşturuldu {{ param }}",
             "updated": "Analiz Güncellendi {{ param }}",
@@ -39,7 +41,11 @@
             "endLineTotalCount": "Bitiş Toplam Geçiş",
             "startLineCrossRate": "Başlangıç Geçiş Oranı",
             "endLineCrossRate": "Bitiş Geçiş Oranı",
-            "analyzeResult": "Analiz Sonucu"
+            "analyzeResult": "Analiz Sonucu",
+            "videoSelectionForScenario": "Senaryo için Video",
+            "videoSelectionForAnalyze": "Analiz için Video Listesi",
+            "videoAndScenario": "Video ve Senaryo"
+            
         }
     }
 }

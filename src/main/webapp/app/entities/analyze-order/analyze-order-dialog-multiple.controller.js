@@ -3,11 +3,11 @@
 
     angular
         .module('trafficanalzyzerv2App')
-        .controller('AnalyzeOrderDialogController', AnalyzeOrderDialogController);
+        .controller('AnalyzeOrderDialogMultipleController', AnalyzeOrderDialogMultipleController);
 
-    AnalyzeOrderDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'AnalyzeOrder', 'Video', 'Scenario', 'AnalyzeOrderDetails','$window','Line','Polygon','$location'];
+    AnalyzeOrderDialogMultipleController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'AnalyzeOrder', 'Video', 'Scenario', 'AnalyzeOrderDetails','$window','Line','Polygon','$location'];
 
-    function AnalyzeOrderDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, AnalyzeOrder, Video, Scenario, AnalyzeOrderDetails, $window, Line, Polygon,$location) {
+    function AnalyzeOrderDialogMultipleController ($timeout, $scope, $stateParams, $uibModalInstance, entity, AnalyzeOrder, Video, Scenario, AnalyzeOrderDetails, $window, Line, Polygon,$location) {
         var vm = this;
 
         vm.analyzeOrder = entity;
@@ -94,8 +94,12 @@
             var dataURL = $window.stage.toDataURL();
                 vm.analyzeOrder.screenShoot=dataURL.replace('data:image/png;base64,','');
                 vm.analyzeOrder.screenShootContentType='image/png';
-				vm.analyzeOrder.addToQuene = true;                
-				AnalyzeOrder.save(vm.analyzeOrder, onSaveSuccess, onSaveError);
+                //AnalyzeOrder.save(vm.analyzeOrder, onSaveSuccess, onSaveError);
+				var analyzeOrderMultiple = {};
+				analyzeOrderMultiple.analyzeOrder = vm.analyzeOrder;
+				analyzeOrderMultiple.videoList = vm.videoList;
+				AnalyzeOrder.startAnalyzeOrdersMultiple(analyzeOrderMultiple, onSaveSuccess, onSaveError);
+
             }
         }
 

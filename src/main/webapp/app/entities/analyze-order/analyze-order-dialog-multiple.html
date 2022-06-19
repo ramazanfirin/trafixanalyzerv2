@@ -4,7 +4,7 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myAnalyzeOrderLabel" data-translate="trafficanalzyzerv2App.analyzeOrder.home.createOrEditLabel">Create or edit a Analyze Order</h4>
+        <h4 class="modal-title" id="myAnalyzeOrderLabel" data-translate="trafficanalzyzerv2App.analyzeOrder.home.createOrEditLabelMultiple">Create or edit a Analyze Order</h4>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
@@ -57,7 +57,7 @@
 <!--         </div> -->
 
         <div class="form-group">
-            <label data-translate="trafficanalzyzerv2App.analyzeOrder.video" for="field_video">Video</label>
+            <label data-translate="trafficanalzyzerv2App.analyzeOrder.videoSelectionForScenario" for="field_video">Video</label>
             <select class="form-control" id="field_video" name="video" ng-model="vm.analyzeOrder.video" ng-change="vm.videoFileChanged()" ng-options="video as video.name for video in vm.videos track by video.id">
                 <option value=""></option>
             </select>
@@ -69,11 +69,19 @@
             </select>
         </div>
         
-        <div class="form-group">
-<!--         	<img ng-src="content/images/kale.JPG" width="640" height="480"> -->
+        
+        <div class="form-group" style="min-height: 200px">
+			<label data-translate="trafficanalzyzerv2App.analyzeOrder.videoAndScenario" for="field_scenario">Scenario</label>
+            
 			<div id="containerKonva"></div>
         </div>
         
+        <div class="form-group">
+            <label data-translate="trafficanalzyzerv2App.analyzeOrder.videoSelectionForAnalyze" for="field_videoList">Video</label>
+            <select class="form-control" multiple size=10 id="field_videoList" name="videoList" ng-model="vm.videoList" ng-options="video as video.name for video in vm.videos track by video.id">
+                <option value=""></option>
+            </select>
+        </div>
 <!--         <div class="form-group"> -->
 <!--             <label data-translate="trafficanalzyzerv2App.analyzeOrder.orderDetails" for="field_orderDetails">Order Details</label> -->
 <!--             <select class="form-control" id="field_orderDetails" name="orderDetails" ng-model="vm.analyzeOrder.orderDetails" ng-options="analyzeOrderDetails as analyzeOrderDetails.id for analyzeOrderDetails in vm.analyzeorderdetails track by analyzeOrderDetails.id"> -->
@@ -92,14 +100,13 @@
                           ng-model="vm.analyzeOrder.analyzePerson"/>
         </div>
         
-        <!-- 
+        <!--  
         <div class="form-group">
             <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrderDetails.addToQuene" for="field_analyzePerson">Analyze Person</label>
                 <input type="checkbox" name="addToQuene" id="field_addToQuene"
                           ng-model="vm.analyzeOrder.addToQuene"/>
         </div>
         -->
-        
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">

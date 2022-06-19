@@ -60,6 +60,7 @@ import com.masterteknoloji.trafficanalyzer.domain.Line;
 import com.masterteknoloji.trafficanalyzer.domain.Polygon;
 import com.masterteknoloji.trafficanalyzer.domain.RawRecord;
 import com.masterteknoloji.trafficanalyzer.domain.Scenario;
+import com.masterteknoloji.trafficanalyzer.domain.Video;
 import com.masterteknoloji.trafficanalyzer.domain.VideoRecord;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.AnalyzeState;
 import com.masterteknoloji.trafficanalyzer.domain.enumeration.PolygonType;
@@ -73,6 +74,7 @@ import com.masterteknoloji.trafficanalyzer.repository.VideoRecordRepository;
 import com.masterteknoloji.trafficanalyzer.service.LinuxCommandService;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.AnalyzeOrderNotStartedException;
 import com.masterteknoloji.trafficanalyzer.web.rest.errors.BadRequestAlertException;
+import com.masterteknoloji.trafficanalyzer.web.rest.util.AnalyzeOrderMultiple;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.HeaderUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.PaginationUtil;
 import com.masterteknoloji.trafficanalyzer.web.rest.util.Util;
@@ -161,20 +163,15 @@ public class AnalyzeOrderResource {
 			analyzeOrderDetails = Util.prepareAnalyzeOrderDetails(objectMapper,result.getId().toString(), result.getVideo().getPath(), lines,directions, speedPolygons,
 					result.getShowVisulationWindow(),result.getVideo().getType().toString(),result.getAnalyzePerson());
 			
-			if(result.getAddToQuene()) {
-				analyzeOrderDetails.setState(AnalyzeState.WAITING_ON_QUEBE);
-				result.setState(AnalyzeState.WAITING_ON_QUEBE);
-			}else {
-				analyzeOrderDetails.setState(AnalyzeState.NOT_STARTED);
-				result.setState(AnalyzeState.NOT_STARTED);
-			}
+			analyzeOrderDetails.setState(AnalyzeState.WAITING_ON_QUEBE);
+			result.setState(AnalyzeState.WAITING_ON_QUEBE);
 			
 			analyzeOrderDetailsRepository.save(analyzeOrderDetails);
 			result.setOrderDetails(analyzeOrderDetails);
 			result = analyzeOrderRepository.save(result);
 			
-			if(!result.getAddToQuene())
-				linuxCommandService.startScriptByHttp(analyzeOrderDetails.getSessionId());
+			//if(!result.getAddToQuene())
+			//	linuxCommandService.startScriptByHttp(analyzeOrderDetails.getSessionId());
 			
 			
 			return ResponseEntity.created(new URI("/api/analyze-orders/" + result.getId()))
@@ -193,6 +190,28 @@ public class AnalyzeOrderResource {
 		
 	}
 
+	@PostMapping("/analyze-orders-multiple")
+	@Timed
+	public ResponseEntity<AnalyzeOrder> createAnalyzeOrderMultiple(@RequestBody AnalyzeOrderMultiple analyzeOrderMultiple) throws Exception {
+		log.debug("REST request to save AnalyzeOrder : {}", analyzeOrderMultiple);
+		
+		if(analyzeOrderMultiple.getVideoList()==null || analyzeOrderMultiple.getVideoList().size()==0)
+			throw new AnalyzeOrderNotStartedException("Video List is empty");
+		
+		AnalyzeOrder result = analyzeOrderMultiple.getAnalyzeOrder();
+		for (Iterator iterator = analyzeOrderMultiple.getVideoList().iterator(); iterator.hasNext();) {
+			result.setId(null);
+			Video video = (Video) iterator.next();
+			result.setVideo(video);
+			result.setAddToQuene(true);
+			createAnalyzeOrder(result);
+		}
+		
+		return ResponseEntity.created(new URI("/api/analyze-orders/" + result.getId()))
+				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result); 
+	}
+
+	
 	/**
 	 * PUT /analyze-orders : Updates an existing analyzeOrder.
 	 *
@@ -419,7 +438,7 @@ public class AnalyzeOrderResource {
 
 	}
 	
-	@Scheduled(fixedRate = 180000)
+	@Scheduled(fixedRate = 60000)
 	public void processFromQuene() throws Exception {
 
 		log.info("processFromQuene" + " started");

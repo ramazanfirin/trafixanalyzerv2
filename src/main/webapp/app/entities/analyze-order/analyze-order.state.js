@@ -143,6 +143,36 @@
                 });
             }]
         })
+		.state('analyze-order.multiple', {
+            parent: 'analyze-order',
+            url: '/new/multiple',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/analyze-order/analyze-order-dialog-multiple.html',
+                    controller: 'AnalyzeOrderDialogMultipleController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: function () {
+                            return {
+                                state: null,
+                                screenShoot: null,
+                                screenShootContentType: null,
+                                id: null
+                            };
+                        }
+                    }
+                }).result.then(function() {
+                    $state.go('analyze-order', null, { reload: 'analyze-order' });
+                }, function() {
+                    $state.go('analyze-order');
+                });
+            }]
+        })
         .state('analyze-order.edit', {
             parent: 'analyze-order',
             url: '/{id}/edit',

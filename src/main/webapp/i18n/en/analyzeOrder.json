@@ -4,7 +4,9 @@
             "home": {
                 "title": "Analyze Orders",
                 "createLabel": "Create a new Analyze Order",
-                "createOrEditLabel": "Create or edit a Analyze Order"
+                "createLabelMultiple": "Create Multiple Analyze Order",
+                "createOrEditLabel": "Create or edit a Analyze Order",
+                "createOrEditLabelMultiple": "Create or edit Multiple Analyze Order"
             },
             "created": "A new Analyze Order is created with identifier {{ param }}",
             "updated": "A Analyze Order is updated with identifier {{ param }}",
@@ -39,8 +41,10 @@
             "endLineTotalCount": "End Line Count",
             "startLineCrossRate": "Start Line Cross Rate",
             "endLineCrossRate": "End Line Cross Rate",
-            "analyzeResult": "Analyze Result"
-            
+            "analyzeResult": "Analyze Result",
+            "videoSelectionForScenario": "Video for Scenario",
+            "videoSelectionForAnalyze": "Videos for Analyze",
+            "videoAndScenario": "Video and Scenario"
         }
     }
 }
