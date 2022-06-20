@@ -44,7 +44,10 @@
             "analyzeResult": "Analyze Result",
             "videoSelectionForScenario": "Video for Scenario",
             "videoSelectionForAnalyze": "Videos for Analyze",
-            "videoAndScenario": "Video and Scenario"
+            "videoAndScenario": "Video and Scenario",
+            "analyzeSpecifiedMinutes": "Analyze Specified Minutes",
+            "analyzeStartMinute":"Analyze Start Minute",
+            "analyzeEndMinute":"Analyze End Minute"
         }
     }
 }

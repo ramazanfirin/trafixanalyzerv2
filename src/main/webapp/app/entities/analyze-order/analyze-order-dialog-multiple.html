@@ -107,6 +107,25 @@
                           ng-model="vm.analyzeOrder.addToQuene"/>
         </div>
         -->
+        
+        
+        <div class="form-group">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrder.analyzeSpecifiedMinutes" for="field_analyzePerson">Analyze Person</label>
+                <input type="checkbox" name="analyzeSpecifiedMinutes" id="field_analyzeSpecifiedMinutes"
+                          ng-model="vm.analyzeOrder.analyzeSpecifiedMinutes"/>
+        </div>
+        
+        <div class="form-group" ng-if="vm.analyzeOrder.analyzeSpecifiedMinutes">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrder.analyzeStartMinute" for="field_analyzeStartMinute">Analyze Person</label>
+                 <input type="number" class="form-control" id="analyzeStartMinute" name="analyzeStartMinute" ng-model="vm.analyzeOrder.analyzeStartMinute" />
+        </div>
+        
+        <div class="form-group" ng-if="vm.analyzeOrder.analyzeSpecifiedMinutes">
+            <label class="control-label" data-translate="trafficanalzyzerv2App.analyzeOrder.analyzeEndMinute" for="field_analyzeEndMinute">Analyze Person</label>
+                 <input type="number" class="form-control" id="analyzeEndMinute" name="analyzeEndMinute" ng-model="vm.analyzeOrder.analyzeEndMinute" />
+        </div>
+    
+        
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">

@@ -47,6 +47,15 @@ public class AnalyzeOrder implements Serializable {
     @Column(name = "add_to_quene")
     private Boolean addToQuene = false;
     
+    @Column(name = "analyze_start_minute")
+    private Long analyzeStartMinute;
+    
+    @Column(name = "analyze_end_minute")
+    private Long analyzeEndMinute;
+    
+    @Column(name = "analyze_specified_minutes")
+    private Boolean analyzeSpecifiedMinutes = false;
+    
     @ManyToOne
     private Video video;
 
@@ -204,5 +213,29 @@ public class AnalyzeOrder implements Serializable {
 
 	public void setAddToQuene(Boolean addToQuene) {
 		this.addToQuene = addToQuene;
+	}
+
+	public Long getAnalyzeStartMinute() {
+		return analyzeStartMinute;
+	}
+
+	public void setAnalyzeStartMinute(Long analyzeStartMinute) {
+		this.analyzeStartMinute = analyzeStartMinute;
+	}
+
+	public Long getAnalyzeEndMinute() {
+		return analyzeEndMinute;
+	}
+
+	public void setAnalyzeEndMinute(Long analyzeEndMinute) {
+		this.analyzeEndMinute = analyzeEndMinute;
+	}
+
+	public Boolean getAnalyzeSpecifiedMinutes() {
+		return analyzeSpecifiedMinutes;
+	}
+
+	public void setAnalyzeSpecifiedMinutes(Boolean analyzeSpecifiedMinutes) {
+		this.analyzeSpecifiedMinutes = analyzeSpecifiedMinutes;
 	}
 }

@@ -26,6 +26,9 @@
     <include file="config/liquibase/changelog/20211001122527_added_entity_Video.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20211001122528_added_entity_AnalyzeOrderDetails.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20211001122529_added_entity_AnalyzeOrder.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220619122529_added_entity_AnalyzeOrder.xml" relativeToChangelogFile="false"/>
+    
+    
     
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20210707180521_added_entity_constraints_District.xml" relativeToChangelogFile="false"/>

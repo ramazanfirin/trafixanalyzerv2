@@ -20,6 +20,12 @@ public class AnalyzeOrderDetailVM {
 	Boolean showVisulationWindow;
 	
 	String videoType;
+	
+	Boolean analyzeSpecifiedMinutes;
+
+	Long analyzeStartMinute;
+
+	Long analyzeEndMinute;
 
 	public String getSessionId() {
 		return sessionId;
@@ -83,6 +89,30 @@ public class AnalyzeOrderDetailVM {
 
 	public void setVideoType(String videoType) {
 		this.videoType = videoType;
+	}
+
+	public Boolean getAnalyzeSpecifiedMinutes() {
+		return analyzeSpecifiedMinutes;
+	}
+
+	public void setAnalyzeSpecifiedMinutes(Boolean analyzeSpecifiedMinutes) {
+		this.analyzeSpecifiedMinutes = analyzeSpecifiedMinutes;
+	}
+
+	public Long getAnalyzeStartMinute() {
+		return analyzeStartMinute;
+	}
+
+	public void setAnalyzeStartMinute(Long analyzeStartMinute) {
+		this.analyzeStartMinute = analyzeStartMinute;
+	}
+
+	public Long getAnalyzeEndMinute() {
+		return analyzeEndMinute;
+	}
+
+	public void setAnalyzeEndMinute(Long analyzeEndMinute) {
+		this.analyzeEndMinute = analyzeEndMinute;
 	}
 
 		

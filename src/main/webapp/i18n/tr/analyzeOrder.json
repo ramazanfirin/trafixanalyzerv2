@@ -44,7 +44,10 @@
             "analyzeResult": "Analiz Sonucu",
             "videoSelectionForScenario": "Senaryo için Video",
             "videoSelectionForAnalyze": "Analiz için Video Listesi",
-            "videoAndScenario": "Video ve Senaryo"
+            "videoAndScenario": "Video ve Senaryo",
+            "analyzeSpecifiedMinutes": "Belirtilen Dakikaları Analiz Et",
+            "analyzeStartMinute":"Analiz Başlangıç Dakikası",
+            "analyzeEndMinute":"Analiz Bitiş Dakikası"
             
         }
     }

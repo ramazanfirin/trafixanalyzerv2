@@ -161,7 +161,7 @@ public class AnalyzeOrderResource {
 			List<Polygon> speedPolygons = polygonRepository.getPolygonListByScenarioId(result.getScenario().getId(),PolygonType.SPEED);
 			
 			analyzeOrderDetails = Util.prepareAnalyzeOrderDetails(objectMapper,result.getId().toString(), result.getVideo().getPath(), lines,directions, speedPolygons,
-					result.getShowVisulationWindow(),result.getVideo().getType().toString(),result.getAnalyzePerson());
+					result.getShowVisulationWindow(),result.getVideo().getType().toString(),result.getAnalyzePerson(),result.getAnalyzeSpecifiedMinutes(),result.getAnalyzeStartMinute(),result.getAnalyzeEndMinute());
 			
 			analyzeOrderDetails.setState(AnalyzeState.WAITING_ON_QUEBE);
 			result.setState(AnalyzeState.WAITING_ON_QUEBE);

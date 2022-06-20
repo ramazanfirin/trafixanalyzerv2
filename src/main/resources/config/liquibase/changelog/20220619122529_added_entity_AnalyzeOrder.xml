@@ -17,38 +17,27 @@
     <!--
         Added the entity RawRecord.
     -->
-    <changeSet id="20211001122529-1" author="jhipster">
+	<changeSet id="20220619122529-2" author="jhipster">
         
         <addColumn tableName="analyze_order" >
-			          <column name="show_visulation_window" type="bit">
+			 <column name="analyze_specified_minutes" type="bit">
                 <constraints nullable="true" />
             </column>
-			
 		</addColumn>  
-        
-    </changeSet>
-    <changeSet id="20211113122529-1" author="jhipster">
-        
-        <addColumn tableName="analyze_order" >
-			          <column name="analyze_person" type="bit">
+		
+		 <addColumn tableName="analyze_order" >
+			 <column name="analyze_start_minute" type="bigint">
                 <constraints nullable="true" />
             </column>
-			
 		</addColumn>  
-        
-    </changeSet>
-    
-    <changeSet id="20211210122529-1" author="jhipster">
-        
-        <addColumn tableName="analyze_order" >
-			 <column name="add_to_quene" type="bit">
+		
+		 <addColumn tableName="analyze_order" >
+			<column name="analyze_end_minute" type="bigint">
                 <constraints nullable="true" />
             </column>
 		</addColumn>  
         
     </changeSet>
-   
-   
    
     
         <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
