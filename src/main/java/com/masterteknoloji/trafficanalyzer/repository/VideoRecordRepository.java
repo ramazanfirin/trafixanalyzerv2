@@ -74,6 +74,13 @@ public interface VideoRecordRepository extends JpaRepository<VideoRecord, Long> 
 	  		     + "group by name,vehicle_type;",nativeQuery=true)
 	  public  Iterable<Map<String,Object>> getVehicleTypeGroups(@Param("analyzeOrderId") Long analyzeOrderId);
 	  
+	  @Query(value="SELECT vehicle_type as type,count(*) as count FROM video_record "
+	  		     //+ "INNER JOIN line as line ON line_id=line.id "
+	  		     + "where "
+	  		     + "analyze_id=:analyzeOrderId "
+	  		     + "group by vehicle_type;",nativeQuery=true)
+	  public  Iterable<Map<String,Object>> getVehicleTypeGroupsForAll(@Param("analyzeOrderId") Long analyzeOrderId);
+	  
 	  @Query(value="SELECT direction.name as name,vehicle_type,count(*) as count FROM video_record\n"
 	  		+ "INNER JOIN direction as direction ON direction_id=direction.id\n"
 	  		+ "where\n"

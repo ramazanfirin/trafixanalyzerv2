@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -83,6 +84,23 @@ public class ExcelExporter {
         createCell(row, 7, getMessage("excel.endLineRate"), style);	
         
         
+        return sheet;
+    }
+    
+    public XSSFSheet createSheetForVehicleTypes(XSSFWorkbook workbook,String sheetName) {
+    	XSSFSheet sheet = workbook.createSheet(sheetName);
+    
+    	Row row = sheet.createRow(0);
+        
+        CellStyle style = workbook.createCellStyle();
+        XSSFFont font = workbook.createFont();
+        font.setBold(true);
+        font.setFontHeight(10);
+        style.setFont(font);
+         
+        createCell(row, 0, getMessage("excel.type"), style);      
+        createCell(row, 1, getMessage("excel.count"), style);       
+              
         return sheet;
     }
     
@@ -166,6 +184,30 @@ public class ExcelExporter {
         sheet.autoSizeColumn(6);
         sheet.autoSizeColumn(7);
         
+        
+    }
+    
+    public void writeDataForVehicleType(XSSFWorkbook workbook,XSSFSheet sheet,Iterable<Map<String,Object>> dataList) {
+    	int rowCount = 1;
+    	 
+        CellStyle style = workbook.createCellStyle();
+        XSSFFont font = workbook.createFont();
+        font.setFontHeight(14);
+        style.setFont(font);
+        style.setShrinkToFit(true);
+         
+        Long totalCount = 0l;
+        for (Map<String,Object> videoRecordSummaryVM : dataList) {
+            Row row = sheet.createRow(rowCount++);
+            int columnCount = 0;
+             
+            createCell(row, columnCount++, videoRecordSummaryVM.get("type"), style);
+            createCell(row, columnCount++, videoRecordSummaryVM.get("count").toString(), style);
+            
+        }
+        
+        sheet.autoSizeColumn(0);
+        sheet.autoSizeColumn(1);
         
     }
      

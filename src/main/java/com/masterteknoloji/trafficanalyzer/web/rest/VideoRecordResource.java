@@ -382,6 +382,12 @@ public class VideoRecordResource {
         List<DirectionReportSummary> directionReportSummaries = getResultOfDirectionReport(id);
         excelExporter.writeDataForDirectionReport(workbook, yon, directionReportSummaries);
         
+        XSSFSheet type = excelExporter.createSheetForVehicleTypes(workbook, messageSource.getMessage("excel.vehicleType", null,locale));
+        Iterable<Map<String,Object>> createSheetForVehicleTypes = videoRecordRepository.getVehicleTypeGroupsForAll(id);
+        excelExporter.writeDataForVehicleType(workbook, type, createSheetForVehicleTypes);
+        
+        
+        
         excelExporter.export(workbook,response);   
     	
     }
