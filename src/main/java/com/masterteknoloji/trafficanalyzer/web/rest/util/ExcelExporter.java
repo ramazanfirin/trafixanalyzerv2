@@ -175,15 +175,15 @@ public class ExcelExporter {
             createCell(row, columnCount++, "%"+videoRecordSummaryVM.getEndLineRate(), style);
         }
         
-        sheet.autoSizeColumn(0);
-        sheet.autoSizeColumn(1);
-        sheet.autoSizeColumn(2);
-        sheet.autoSizeColumn(3);
-        sheet.autoSizeColumn(4);
-        sheet.autoSizeColumn(5);
-        sheet.autoSizeColumn(6);
-        sheet.autoSizeColumn(7);
-        
+//        sheet.autoSizeColumn(0);
+//        sheet.autoSizeColumn(1);
+//        sheet.autoSizeColumn(2);
+//        sheet.autoSizeColumn(3);
+//        sheet.autoSizeColumn(4);
+//        sheet.autoSizeColumn(5);
+//        sheet.autoSizeColumn(6);
+//        sheet.autoSizeColumn(7);
+//        
         
     }
     
@@ -206,9 +206,9 @@ public class ExcelExporter {
             
         }
         
-        sheet.autoSizeColumn(0);
-        sheet.autoSizeColumn(1);
-        
+//        sheet.autoSizeColumn(0);
+//        sheet.autoSizeColumn(1);
+//        
     }
      
     private void createCell(Row row, int columnCount, Object value, CellStyle style) {
