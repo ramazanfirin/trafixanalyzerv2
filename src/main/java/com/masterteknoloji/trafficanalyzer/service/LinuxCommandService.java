@@ -112,6 +112,38 @@ public class LinuxCommandService {
 		
 	}
 	
+	public void switchVisulationWindow() throws ClientProtocolException, IOException {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+
+        try {
+        	
+        	String endpoint = applicationProperties.getVisulationSwitchUrl();
+            HttpGet request = new HttpGet(endpoint);
+            CloseableHttpResponse response = httpClient.execute(request);
+            log.info(endpoint+ " script called");
+            try {
+
+            	int statusCode = response.getStatusLine().getStatusCode();
+                if(statusCode != 200) {
+                	log.error("error for calling visulation switch url");
+                    throw new RuntimeException("error for calling visulation switch url");
+                }
+            	
+                
+            }catch (Exception e) {
+            	log.error("error for calling visulation switch url",e);
+                
+			} 
+            finally {
+                response.close();
+            }
+        } finally {
+            httpClient.close();
+        }
+
+		
+	}
+	
 	public List<LinuxProcessDetailsVM> callRunningProcess(String scriptName) {
 		log.info("callRunningProcess"+ " started");
     	

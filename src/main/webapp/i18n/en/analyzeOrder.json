@@ -47,7 +47,9 @@
             "videoAndScenario": "Video and Scenario",
             "analyzeSpecifiedMinutes": "Analyze Specified Minutes",
             "analyzeStartMinute":"Analyze Start Minute",
-            "analyzeEndMinute":"Analyze End Minute"
+            "analyzeEndMinute":"Analyze End Minute",
+            "visulationWindow": "Visulation Window",
+            "showHideVisulationWindow": "Show/Hide"
         }
     }
 }

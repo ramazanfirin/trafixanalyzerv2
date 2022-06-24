@@ -438,7 +438,7 @@ public class AnalyzeOrderResource {
 
 	}
 	
-	@Scheduled(fixedRate = 60000)
+	@Scheduled(fixedRate = 15000)
 	public void processFromQuene() throws Exception {
 
 		log.info("processFromQuene" + " started");
@@ -672,5 +672,11 @@ public class AnalyzeOrderResource {
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         IOUtils.copy(targetStream, response.getOutputStream());
     }
-
+	
+	@GetMapping("/analyze-orders/switchVisulationWindow")
+    public void switchVisulationWindow() throws IOException {
+		linuxCommandService.switchVisulationWindow();
+    }
+	
+	
 }

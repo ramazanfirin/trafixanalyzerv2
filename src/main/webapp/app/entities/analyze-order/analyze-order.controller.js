@@ -31,6 +31,7 @@
         currentDate.setHours(23);
         currentDate.setMinutes(59);
  		vm.endDate = currentDate ;
+	    vm.showHideVisilationWindow = showHideVisilationWindow;
  		
 		vm.play = play;
         loadAll();
@@ -98,6 +99,10 @@
 		function playSuccess(result){
 			//resetAll();
 			
+		}
+		
+		function showHideVisilationWindow(){
+			AnalyzeOrder.switchVisulationWindow();
 		}
 		
 		function onSaveError(error) {

@@ -33,6 +33,8 @@ public class ApplicationProperties {
 
 	String webServerPort;
 	
+	String visulationSwitchUrl;
+	
 	public String getAiScriptEndpoint() {
 		return aiScriptEndpoint;
 	}
@@ -119,6 +121,14 @@ public class ApplicationProperties {
 
 	public void setWebServerPort(String webServerPort) {
 		this.webServerPort = webServerPort;
+	}
+
+	public String getVisulationSwitchUrl() {
+		return visulationSwitchUrl;
+	}
+
+	public void setVisulationSwitchUrl(String visulationSwitchUrl) {
+		this.visulationSwitchUrl = visulationSwitchUrl;
 	}
 	
 	

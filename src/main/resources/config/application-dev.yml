@@ -178,4 +178,5 @@ application:
     reportInterval: 3
     trafixViewerJarLocation: /home/ramazan/Desktop/trafix/trafixviewer-0.0.1-SNAPSHOT.jar
     webServerPort: 8000
+    visulationSwitchUrl: http://localhost:9000
 

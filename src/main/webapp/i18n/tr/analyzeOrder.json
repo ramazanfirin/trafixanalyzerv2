@@ -47,7 +47,9 @@
             "videoAndScenario": "Video ve Senaryo",
             "analyzeSpecifiedMinutes": "Belirtilen Dakikaları Analiz Et",
             "analyzeStartMinute":"Analiz Başlangıç Dakikası",
-            "analyzeEndMinute":"Analiz Bitiş Dakikası"
+            "analyzeEndMinute":"Analiz Bitiş Dakikası",
+            "visulationWindow": "Analiz Penceresi",
+            "showHideVisulationWindow": " Göster/Gizle"
             
         }
     }

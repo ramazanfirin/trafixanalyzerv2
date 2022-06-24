@@ -15,7 +15,7 @@
 			'play': { method: 'GET', isArray: false,url: 'api/analyze-orders/play/:id'},
 			'search': { method: 'GET', isArray: true,url: 'api/analyze-orders/search'},
 			'startAnalyzeOrdersMultiple': { method: 'POST', isArray: false,url: 'api/analyze-orders-multiple'},
-			
+			'switchVisulationWindow': { method: 'GET', isArray: false,url: 'api/analyze-orders/switchVisulationWindow'},
 			
 			'get': {
                 method: 'GET',
